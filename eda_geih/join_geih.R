@@ -5,9 +5,11 @@ merge_month <- function(month) {
   
   final_df <- data.table()
   
+  variables_to_delete <- c("PERIODO.y", "MES.y", "PER.y", "REGIS.y", "AREA.y", "CLASE.y", "DPTO.y", "FT.y", "FFT.y")
+  
   key_variables = c("DIRECTORIO", "SECUENCIA_P", "ORDEN","HOGAR", "FEX_C18")
   
-  setwd(paste0("C:/data_exploration/data-exploration/eda_geih/datos/", month))
+  setwd(paste0("C:/data-exploration/eda_geih/datos/", month))
   
   all_files <- list.files(pattern = "*.csv", ignore.case = TRUE)
   
@@ -25,7 +27,10 @@ merge_month <- function(month) {
       final_df <- merge(final_df, df, by = c(new_key_variables), all.x = T)
       
       if ("PERIODO.x" %in% colnames(final_df)) {
-        final_df[, c("PERIODO.x", "MES.x", "PER.x", "REGIS.x", "AREA.x", "CLASE.x", "DPTO.x", "PERIODO.y", "MES.y", "PER.y", "REGIS.y", "AREA.y", "CLASE.y", "DPTO.y") := NULL]
+        
+        setnames(final_df, old = c("PERIODO.x", "MES.x", "PER.x", "REGIS.x", "AREA.x", "CLASE.x", "DPTO.x", "FT.x", "FFT.x"), new = c("PERIODO", "MES", "PER", "REGIS", "AREA", "CLASE", "DPTO", "FT", "FFT"))
+        
+        final_df[, c(variables_to_delete) := NULL]
       }
     }
     
@@ -63,5 +68,6 @@ geih_completed <- function () {
 
 data <- geih_completed()
 
-
 #####################################################
+
+
