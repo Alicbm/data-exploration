@@ -15,18 +15,21 @@ merge_month <- function(month) {
     
     if (length(final_df) == 0) {
       final_df <- fread(file = files)
+    } else {
+      
+      df <- fread(file = files)
+      col_names <- colnames(df)
+      
+      new_key_variables <- col_names[col_names %in% key_variables]
+      
+      final_df <- merge(final_df, df, by = c(new_key_variables), all.x = T)
+      
+      if ("PERIODO.x" %in% colnames(final_df)) {
+        final_df[, c("PERIODO.x", "MES.x", "PER.x", "REGIS.x", "AREA.x", "CLASE.x", "DPTO.x", "PERIODO.y", "MES.y", "PER.y", "REGIS.y", "AREA.y", "CLASE.y", "DPTO.y") := NULL]
+      }
     }
     
-    df <- fread(file = files)
-    col_names <- colnames(df)
     
-    new_key_variables <- col_names[col_names %in% key_variables]
-    
-    final_df <- merge(final_df, df, by = c(new_key_variables), all.x = T, no.dups = TRUE)
-    
-    if ("PERIODO.x" %in% colnames(final_df)) {
-      final_df[, c("PERIODO.x", "MES.x", "PER.x", "REGIS.x", "AREA.x", "CLASE.x", "DPTO.x", "PERIODO.y", "MES.y", "PER.y", "REGIS.y", "AREA.y", "CLASE.y", "DPTO.y") := NULL]
-    }
   }
   
   return (final_df)
@@ -48,7 +51,7 @@ geih_completed <- function () {
     if (length(all_months) == 0) {
       all_months <- merge_month(month)
     } else {
-      all_months <- rbind(all_months, merge_month(month))
+      all_months <- rbindlist(list(all_months, merge_month(month)), fill = T)
       
     }
     
@@ -62,5 +65,3 @@ data <- geih_completed()
 
 
 #####################################################
-
-
