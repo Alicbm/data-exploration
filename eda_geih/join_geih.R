@@ -1,6 +1,6 @@
 library(data.table)
 
-
+getwd()
 merge_month <- function(month) {
   
   final_df <- data.table()
@@ -9,7 +9,7 @@ merge_month <- function(month) {
   
   key_variables = c("DIRECTORIO", "SECUENCIA_P", "ORDEN","HOGAR", "FEX_C18")
   
-  setwd(paste0("C:/data-exploration/eda_geih/datos/", month))
+  setwd(paste0("C:/Users/MERCADEO/Documents/proyecto_d/analitica/data-exploration/eda_geih/datos/", month))
   
   all_files <- list.files(pattern = "*.csv", ignore.case = TRUE)
   
