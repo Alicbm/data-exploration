@@ -2,6 +2,3 @@
 .Rhistory
 .RData
 .Ruserdata
-*.qmd
-tutorials/merge_geih_explication_functions_files/
-tutorials/data_validation_files/
