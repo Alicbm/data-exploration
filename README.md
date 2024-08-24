@@ -61,8 +61,6 @@ Para aplicar el factor de expansión:
   ```plaintext
   Estimación Total = ∑ (Valor de la Observación × Factor de Expansión)
 
-
-
 Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1 si está ocupado, 0 si no) por el factor de expansión y suma los valores ajustados.
 
 ### 4. Consideraciones Adicionales
