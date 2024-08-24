@@ -1,0 +1,12 @@
+html body {
+    background-color: #fcfbfb;
+}
+
+h1 {
+    font-size: 45px;
+    font-weight: bold;
+}
+
+.sourceCode.r.code-with-copy {
+    background-color: #f3f3f3;
+}
