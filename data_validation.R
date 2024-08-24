@@ -1,124 +1,136 @@
 #######################################################
-
 # VALIDACIÓN DE DATA
-
 #######################################################
 
 # 1. Verificar la Estructura de los Datos
 
 ### Columnas comunes
+# Este paso verifica si los nombres de las columnas en los datos de cada mes son iguales a los de la data consolidada.
+# Se toma cada mes de datos para asegurar que la estructura de columnas es consistente.
 
-# Para esto tomamos cualquier mes, con el objetivo de verificar cuántas variables tiene ese mes 
-# y ver si sigue manteniendo la misma cantidad en la data consolidada.
-
-# Generamos el mes que elegimos
-febrero <- merge_month("febrero")
-
-# Verificamos el número de columnas
-ncol(febrero) # 526
-
-# Mostramos los nombres de las columnas
-names(febrero)
-
-# Ahora hacemos lo mismo con la data consolidada
-ncol(data) # 526
-
-# Mostramos los nombres de las columnas
-names(data)
-
-#### Tipo de datos
-
-# Verificamos la estructura de los datos del mes de febrero
-str(febrero)
-
-# Verificamos la estructura de los datos consolidados
-str(data)
-
-meses <- C(enero, febrero, marzo, abrir, mayo, junio)
-
-verificar_variables <- function(data, mes){
+verificar_variables <- function() {
   
-for (mes in data) {
+  months <- c("enero", "febrero", "marzo", "abril", "mayo", "junio")
   
+  for (month in months) {
     
-      if(names %in% names(mes)) {
-      
-        print("las variables son las misma")
-        } else {
-      
-            print("las variables no son las misma")
-     }
+    # Aquí se asume que `merge_month` carga los datos del mes específico
+    month_data <- merge_month(month)
     
-    
+    # Verifica si los nombres de columnas en los datos del mes están en la data consolidada
+    if (all(names(month_data) %in% names(data))) {
+      print(paste("Las variables son las mismas que las del mes de", month))
+    } else {
+      print(paste("Las variables no son las mismas que las del mes de", month))
+    }
   }
-
 }
 
-verificar_variables(data,enero)
-  
-#función 
+verificar_variables()
+
 
 # 2. Conteo de Registros
 
-# Para esto vamos a sumar las observaciones de todos los meses, las cuales tienen que coincidir con la data consolidada.
+# Este paso suma el número de observaciones de cada mes para asegurarse de que coincida con el número total de observaciones en la data consolidada.
 
-# Generamos los datos de cada mes
-enero <- merge_month("enero")
-febrero <- merge_month("febrero")
-marzo <- merge_month("marzo")
-abril <- merge_month("abril")
-mayo <- merge_month("mayo")
-junio <- merge_month("junio")
-
-# Sumamos el número de observaciones de todos los meses
-total_de_obs_original <- nrow(enero) + nrow(febrero) + nrow(marzo) + nrow(abril) + nrow(mayo) + nrow(junio)
-
-# Obtenemos el número de observaciones de la data consolidada
-total_de_obs_pegado <- nrow(data)
-
-# Comparamos las observaciones
-if (total_de_obs_original == total_de_obs_pegado) {
-  print("La cantidad de observaciones es la correcta")
-} else {
-  print("La cantidad de observaciones no es la correcta")
+observaciones <- function() {
+  
+  months <- c("enero", "febrero", "marzo", "abril", "mayo", "junio")
+  total_obs <- 0
+  
+  for (month in months) {
+    
+    # Aquí se asume que `merge_month` carga los datos del mes específico
+    month_data <- merge_month(month)
+    
+    # Suma el número de filas de los datos de cada mes
+    total_obs <- total_obs + nrow(month_data)
+  } 
+  
+  # Compara el total de observaciones con el número de filas en la data consolidada
+  if (total_obs == nrow(data)) {
+    print("El número de observaciones es correcto")
+  } else {
+    print("El número de observaciones no es correcto")
+  }
 }
 
+observaciones()
 
-#función 
 # 3. Duplicados
 
 #### Verificar duplicados
+# Identifica si hay filas duplicadas en la data consolidada.
 
-# Identificamos duplicados en la data consolidada
-duplicado <- data[duplicated(data)]
-
-# Verificamos si hay duplicados
-if (nrow(duplicado) == 0) {
-  print("No hay duplicados por fila")
-} else {
-  print("Hay duplicados por fila")
+duplicados <- function(data) {
+  
+  duplicado <- data[duplicated(data)]
+  
+  # Verifica si hay filas duplicadas
+  if (nrow(duplicado) == 0) {
+    print("No hay duplicados por fila")
+  } else {
+    print("Hay duplicados por fila")
+  }
 }
+
+duplicados(data)
+
 
 # 4. Completitud de Datos
 
-#### Verificar valores faltantes: Asegúrate de que no haya valores faltantes en columnas clave.
+#### Verificar valores faltantes
+# Este paso cuenta los valores faltantes en columnas clave para asegurarse de que no haya datos faltantes.
 
-# NOTA: SIEMPRE HABRÁ VALORES NULOS, PERO LA FINALIDAD ES IDENTIFICARLOS Y VER SI LAS VARIABLES CLAVE ESTÁN COMPLETAS.
+valores_faltantes1 <- function(data, ...) {
+  
+  data[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = c(...)]
+  
+}
 
-# Contamos los valores faltantes en cada columna
-data[, sapply(.SD, function(x) sum(is.na(x)))]
-función
+# Contamos valores faltantes en las columnas especificadas
+valores_faltantes1(data, "OCI", "MES", "DPTO", "HOGAR", "FEX_C18", "P7360", "P9460")
+
 
 # 5. Validación de Contenidos
 
-# Vamos a mirar la cantidad de ocupados en enero por departamento, tanto en la data consolidada como en la data específica de enero.
+# Comparamos la cantidad de ocupados en enero por departamento entre la data consolidada y la data específica de enero.
 
-# Sumamos los ocupados en enero por departamento en la data específica de enero
-enero[, .(muestra_enero = sum(OCI, na.rm = TRUE)), by = DPTO]
+validacion <- function(data, month, variable, ...) {
+  
+  meses_diccionario <- list(
+    "enero" = 1,
+    "febrero" = 2,
+    "marzo" = 3,
+    "abril" = 4,
+    "mayo" = 5,
+    "junio" = 6,
+    "julio" = 7,
+    "agosto" = 8,
+    "septiembre" = 9,
+    "octubre" = 10,
+    "noviembre" = 11,
+    "diciembre" = 12
+  )
+  
+  # Aquí se asume que `merge_month` carga los datos del mes específico
+  month_data <- merge_month(month)
+  
+  # Suma los valores en la data consolidada
+  resultado1 <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = variable]
+  
+  # Suma los valores en la data específica del mes
+  resultado2 <- data[MES == meses_diccionario[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = variable] 
+  
+  # Compara los resultados para verificar si coinciden
+  if (all(resultado1 == resultado2)) {
+    print("El contenido coincide")
+  } else {
+    print("El contenido no coincide")
+  }
+}
 
-# Sumamos los ocupados en enero por departamento en la data consolidada
-data[MES == 1, .(muestra_enero = sum(OCI, na.rm = TRUE)), by = DPTO]
-#función 
+validacion(data, "marzo", "DPTO", "OCI", "P7360", "P9460")
 
 
 

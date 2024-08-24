@@ -1,0 +1,198 @@
+---
+title: "Validación"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## 1. Verificar la Estructura de los Datos
+
+```{r eval = FALSE}
+verificar_variables <- function() {
+  
+  months <- c("enero", "febrero", "marzo", "abril", "mayo", "junio")
+  
+  for (month in months) {
+    
+    month_data <- merge_month(month)
+    
+    if (all(names(month_data) %in% names(data))) {
+      print(paste("Las variables son las mismas que las del mes de", month))
+    } else {
+      print(paste("Las variables no son las mismas que las del mes de", month))
+    }
+  }
+}
+
+verificar_variables()
+```
+
+### 1.1 Definición de la Función
+
+```{r eval = FALSE}
+verificar_variables <- function() {
+```
+
+Aquí se define una nueva función llamada `verificar_variables`. Esta función no toma ningún argumento y su propósito es verificar que las variables (columnas) en los datos de cada mes coincidan con las variables en la data consolidada.
+
+### 1. 2 lista de meses
+
+```{r eval = FALSE}
+months <- c("enero", "febrero", "marzo", "abril", "mayo", "junio")
+```
+
+Se crea un vector llamado `months` que contiene los nombres de los meses que se van a verificar. En este caso, los meses son de enero a junio.
+
+### 1. 3 Iteración sobre los Meses
+
+```{r eval = FALSE}
+
+for (month in months) {
+```
+
+Se utiliza un bucle `for` para iterar sobre cada mes en el vector `months`. En cada iteración, la variable `month` tomará el valor de uno de los meses.
+
+### 1. 4 Obtener Datos del Mes
+
+```{r eval = FALSE}
+month_data <- merge_month(month)
+```
+
+Dentro del bucle, se llama a la función `merge_month()` con el nombre del mes actual como argumento. Esta función debería devolver un data frame que contiene los datos para el mes especificado. El resultado se guarda en la variable `month_data`.
+
+### 1. 5 Comparación de Nombres de Columnas
+
+```{r eval = FALSE}
+if (all(names(month_data) %in% names(data))) {
+```
+
+Se verifica si todos los nombres de las columnas en `month_data` están presentes en `names(data)`, que es un vector con los nombres de las columnas en la data consolidada. La función `names()` obtiene los nombres de las columnas de un data frame, y `%in%` verifica si cada nombre de columna de `month_data` está en el conjunto de nombres de columnas de `data`. La función `all()` asegura que la condición sea verdadera para todas las columnas.\
+
+### 1. 6 Mensaje de Resultados
+
+```{r eval = FALSE}
+print(paste("Las variables son las mismas que las del mes de", month))
+```
+
+Si todas las columnas de `month_data` están presentes en la data consolidada, se imprime un mensaje indicando que las variables son las mismas que las del mes actual.
+
+```{r eval = FALSE}
+print(paste("Las variables no son las mismas que las del mes de", month))
+```
+
+Si alguna columna de `month_data` no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.
+
+### 1. 7 Llamada a la Función
+
+```{r eval = FALSE}
+verificar_variables()
+```
+
+## 2. Conteo de Registros
+
+```{r eval = FALSE}
+observaciones <- function() {
+  
+  months <- c("enero", "febrero", "marzo", "abril", "mayo", "junio")
+  total_obs <- 0
+  
+  for (month in months) {
+    
+    month_data <- merge_month(month)
+    
+    total_obs <- total_obs + nrow(month_data)
+  } 
+  
+  if (total_obs == nrow(data)) {
+    print("El número de observaciones es correcto")
+  } else {
+    print("El número de observaciones no es correcto")
+  }
+}
+
+observaciones()
+```
+
+### 2. 1 Definición de la Función
+
+```{r eval = FALSE}
+observaciones <- function() {
+
+```
+
+Aquí se define una nueva función llamada `observaciones`. Esta función no recibe ningún argumento y su objetivo es verificar si el número total de observaciones en la data consolidada coincide con la suma de las observaciones de cada mes.\
+
+### 2. 2 Lista de Meses
+
+```{r eval = FALSE}
+months <- c("enero", "febrero", "marzo", "abril", "mayo", "junio")
+```
+
+Se crea un vector llamado `months` que contiene los nombres de los meses que se van a procesar, desde enero hasta junio. Este vector será utilizado para iterar sobre cada mes y calcular el número de observaciones.
+
+### 2. 3 Inicialización del Contador de Observaciones
+
+```{r eval = FALSE}
+total_obs <- 0
+```
+
+Se inicializa una variable llamada `total_obs` con el valor 0. Esta variable se utilizará para acumular el total de observaciones de todos los meses.\
+
+### 2. 4 Iteración sobre los Meses
+
+```{r eval = FALSE}
+for (month in months) {
+```
+
+Se utiliza un bucle `for` para iterar sobre cada mes en el vector `months`. En cada iteración, la variable `month` toma el valor de uno de los meses (por ejemplo, "enero", "febrero", etc.).
+
+### 2. 5 Obtener Datos del Mes
+
+```{r eval = FALSE}
+month_data <- merge_month(month)
+```
+
+Dentro del bucle, se llama a la función `merge_month()` con el nombre del mes actual como argumento. Esta función debería devolver un data frame que contiene los datos para el mes especificado. El resultado se guarda en la variable `month_data`.
+
+### 2. 6 Contar y Acumular Observaciones
+
+```{r eval = FALSE}
+total_obs <- total_obs + nrow(month_data)
+
+```
+
+Se cuenta el número de filas (observaciones) en `month_data` utilizando `nrow(month_data)` y se suma al contador `total_obs`. Esta operación se repite para cada mes, acumulando el total de observaciones.
+
+### 2. 7 Verificación del Número de Observaciones
+
+```{r eval = FALSE}
+if (total_obs == nrow(data)) {
+```
+
+Una vez que se ha acumulado el total de observaciones para todos los meses, se compara este total con el número de filas en la data consolidada (usando `nrow(data)`). La función `nrow()` obtiene el número de filas en un data frame o data table.
+
+### 2. 8 Mensaje de Resultados 
+
+```{r eval = FALSE}
+print("El número de observaciones es correcto")
+```
+
+Si el total de observaciones calculado coincide con el número de filas en la data consolidada, se imprime el mensaje "El número de observaciones es correcto".\
+\
+
+```{r eval = FALSE}
+print("El número de observaciones no es correcto")
+```
+
+Si el total de observaciones calculado no coincide con el número de filas en la data consolidada, se imprime el mensaje "El número de observaciones no es correcto".
+
+### 2. 9 Llamada a la Función
+
+```{r eval = FALSE}
+observaciones()
+```
+
+Finalmente, se llama a la función `observaciones()` para ejecutar el código y realizar la verificación del número total de observaciones.

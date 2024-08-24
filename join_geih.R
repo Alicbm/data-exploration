@@ -28,6 +28,8 @@ merge_month <- function(month) {
 }
 
 
+enero2 <- merge_month("enero")
+
 geih_completed <- function () {
 
   base_dir <- file.path(getwd(), "datos")
