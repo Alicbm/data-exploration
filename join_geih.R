@@ -1,4 +1,11 @@
+#Descomentar eliminando el (#) en caso de no tener instalada la libreria data.table
+#install.packages("data.table")
+
 library(data.table)
+
+###################################################################
+# FUNCIÓN PARA EL PEGADO DE TODOS LOS MODULOS DE UN MES ESPECIFICO 
+##################################################################
 
 merge_month <- function(month) {
   
@@ -28,7 +35,9 @@ merge_month <- function(month) {
 }
 
 
-enero2 <- merge_month("enero")
+#############################################
+# FUNCIÓN PARA EL PEGADO DE TODOS LOS MESES 
+#############################################
 
 geih_completed <- function () {
 
@@ -44,18 +53,17 @@ geih_completed <- function () {
       all_months <- merge_month(month)
     } else {
       all_months <- rbindlist(list(all_months, merge_month(month)), fill = T)
-      
     }
     
   }
   
+  fwrite(all_months, file = "geih_complete.csv")
   return (all_months)
      
 }
 
-data <- geih_completed()
-
-
+#Descomentar eliminando el (#) para iniciar con el pegado de las bases de datos
+#geih_completed()
 
 
 

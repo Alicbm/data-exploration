@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Alic Barandica, Daniel Molina">
+<meta name="dcterms.date" content="2024-08-23">
+
+<title>Explicación de las funciones para el pegado de la GEIH</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="merge_geih_explication_functions_files/libs/clipboard/clipboard.min.js"></script>
+<script src="merge_geih_explication_functions_files/libs/quarto-html/quarto.js"></script>
+<script src="merge_geih_explication_functions_files/libs/quarto-html/popper.min.js"></script>
+<script src="merge_geih_explication_functions_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="merge_geih_explication_functions_files/libs/quarto-html/anchor.min.js"></script>
+<link href="merge_geih_explication_functions_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="merge_geih_explication_functions_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="merge_geih_explication_functions_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="merge_geih_explication_functions_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="merge_geih_explication_functions_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenido</h2>
+   
+  <ul>
+  <li><a href="#función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month" id="toc-función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month" class="nav-link active" data-scroll-target="#función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month"><em>Función para el pegado de todos los modulos en un mes determinado (merge_month)</em></a>
+  <ul class="collapse">
+  <li><a href="#definición-de-la-función" id="toc-definición-de-la-función" class="nav-link" data-scroll-target="#definición-de-la-función">1. Definición de la función</a></li>
+  <li><a href="#definir-las-variables-clave" id="toc-definir-las-variables-clave" class="nav-link" data-scroll-target="#definir-las-variables-clave">2. Definir las variables clave</a></li>
+  <li><a href="#definir-las-variables-a-eliminar" id="toc-definir-las-variables-a-eliminar" class="nav-link" data-scroll-target="#definir-las-variables-a-eliminar">3. Definir las variables a eliminar</a></li>
+  <li><a href="#definir-el-directorio-base" id="toc-definir-el-directorio-base" class="nav-link" data-scroll-target="#definir-el-directorio-base">4. Definir el directorio base</a></li>
+  <li><a href="#listar-los-archivos-csv-en-el-directorio" id="toc-listar-los-archivos-csv-en-el-directorio" class="nav-link" data-scroll-target="#listar-los-archivos-csv-en-el-directorio">5. Listar los archivos CSV en el directorio</a></li>
+  <li><a href="#leer-el-primer-archivo" id="toc-leer-el-primer-archivo" class="nav-link" data-scroll-target="#leer-el-primer-archivo">6. Leer el primer archivo</a></li>
+  <li><a href="#fusión-de-los-archivos-restantes" id="toc-fusión-de-los-archivos-restantes" class="nav-link" data-scroll-target="#fusión-de-los-archivos-restantes">7. Fusión de los archivos restantes</a></li>
+  <li><a href="#eliminar-columnas-duplicadas" id="toc-eliminar-columnas-duplicadas" class="nav-link" data-scroll-target="#eliminar-columnas-duplicadas">8. Eliminar columnas duplicadas</a></li>
+  <li><a href="#devolver-el-data.table-final" id="toc-devolver-el-data.table-final" class="nav-link" data-scroll-target="#devolver-el-data.table-final">9. Devolver el data.table final</a></li>
+  </ul></li>
+  <li><a href="#función-para-el-pegado-de-todos-los-meses-geih_completed" id="toc-función-para-el-pegado-de-todos-los-meses-geih_completed" class="nav-link" data-scroll-target="#función-para-el-pegado-de-todos-los-meses-geih_completed"><em>Función para el pegado de todos los meses (<code>geih_completed</code>)</em></a>
+  <ul class="collapse">
+  <li><a href="#definición-de-la-función-1" id="toc-definición-de-la-función-1" class="nav-link" data-scroll-target="#definición-de-la-función-1">1. Definición de la función</a></li>
+  <li><a href="#definir-el-directorio-base-1" id="toc-definir-el-directorio-base-1" class="nav-link" data-scroll-target="#definir-el-directorio-base-1">2. Definir el directorio base</a></li>
+  <li><a href="#listar-los-subdirectorios-meses" id="toc-listar-los-subdirectorios-meses" class="nav-link" data-scroll-target="#listar-los-subdirectorios-meses">3. Listar los subdirectorios (meses)</a></li>
+  <li><a href="#inicializar-un-data.table-vacío" id="toc-inicializar-un-data.table-vacío" class="nav-link" data-scroll-target="#inicializar-un-data.table-vacío">4. Inicializar un <code>data.table</code> vacío</a></li>
+  <li><a href="#combinar-datos-para-cada-mes" id="toc-combinar-datos-para-cada-mes" class="nav-link" data-scroll-target="#combinar-datos-para-cada-mes">6. Combinar datos para cada mes</a></li>
+  <li><a href="#devolver-el-data.table-combinado" id="toc-devolver-el-data.table-combinado" class="nav-link" data-scroll-target="#devolver-el-data.table-combinado">7. Devolver el <code>data.table</code> combinado</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Explicación de las funciones para el pegado de la GEIH</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Alic Barandica, Daniel Molina </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 23, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><strong>Nota</strong>: Para utilizar las funciones y unir las bases de datos no es necesario saber R, el archivo README.md (ubicado en la capeta raíz del repositorio) está creado con el fin de ser lo más explícito posible para que puedas utilizarlas sin inconvenientes, sin embargo, para entender como funciona la lógica detrás del pegado de las bases de datos es necesario entender como funciona R. En este espacio explicaremos linea a linea como están construidas estás funciones.</p>
+<section id="función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month" class="level2">
+<h2 class="anchored" data-anchor-id="función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month"><em>Función para el pegado de todos los modulos en un mes determinado (merge_month)</em></h2>
+<p>La siguiente función (<code>merge_month</code>) tiene como objetivo unir todos los modulos que hay dentro de cada mes. A continuación se expicará cada una de las funcionalidades dentro de ella:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>merge_month <span class="ot">&lt;-</span> <span class="cf">function</span>(month) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  key_variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"DIRECTORIO"</span>, <span class="st">"SECUENCIA_P"</span>, <span class="st">"ORDEN"</span>, <span class="st">"HOGAR"</span>, <span class="st">"FEX_C18"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  variables_to_delete <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PERIODO"</span>, <span class="st">"MES"</span>, <span class="st">"PER"</span>, <span class="st">"REGIS"</span>, <span class="st">"AREA"</span>, <span class="st">"CLASE"</span>, <span class="st">"DPTO"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>, month)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  all_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> base_dir, <span class="at">pattern =</span> <span class="st">"*.csv"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  final_df <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="at">file =</span> all_files[<span class="dv">1</span>])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (file <span class="cf">in</span> all_files[<span class="sc">-</span><span class="dv">1</span>]) {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    df <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="at">file =</span> file)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    new_key_variables <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">colnames</span>(df), key_variables)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    final_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(final_df, df, <span class="at">by =</span> new_key_variables, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="st">"PERIODO.x"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(final_df)) {</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">setnames</span>(final_df, <span class="at">old =</span> <span class="fu">paste0</span>(variables_to_delete, <span class="st">".x"</span>), <span class="at">new =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="st">""</span>, variables_to_delete))</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      final_df[, <span class="fu">c</span>(<span class="fu">paste0</span>(variables_to_delete, <span class="st">".y"</span>)) <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_df)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="definición-de-la-función" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función">1. Definición de la función</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>merge_month <span class="ot">&lt;-</span> <span class="cf">function</span>(month) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aquí defines una función llamada <code>merge_month</code>. Las funciones en R son bloques de código que realizan una tarea específica y pueden ser reutilizadas. Esta función toma un único argumento, <code>month</code>, que es un texto que representa el nombre de un mes (por ejemplo, <code>"enero"</code>, <code>"febrero"</code>). Este argumento será utilizado para identificar la carpeta en la que se encuentran los archivos CSV que quieres fusionar.</p>
+</section>
+<section id="definir-las-variables-clave" class="level3">
+<h3 class="anchored" data-anchor-id="definir-las-variables-clave">2. Definir las variables clave</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>  key_variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"DIRECTORIO"</span>, <span class="st">"SECUENCIA_P"</span>, <span class="st">"ORDEN"</span>, <span class="st">"HOGAR"</span>, <span class="st">"FEX_C18"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>En este paso, defines un vector llamado <code>key_variables</code> que contiene los nombres de las columnas que actuarán como claves para la fusión de los archivos CSV.</p>
+<p><strong>¿Por qué necesitas claves?</strong> Al fusionar datos de múltiples archivos, es común que haya algunas columnas (variables) que son compartidas por todos los archivos y que identifican de manera única cada registro. Estas son las claves. Al fusionar, R combinará los datos que comparten estas claves para asegurarse de que los datos coincidan correctamente. Por ejemplo, si <code>DIRECTORIO</code>, <code>SECUENCIA_P</code>, <code>ORDEN</code>, <code>HOGAR</code> y <code>FEX_C18</code> son variables que están presentes en todos los archivos, los registros se combinarán en base a la coincidencia de valores en estas columnas.</p>
+</section>
+<section id="definir-las-variables-a-eliminar" class="level3">
+<h3 class="anchored" data-anchor-id="definir-las-variables-a-eliminar">3. Definir las variables a eliminar</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>variables_to_delete <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"PERIODO"</span>, <span class="st">"MES"</span>, <span class="st">"PER"</span>, <span class="st">"REGIS"</span>, <span class="st">"AREA"</span>, <span class="st">"CLASE"</span>, <span class="st">"DPTO"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aquí defines otro vector llamado <code>variables_to_delete</code>, que contiene los nombres de las columnas que serán eliminadas después de la fusión.</p>
+<p><strong>¿Por qué eliminar columnas?</strong> Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, <code>PERIODO.x</code>, <code>PERIODO.y</code>). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el <code>data.table</code> final limpio y manejable.</p>
+</section>
+<section id="definir-el-directorio-base" class="level3">
+<h3 class="anchored" data-anchor-id="definir-el-directorio-base">4. Definir el directorio base</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>, month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta línea crea una ruta de acceso (<code>base_dir</code>) que apunta a la carpeta donde se encuentran los archivos CSV para el mes específico.</p>
+<p><strong>¿Cómo funciona?</strong></p>
+<ul>
+<li><p><code>getwd()</code> obtiene el directorio de trabajo actual (es decir, la carpeta en la que estás trabajando).</p></li>
+<li><p><code>file.path()</code> es una función que construye una ruta de archivo de manera portátil, es decir, que funcionará tanto en Windows como en macOS o Linux.</p></li>
+<li><p><code>"datos"</code> es una subcarpeta dentro del directorio de trabajo donde están almacenados los datos.</p></li>
+<li><p><code>month</code> es el argumento pasado a la función que especifica el nombre de la carpeta del mes.</p></li>
+</ul>
+<p><strong>Ejemplo:</strong> Si <code>getwd()</code> devuelve <code>"/Users/usuario/proyecto"</code> y <code>month</code> es <code>"enero"</code>, entonces <code>base_dir</code> será <code>"/Users/usuario/proyecto/datos/enero"</code>.</p>
+</section>
+<section id="listar-los-archivos-csv-en-el-directorio" class="level3">
+<h3 class="anchored" data-anchor-id="listar-los-archivos-csv-en-el-directorio">5. Listar los archivos CSV en el directorio</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>all_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="at">path =</span> base_dir, <span class="at">pattern =</span> <span class="st">"*.csv"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>, <span class="at">ignore.case =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aquí creas una lista (<code>all_files</code>) de todos los archivos CSV en el directorio especificado por <code>base_dir</code>.</p>
+<p><strong>Detalles:</strong></p>
+<ul>
+<li><p><code>list.files()</code> es una función que lista los nombres de los archivos en un directorio.</p></li>
+<li><p><code>path = base_dir</code> le indica a <code>list.files()</code> en qué carpeta buscar.</p></li>
+<li><p><code>pattern = "*.csv"</code> especifica que solo quieres archivos que terminan en <code>.csv</code> (es decir, archivos CSV).</p></li>
+<li><p><code>full.names = TRUE</code> indica que quieres las rutas completas de los archivos, no solo los nombres.</p></li>
+<li><p><code>ignore.case = TRUE</code> asegura que la búsqueda no distinga entre mayúsculas y minúsculas (es decir, <code>*.CSV</code> y <code>*.csv</code> serán tratados de la misma manera).</p></li>
+</ul>
+<p><strong>Resultado:</strong> Si hay tres archivos CSV en la carpeta (<code>archivo1.csv</code>, <code>archivo2.csv</code>, <code>archivo3.csv</code>), <code>all_files</code> contendrá las rutas completas de estos archivos como una lista de cadenas de texto.</p>
+</section>
+<section id="leer-el-primer-archivo" class="level3">
+<h3 class="anchored" data-anchor-id="leer-el-primer-archivo">6. Leer el primer archivo</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>final_df <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="at">file =</span> all_files[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aquí lees el primer archivo CSV de la lista <code>all_files</code> y lo almacenas en un <code>data.table</code> llamado <code>final_df</code>.</p>
+<p><strong>Detalles:</strong></p>
+<ul>
+<li><p><code>fread()</code> es una función rápida para leer archivos CSV en R, parte del paquete <code>data.table</code>.</p></li>
+<li><p><code>file = all_files[1]</code> indica que debes leer el primer archivo en la lista <code>all_files</code>.</p></li>
+</ul>
+<p><strong>Ejemplo:</strong> Si el primer archivo es <code>"/Users/usuario/proyecto/datos/enero/archivo1.csv"</code>, entonces <code>fread()</code> cargará este archivo en <code>final_df</code>.</p>
+</section>
+<section id="fusión-de-los-archivos-restantes" class="level3">
+<h3 class="anchored" data-anchor-id="fusión-de-los-archivos-restantes">7. Fusión de los archivos restantes</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (file <span class="cf">in</span> all_files[<span class="sc">-</span><span class="dv">1</span>]) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="at">file =</span> file)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  new_key_variables <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">colnames</span>(df), key_variables)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  final_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(final_df, df, <span class="at">by =</span> new_key_variables, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Este bloque de código fusiona todos los archivos CSV restantes en <code>final_df</code>.</p>
+<p><strong>Paso a paso:</strong></p>
+<ul>
+<li><p><code>for (file in all_files[-1])</code> inicia un bucle <code>for</code> que itera sobre todos los archivos en <code>all_files</code>, excepto el primero (<code>all_files[-1]</code>).</p></li>
+<li><p><code>df &lt;- fread(file = file)</code> lee cada archivo en un <code>data.table</code> temporal llamado <code>df</code>.</p></li>
+<li><p><code>new_key_variables &lt;- intersect(colnames(df), key_variables)</code> identifica las columnas clave comunes entre <code>df</code> y <code>final_df</code>.</p></li>
+<li><p><code>final_df &lt;- merge(final_df, df, by = new_key_variables, all.x = TRUE)</code> fusiona <code>final_df</code> con <code>df</code> utilizando las columnas clave comunes, asegurando que todas las filas de <code>final_df</code> se mantengan (<code>all.x = TRUE</code>).</p></li>
+</ul>
+<p><strong>Ejemplo:</strong> Si tienes tres archivos (<code>archivo1.csv</code>, <code>archivo2.csv</code>, <code>archivo3.csv</code>):</p>
+<ul>
+<li><p><code>final_df</code> empieza como <code>archivo1.csv</code>.</p></li>
+<li><p>Luego se fusiona con <code>archivo2.csv</code> usando las columnas clave comunes.</p></li>
+<li><p>Finalmente, se fusiona con <code>archivo3.csv</code>.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="eliminar-columnas-duplicadas" class="level3">
+<h3 class="anchored" data-anchor-id="eliminar-columnas-duplicadas">8. Eliminar columnas duplicadas</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="st">"PERIODO.x"</span> <span class="sc">%in%</span> <span class="fu">colnames</span>(final_df)) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setnames</span>(final_df, <span class="at">old =</span> <span class="fu">paste0</span>(variables_to_delete, <span class="st">".x"</span>), <span class="at">new =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="st">""</span>, variables_to_delete))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    final_df[, <span class="fu">c</span>(<span class="fu">paste0</span>(variables_to_delete, <span class="st">".y"</span>)) <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Este bloque se encarga de eliminar cualquier duplicado de las columnas especificadas en <code>variables_to_delete</code>.</p>
+<p><strong>Detalles:</strong></p></li>
+<li><p><code>if ("PERIODO.x" %in% colnames(final_df))</code> verifica si hay columnas duplicadas con el sufijo <code>.x</code> (como <code>PERIODO.x</code>).</p></li>
+<li><p><code>setnames(final_df, old = paste0(variables_to_delete, ".x"), new = gsub("\\.x$", "", variables_to_delete))</code> renombra estas columnas, eliminando el sufijo <code>.x</code>.</p></li>
+<li><p><code>final_df[, c(paste0(variables_to_delete, ".y")) := NULL]</code> elimina las versiones <code>.y</code> de estas columnas, si existen.</p>
+<p><strong>Ejemplo:</strong> Si después de la fusión tienes columnas como <code>PERIODO.x</code> y <code>PERIODO.y</code>, este código renombrará <code>PERIODO.x</code> a <code>PERIODO</code> y eliminará <code>PERIODO.y</code>.</p></li>
+</ul>
+</section>
+<section id="devolver-el-data.table-final" class="level3">
+<h3 class="anchored" data-anchor-id="devolver-el-data.table-final">9. Devolver el data.table final</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(final_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta línea simplemente devuelve el <code>data.table</code> resultante (<code>final_df</code>) después de que todos los archivos han sido fusionados y las columnas duplicadas han sido eliminadas.</p>
+<p><strong>Uso de la función:</strong> Después de definir esta función, puedes llamarla con el nombre del mes deseado para obtener el <code>data.table</code> fusionado de los archivos CSV correspondientes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>merged_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(<span class="st">"enero"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esto ejecutará la función y devolverá un <code>data.table</code> llamado <code>merged_data</code> que contiene los datos fusionados de todos los archivos CSV en la carpeta <code>"enero"</code>.</p>
+</section>
+</section>
+<section id="función-para-el-pegado-de-todos-los-meses-geih_completed" class="level2">
+<h2 class="anchored" data-anchor-id="función-para-el-pegado-de-todos-los-meses-geih_completed"><em>Función para el pegado de todos los meses (<code>geih_completed</code>)</em></h2>
+<p>En esta función se uniran todos los meses antes creados, para formar una sola base de datos, el resultado de esta sería la GEIH.</p>
+<section id="definición-de-la-función-1" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función-1">1. Definición de la función</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>geih_completed <span class="ot">&lt;-</span> <span class="cf">function</span> () {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La función <code>geih_completed</code> no toma ningún argumento. Su propósito es ejecutar un proceso de combinación de datos en función de los archivos CSV presentes en subdirectorios de la carpeta <code>"datos"</code>.</p>
+</section>
+<section id="definir-el-directorio-base-1" class="level3">
+<h3 class="anchored" data-anchor-id="definir-el-directorio-base-1">2. Definir el directorio base</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aquí se define el directorio base (<code>base_dir</code>) que contiene los subdirectorios con los datos.</p>
+<p><strong>¿Cómo funciona?</strong></p>
+<ul>
+<li><p><code>getwd()</code> obtiene el directorio de trabajo actual.</p></li>
+<li><p><code>file.path()</code> construye una ruta al directorio <code>"datos"</code> dentro del directorio de trabajo actual.</p></li>
+</ul>
+<p><strong>Ejemplo:</strong> Si tu directorio de trabajo es <code>"/Users/usuario/proyecto"</code>, entonces <code>base_dir</code> será <code>"/Users/usuario/proyecto/datos"</code>.</p>
+</section>
+<section id="listar-los-subdirectorios-meses" class="level3">
+<h3 class="anchored" data-anchor-id="listar-los-subdirectorios-meses">3. Listar los subdirectorios (meses)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>months <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="at">path =</span> base_dir, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta línea obtiene una lista de subdirectorios dentro de <code>base_dir</code>, que se espera que correspondan a diferentes meses.</p>
+<p><strong>Detalles:</strong></p>
+<ul>
+<li><p><code>list.dirs()</code> devuelve una lista de directorios.</p></li>
+<li><p><code>path = base_dir</code> especifica el directorio base desde donde listar los subdirectorios.</p></li>
+<li><p><code>full.names = FALSE</code> asegura que solo se devuelvan los nombres de los subdirectorios, no las rutas completas.</p></li>
+<li><p><code>recursive = FALSE</code> asegura que solo se listan los directorios de primer nivel dentro de <code>base_dir</code>.</p></li>
+</ul>
+<p><strong>Ejemplo:</strong> Si <code>base_dir</code> contiene subdirectorios <code>"enero"</code>, <code>"febrero"</code>, y <code>"marzo"</code>, entonces <code>months</code> será <code>c("enero", "febrero", "marzo")</code>.</p>
+</section>
+<section id="inicializar-un-data.table-vacío" class="level3">
+<h3 class="anchored" data-anchor-id="inicializar-un-data.table-vacío">4. Inicializar un <code>data.table</code> vacío</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (month <span class="cf">in</span> months) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Inicia un bucle <code>for</code> que iterará sobre cada mes en la lista <code>months</code>.</p>
+</section>
+<section id="combinar-datos-para-cada-mes" class="level3">
+<h3 class="anchored" data-anchor-id="combinar-datos-para-cada-mes">6. Combinar datos para cada mes</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_months) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">list</span>(all_months, <span class="fu">merge_month</span>(month)), <span class="at">fill =</span> T)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dentro del bucle, se verifica si <code>all_months</code> está vacío para decidir si se debe inicializar con los datos del primer mes o fusionar con los datos de meses adicionales.</p>
+<p><strong>Detalles:</strong></p>
+<ul>
+<li><p><code>if (length(all_months) == 0)</code> verifica si <code>all_months</code> está vacío. La función <code>length()</code> aplicada a un <code>data.table</code> devuelve el número de filas, por lo que <code>length(all_months) == 0</code> indica que <code>all_months</code> no tiene filas.</p></li>
+<li><p><code>all_months &lt;- merge_month(month)</code> llama a la función <code>merge_month()</code> para procesar y combinar los archivos del mes actual y asigna el resultado a <code>all_months</code>.</p></li>
+<li><p><code>else</code> si <code>all_months</code> ya tiene datos, combina los datos del mes actual con los datos existentes usando <code>rbindlist()</code>. Esto agrega las filas del <code>data.table</code> obtenido de <code>merge_month(month)</code> a <code>all_months</code>.</p></li>
+<li><p><code>fill = T</code> asegura que se llenarán los datos faltantes con NA cuando las columnas no coincidan entre los <code>data.table</code>.</p></li>
+</ul>
+</section>
+<section id="devolver-el-data.table-combinado" class="level3">
+<h3 class="anchored" data-anchor-id="devolver-el-data.table-combinado">7. Devolver el <code>data.table</code> combinado</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(all_months)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finalmente, la función devuelve el <code>data.table</code> combinado (<code>all_months</code>) que contiene los datos de todos los meses procesados.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
