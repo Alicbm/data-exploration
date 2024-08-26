@@ -1,0 +1,42 @@
+---
+title: "Bienvenido a nuestro proyecto"
+author: "Alic Barandica, Daniel Molina"
+date: "`r Sys.Date()`"
+format:
+  html:
+    toc: true
+    toc-title: "Tabla de contenido"
+    css: styles.css
+---
+
+Somos estudiantes de último semestre de Economía en la Universidad del Magdalena y formamos parte del grupo de analítica de datos de la universidad. En el marco de nuestro proyecto académico, hemos desarrollado una serie de herramientas y funciones que tienen como objetivo facilitar el manejo y análisis de datos provenientes del DANE.
+
+Nuestro proyecto se divide en tres secciones principales:
+
+## 1. Funciones Dinámicas para la Unión de Bases de Datos
+
+En esta sección, hemos desarrollado funciones específicas para unir varias bases de datos del DANE. Una de las bases de datos con las que trabajamos es la de la Gran Encuesta Integrada de Hogares (GEIH), que contiene alrededor de 1 millón de filas y más de 500 columnas. Estas funciones permiten integrar y manejar eficientemente grandes volúmenes de datos.
+
+## 2. Validación del Pegado de Bases de Datos: 
+
+Para asegurar la integridad y precisión en la unión de las bases de datos, hemos creado funciones que permiten validar que el proceso de unión se haya realizado correctamente. Estas herramientas están diseñadas para que los estudiantes puedan verificar la exactitud de los datos pegados y detectar posibles errores.
+
+## 3. Cálculo y Graficado de Indicadores del Mercado Laboral
+
+En la tercera sección, hemos implementado funciones para calcular indicadores clave del mercado laboral, como la tasa de desempleo y la tasa de ocupación a nivel departamental. Además, hemos desarrollado una función para graficar estos indicadores de manera dinámica, lo que facilita su interpretación y análisis.
+
+Cada una de estas secciones y funciones está detalladamente documentada, paso a paso, para que los estudiantes puedan comprender cómo descargar y trabajar con las bases de datos del DANE, así como entender el funcionamiento de la GEIH, unir datos mensuales y filtrar variables específicas. Nuestro objetivo es proporcionar herramientas que no solo simplifiquen el análisis de datos, sino que también enseñen buenas prácticas en la manipulación y visualización de información.
+
+Esperamos que este proyecto sea una valiosa adición a los recursos disponibles para el análisis de datos y que facilite el aprendizaje y la práctica de habilidades analíticas entre los estudiantes.
+
+<ul>
+  <li>
+    <a href="merge_geih_explication_functions.html" target="_blank">1. Funciones Dinámicas para la Unión de Bases de Datos</a><br>
+  </li>
+  <li>
+    <a href="data_validation.html" target="_blank">2. Validación del Pegado de Bases de Datos</a><br>
+  </li>
+  <li>
+    <a href="calculate_indicators.html" target="_blank">3. Cálculo y Graficado de Indicadores del Mercado Laboral</a>
+  </li>
+</ul>
