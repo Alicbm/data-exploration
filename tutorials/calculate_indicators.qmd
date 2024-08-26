@@ -29,7 +29,7 @@ library(dplyr)
 
 -   **Carga de librerías**: Las siguientes líneas cargan las librerías mencionadas. `data.table` es excelente para manejar grandes volúmenes de datos, `ggplot2` para crear gráficos, y `dplyr` para la manipulación de datos.
 
-### Lectura del archivo GEIH
+## Lectura del archivo GEIH
 
 ```{r eval=FALSE}
 #LEER EL ARCHIVO DE LA GEIH
@@ -104,7 +104,7 @@ data_geih[, DPTO := fcase(
 
 **Guardado del archivo**: Esta línea te permite guardar la versión modificada del archivo `data_geih` en un nuevo CSV llamado `geih_modify.csv`. Si deseas hacerlo, solo necesitas descomentar la línea.
 
-## *1. Función para el calculo de indicadores (`group_variables`)*
+## 1. Función para el calculo de indicadores (`group_variables`)
 
 La función `group_variables` tiene como objetivo crear un dataframe que incluya variables e indicadores clave para la práctica. Entre los datos que se generarán se encuentran la población por departamento (`factor_expansion`), el número de ocupados y desocupados, así como las tasas de desempleo y de ocupación para cada uno de los departamentos de Colombia.:
 
@@ -132,7 +132,7 @@ group_variables <- function() {
 }
 ```
 
-## 1.1 Definición de la función
+### 1. 1 Definición de la función
 
 ```{r eval=FALSE}
 group_variables <- function() {
@@ -140,7 +140,7 @@ group_variables <- function() {
 
 Aquí se define la función `group_variables` que, cuando se ejecute, realizará un conjunto de operaciones sobre los datos de `data_geih` y devolverá un `data.frame` con diversas estadísticas laborales a nivel departamental.
 
-## 1.2 Obtención del directorio base
+### 1. 2 Obtención del directorio base
 
 ```{r eval=FALSE}
 base_dir <- file.path(getwd(), "datos")
@@ -148,7 +148,7 @@ base_dir <- file.path(getwd(), "datos")
 
 Esta línea crea una variable llamada `base_dir`, que almacena la ruta del directorio donde se encuentran los datos. Usa `getwd()` para obtener el directorio de trabajo actual y luego agrega la carpeta "datos" al final de esa ruta.
 
-## 1.3 Listado de meses disponibles
+### 1. 3 Listado de meses disponibles
 
 ```{r eval=FALSE}
 months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
@@ -156,7 +156,7 @@ months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
 
 Aquí se genera una lista de subdirectorios dentro de `base_dir`. Cada subdirectorio corresponde a un mes. El parámetro `full.names = FALSE` asegura que solo se guarden los nombres de los subdirectorios, y `recursive = FALSE` evita que se busquen subdirectorios dentro de subdirectorios.
 
-## 1.4 Cálculo del factor de expansión
+### 1. 4 Cálculo del factor de expansión
 
 ```{r eval=FALSE}
 factor_expansion <- data_geih[MES == length(months), .(factor_expansion = sum(FEX_C18)), by = DPTO]
@@ -170,7 +170,7 @@ Esta línea filtra los datos de `data_geih` para el mes que corresponde al total
 
 -   **`by = DPTO`**: Agrupa los resultados por departamento.
 
-## 1.5 Cálculo del número de ocupados
+### 1. 5 Cálculo del número de ocupados
 
 ```{r eval=FALSE}
 ocupados <- data_geih[, .(ocupados = sum(OCI * FEX_C18, na.rm = TRUE) / length(months)), by = DPTO]
@@ -184,7 +184,7 @@ Esta línea calcula el número de personas ocupadas por departamento. Se multipl
 
 -   **`/ length(months)`**: Divide por el número de meses para obtener el promedio mensual.
 
-## 1.6 Cálculo del número de desocupados
+### 1. 6 Cálculo del número de desocupados
 
 ```{r eval=FALSE}
 desocupados <- data_geih[, .(desocupados = sum(DSI * FEX_C18, na.rm = TRUE) / length(months)), by = DPTO]
@@ -192,7 +192,7 @@ desocupados <- data_geih[, .(desocupados = sum(DSI * FEX_C18, na.rm = TRUE) / le
 
 Similar a la parte anterior, esta línea calcula el número de desocupados por departamento. `DSI` es una variable que indica si una persona está desocupada, y se aplica el mismo proceso de ponderación y promediado mensual.
 
-## 1.7 Cálculo de la población en edad de trabajar
+### 1. 7 Cálculo de la población en edad de trabajar
 
 ```{r eval=FALSE}
 poblacion_edad_trabajar <- data_geih[P6040 >= 15, 
@@ -207,7 +207,7 @@ Esta línea calcula la población en edad de trabajar, que se define aquí como 
 
 -   **`/ length(unique(MES))`**: Promedio mensual, considerando solo los meses únicos
 
-## 1.8 Combinación de los resultados
+### 1. 8 Combinación de los resultados
 
 ```{r eval=FALSE}
 combined <- factor_expansion[ocupados, on = "DPTO"][desocupados, on = "DPTO"][poblacion_edad_trabajar, on = "DPTO"]
@@ -215,7 +215,7 @@ combined <- factor_expansion[ocupados, on = "DPTO"][desocupados, on = "DPTO"][po
 
 Aquí se combinan las tablas `factor_expansion`, `ocupados`, `desocupados` y `poblacion_edad_trabajar` en una sola tabla llamada `combined`. La combinación se hace por la columna `DPTO` (departamento) utilizando la función `on`, que actúa como una especie de `JOIN`.
 
-## 1.9 Cálculo de la población activa
+### 1. 9 Cálculo de la población activa
 
 ```{r eval=FALSE}
 combined[, fuerza_trabajo := (ocupados + desocupados)]
@@ -223,7 +223,7 @@ combined[, fuerza_trabajo := (ocupados + desocupados)]
 
 Esta línea crea una nueva columna en `combined` llamada `fuerza_trabajo`, que es la suma de los ocupados y desocupados por departamento.
 
-## 1.10 Cálculo de la tasa de desempleo
+### 1. 10 Cálculo de la tasa de desempleo
 
 ```{r eval=FALSE}
 combined[, tasa_desempleo := (desocupados / fuerza_trabajo) * 100]
@@ -231,7 +231,7 @@ combined[, tasa_desempleo := (desocupados / fuerza_trabajo) * 100]
 
 Aquí se calcula la tasa de desempleo como el porcentaje de desocupados sobre la población activa.
 
-## 1.11 Cálculo de la tasa de ocupación
+### 1. 11 Cálculo de la tasa de ocupación
 
 ```{r eval=FALSE}
 combined[, tasa_ocupacion := (ocupados / poblacion_edad_trabajar) * 100]
@@ -239,7 +239,7 @@ combined[, tasa_ocupacion := (ocupados / poblacion_edad_trabajar) * 100]
 
 Esta línea calcula la tasa de ocupación como el porcentaje de ocupados sobre la población en edad de trabajar.
 
-## 1.12 Retorno del resultado
+### 1. 12 Retorno del resultado
 
 ```{r eval=FALSE}
 return (combined)
@@ -248,7 +248,7 @@ return (combined)
 
 Finalmente, la función `group_variables` devuelve la tabla `combined`, que contiene todas las estadísticas calculadas.
 
-## 1.13 Ejecución de la función
+### 1. 13 Ejecución de la función
 
 ```{r eval=FALSE}
 table_variables_to_graph <- group_variables()
@@ -256,7 +256,7 @@ table_variables_to_graph <- group_variables()
 
 Esta línea ejecuta la función `group_variables` y almacena el resultado en la variable `table_variables_to_graph`.
 
-## *2. Función para graficar indicadores (`graph_variables`)*
+## 2. Función para graficar indicadores (`graph_variables`)
 
 La función `graph_variables` se encarga de graficar variables de forma dinámica, esta desarrollada para graficar la tasa de desempleo y la tasa de ocupación .
 
@@ -302,7 +302,7 @@ graph_variables <- function(df, variable, title_graph, title_y) {
 }
 ```
 
-## 2.1 Definición de la función
+### 2. 1 Definición de la función
 
 ```{r eval=FALSE}
 graph_variables <- function(df, variable, title_graph, title_y) {
@@ -318,7 +318,7 @@ Aquí se define la función `graph_variables`, que crea un gráfico de barras a 
 
 -   `title_y`: El título del eje Y.
 
-## 2.2 Creación de un nuevo `data.table`
+### 2. 2 Creación de un nuevo `data.table`
 
 ```{r eval=FALSE}
 new_df <- data.table()
@@ -331,7 +331,7 @@ Aquí se crea un nuevo `data.table` llamado `new_df`. Inicialmente, está vacío
 
 -   `var`: Almacena los valores de la variable seleccionada para graficar (por ejemplo, tasas de desempleo).
 
-## 2.3 Ordenamiento de los datos
+### 2. 3 Ordenamiento de los datos
 
 ```{r eval=FALSE}
 desc_data <- new_df %>% arrange(desc(var))
@@ -339,7 +339,7 @@ desc_data <- new_df %>% arrange(desc(var))
 
 En esta línea, los datos en `new_df` se ordenan de forma descendente según la columna `var`. El resultado se guarda en `desc_data`, que es el `data.table` que se utilizará para graficar.
 
-## 2.4 Definición de los colores de las barras
+### 2. 4 Definición de los colores de las barras
 
 ```{r eval=FALSE}
 colors <- ifelse(desc_data$DPTO == "Cesar" | desc_data$DPTO == "Magdalena", '#147582', '#123344')
@@ -352,7 +352,7 @@ Estas líneas configuran los colores de las barras en el gráfico:
 
 -   Luego, se crea un vector de colores llamado `colors_filter` que asocia cada color con su departamento correspondiente, respetando el orden descendente de la variable (`var`).
 
-## 2.5 Creación del gráfico con `ggplot2`
+### 2. 5 Creación del gráfico con `ggplot2`
 
 ```{r eval=FALSE}
 ggplot(desc_data, aes(x = reorder(DPTO, -var), y = var, fill = DPTO)) +
@@ -541,9 +541,9 @@ geom_text(aes(
 
     -   Si `var` es mayor o igual a 5, el texto es blanco, lo que asegura que sea visible contra el fondo de la barra.
 
-## 2.6 Retorno de la función
+### 2. 6 Retorno de la función
 
-### 2.6.1 Tasa de desempleo
+#### 2. 6. 1 Tasa de desempleo
 
 ```{r eval=FALSE}
 graph_variables(
@@ -556,7 +556,7 @@ graph_variables(
 
 ![](images/tasa_desempleo.png)
 
-### 2.6.2 Tasa de ocupación
+#### 2. 6. 2 Tasa de ocupación
 
 ```{r eval=FALSE}
 graph_variables(
