@@ -68,15 +68,60 @@ Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1
 -   **Ajustes de Diseño Muestral:** Incluye ajustes para el diseño muestral como estratificación y muestreo por conglomerados.
 -   **Validación de Datos:** Verifica que los factores de expansión se apliquen correctamente y que los datos ajustados reflejen la población.
 
-## 7. Cómo Descargar Datos del DANE
+### 7. Cómo Descargar Datos del DANE
 
-1.  **Visitar el Sitio Web del DANE:** [www.dane.gov.co](http://www.dane.gov.co).
-2.  **Navegar a la Sección de “Microdatos”:** Busca la sección de “Microdatos” en el menú principal.
-3.  **Seleccionar la Encuesta de Interés:** Busca la GEIH u otras encuestas.
-4.  **Registrarse o Iniciar Sesión:** Crea una cuenta o inicia sesión para acceder a los datos.
-5.  **Descargar los Archivos:** Descarga los microdatos en formatos como CSV o STATA y la documentación necesaria.
+## Guía Paso a Paso para Buscar Variables en la GEIH del DANE
+
+# 1. Ir al Sitio Web de DANE:
+
+Abre tu navegador web y ve a la página principal del DANE: DANE Colombia.
 
 ![image](https://github.com/user-attachments/assets/5d13ff9b-f2ac-466b-bdd1-7607c7f89cf5)
 
+# 2. Navegar al Área de Encuestas:
 
+En la página principal, busca la sección llamada "Estadísticas por Tema".
+Haz clic en "Mercado laboral"
+
+![image](https://github.com/user-attachments/assets/e4835043-04b6-4d4b-b174-4385c8b7f630)
+
+Luego haz clic en "Accesos directos", luego en "Datos abiertos: microdatos y metadatos"
+
+![image](https://github.com/user-attachments/assets/1cb4b362-065f-4340-a05d-a335154b52e9)
+
+Después de los anterior, vas nuevamende donde dice "Mercado laboral"
+
+![image](https://github.com/user-attachments/assets/70358261-937b-4c20-b86c-a14aeb3d2c51)
+
+luego buscar la "Gran Encuesta Integrada de Hogares (GEIH)" que para este ejemplos tomamos la del 2024
+
+![image](https://github.com/user-attachments/assets/d4e90642-a858-45e7-8e7d-8485e7f20721)
+
+# 3. Acceder a Microdatos:
+En la página de la GEIH, busca una opción que diga "Microdatos".
+Haz clic en ella para acceder a la sección donde puedes descargar los datos detallados de la encuesta.
+
+![image](https://github.com/user-attachments/assets/66c3cb67-4ae9-4f78-a8d7-86cacbf88422)
+
+Una vez ahi, podrás seleccionar el mes y descarga el archivo zip el cual ofrece datos en diferentes formatos, como .csv, .sav (SPSS), o .dta (Stata).
+
+![image](https://github.com/user-attachments/assets/ea30a3e9-1ad7-49b7-a656-1cc9a51dbaab)
+
+
+# 4. Buscar Variables Específicas:
+
+Generalmente, junto con los datos, se proporciona un diccionario de datos o un documento de metadatos que describe todas las variables incluidas en la encuesta, que se encuentra.
+
+Descarga este diccionario de datos para entender qué variables están disponibles y cómo se denominan.
+
+![image](https://github.com/user-attachments/assets/ee7fff1e-623c-4082-97d6-be1ad9b101a2)
+
+
+# 5. Filtrar y Seleccionar Variables:
+
+Utiliza el diccionario de datos para identificar las variables de interés. Puedes buscar por temas específicos como empleo, ingresos, educación, etc.
+
+Al filtrar, toma nota de los nombres de las variables y cómo se codifican para que puedas trabajar con ellas en tu software de análisis.
+
+![image](https://github.com/user-attachments/assets/6146a553-b2d3-4e22-bbbe-14d4d01b0fb5)
 
