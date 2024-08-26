@@ -75,3 +75,8 @@ Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1
 3.  **Seleccionar la Encuesta de Interés:** Busca la GEIH u otras encuestas.
 4.  **Registrarse o Iniciar Sesión:** Crea una cuenta o inicia sesión para acceder a los datos.
 5.  **Descargar los Archivos:** Descarga los microdatos en formatos como CSV o STATA y la documentación necesaria.
+
+![image](https://github.com/user-attachments/assets/5d13ff9b-f2ac-466b-bdd1-7607c7f89cf5)
+
+
+
