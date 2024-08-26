@@ -1,5 +1,5 @@
 ---
-title: "Explicación de las funciones para el pegado de la GEIH"
+title: "Guia paso a paso para el pegado de la GEIH"
 author: "Alic Barandica, Daniel Molina"
 date: "`r Sys.Date()`"
 format:
@@ -9,9 +9,9 @@ format:
     css: styles.css
 ---
 
-**Nota**: Para utilizar las funciones y unir las bases de datos no es necesario saber R, el archivo README.md (ubicado en la capeta raíz del repositorio) está creado con el fin de ser lo más explícito posible para que puedas utilizarlas sin inconvenientes, sin embargo, para entender como funciona la lógica detrás del pegado de las bases de datos es necesario entender como funciona R. En este espacio explicaremos linea a linea como están construidas estás funciones.
+**Nota**: Para utilizar las funciones y unir las bases de datos no es necesario saber R, el archivo <a href="https://github.com/Alicbm/data-exploration" target="_blank">README.md</a><br> (leer primero el archivo README.md) está creado con el fin de ser lo más explícito posible para que puedas utilizarlas sin inconvenientes, sin embargo, para entender como funciona la lógica detrás del pegado de las bases de datos es necesario entender como funciona R. En este espacio explicaremos linea a linea como están construidas estás funciones.
 
-## *Función para el pegado de todos los modulos en un mes determinado (merge_month)*
+## *1. Función para el pegado de todos los modulos en un mes determinado (`merge_month`)*
 
 La siguiente función (`merge_month`) tiene como objetivo unir todos los modulos que hay dentro de cada mes. A continuación se expicará cada una de las funcionalidades dentro de ella:
 
@@ -47,7 +47,7 @@ merge_month <- function(month) {
 
 ```
 
-### 1. Definición de la función
+### 1.1 Definición de la función
 
 ```{r eval=FALSE}
 merge_month <- function(month) {
@@ -55,7 +55,7 @@ merge_month <- function(month) {
 
 Aquí defines una función llamada `merge_month`. Las funciones en R son bloques de código que realizan una tarea específica y pueden ser reutilizadas. Esta función toma un único argumento, `month`, que es un texto que representa el nombre de un mes (por ejemplo, `"enero"`, `"febrero"`). Este argumento será utilizado para identificar la carpeta en la que se encuentran los archivos CSV que quieres fusionar.
 
-### 2. Definir las variables clave
+### 1.2 Definir las variables clave
 
 ```{r eval=FALSE}
   key_variables <- c("DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
@@ -65,7 +65,7 @@ En este paso, defines un vector llamado `key_variables` que contiene los nombres
 
 **¿Por qué necesitas claves?** Al fusionar datos de múltiples archivos, es común que haya algunas columnas (variables) que son compartidas por todos los archivos y que identifican de manera única cada registro. Estas son las claves. Al fusionar, R combinará los datos que comparten estas claves para asegurarse de que los datos coincidan correctamente. Por ejemplo, si `DIRECTORIO`, `SECUENCIA_P`, `ORDEN`, `HOGAR` y `FEX_C18` son variables que están presentes en todos los archivos, los registros se combinarán en base a la coincidencia de valores en estas columnas.
 
-### 3. Definir las variables a eliminar
+### 1.3 Definir las variables a eliminar
 
 ```{r eval=FALSE}
 variables_to_delete <- c("PERIODO", "MES", "PER", "REGIS", "AREA", "CLASE", "DPTO")
@@ -75,7 +75,7 @@ Aquí defines otro vector llamado `variables_to_delete`, que contiene los nombre
 
 **¿Por qué eliminar columnas?** Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, `PERIODO.x`, `PERIODO.y`). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el `data.table` final limpio y manejable.
 
-### 4. Definir el directorio base
+### 1.4 Definir el directorio base
 
 ```{r eval=FALSE}
   base_dir <- file.path(getwd(), "datos", month)
@@ -95,7 +95,7 @@ Esta línea crea una ruta de acceso (`base_dir`) que apunta a la carpeta donde s
 
 **Ejemplo:** Si `getwd()` devuelve `"/Users/usuario/proyecto"` y `month` es `"enero"`, entonces `base_dir` será `"/Users/usuario/proyecto/datos/enero"`.
 
-### 5. Listar los archivos CSV en el directorio
+### 1.5 Listar los archivos CSV en el directorio
 
 ```{r eval=FALSE}
 all_files <- list.files(path = base_dir, pattern = "*.csv", full.names = TRUE, ignore.case = TRUE)
@@ -117,7 +117,7 @@ Aquí creas una lista (`all_files`) de todos los archivos CSV en el directorio e
 
 **Resultado:** Si hay tres archivos CSV en la carpeta (`archivo1.csv`, `archivo2.csv`, `archivo3.csv`), `all_files` contendrá las rutas completas de estos archivos como una lista de cadenas de texto.
 
-### 6. Leer el primer archivo
+### 1.6 Leer el primer archivo
 
 ```{r eval=FALSE}
 final_df <- fread(file = all_files[1])
@@ -133,7 +133,7 @@ Aquí lees el primer archivo CSV de la lista `all_files` y lo almacenas en un `d
 
 **Ejemplo:** Si el primer archivo es `"/Users/usuario/proyecto/datos/enero/archivo1.csv"`, entonces `fread()` cargará este archivo en `final_df`.
 
-### 7. Fusión de los archivos restantes
+### 1.7 Fusión de los archivos restantes
 
 ```{r eval=FALSE}
 for (file in all_files[-1]) {
@@ -165,7 +165,7 @@ for (file in all_files[-1]) {
 
     -   Finalmente, se fusiona con `archivo3.csv`.
 
-### 8. Eliminar columnas duplicadas
+### 1.8 Eliminar columnas duplicadas
 
 ```{r eval=FALSE}
   if ("PERIODO.x" %in% colnames(final_df)) {
@@ -187,7 +187,7 @@ for (file in all_files[-1]) {
 
     **Ejemplo:** Si después de la fusión tienes columnas como `PERIODO.x` y `PERIODO.y`, este código renombrará `PERIODO.x` a `PERIODO` y eliminará `PERIODO.y`.
 
-### 9. Devolver el data.table final
+### 1.9 Devolver el data.table final
 
 ```{r eval=FALSE}
 return(final_df)
@@ -203,11 +203,11 @@ merged_data <- merge_month("enero")
 
 Esto ejecutará la función y devolverá un `data.table` llamado `merged_data` que contiene los datos fusionados de todos los archivos CSV en la carpeta `"enero"`.
 
-## *Función para el pegado de todos los meses (`geih_completed`)*
+## *2. Función para el pegado de todos los meses (`geih_completed`)*
 
 En esta función se uniran todos los meses antes creados, para formar una sola base de datos, el resultado de esta sería la GEIH.
 
-### 1. Definición de la función
+### 2.1 Definición de la función
 
 ```{r eval=FALSE}
 geih_completed <- function () {
@@ -215,7 +215,7 @@ geih_completed <- function () {
 
 La función `geih_completed` no toma ningún argumento. Su propósito es ejecutar un proceso de combinación de datos en función de los archivos CSV presentes en subdirectorios de la carpeta `"datos"`.
 
-### 2. Definir el directorio base
+### 2.2 Definir el directorio base
 
 ```{r eval=FALSE}
 base_dir <- file.path(getwd(), "datos")
@@ -231,7 +231,7 @@ Aquí se define el directorio base (`base_dir`) que contiene los subdirectorios 
 
 **Ejemplo:** Si tu directorio de trabajo es `"/Users/usuario/proyecto"`, entonces `base_dir` será `"/Users/usuario/proyecto/datos"`.
 
-### 3. Listar los subdirectorios (meses)
+### 2.3 Listar los subdirectorios (meses)
 
 ```{r eval=FALSE}
 months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
@@ -251,7 +251,7 @@ Esta línea obtiene una lista de subdirectorios dentro de `base_dir`, que se esp
 
 **Ejemplo:** Si `base_dir` contiene subdirectorios `"enero"`, `"febrero"`, y `"marzo"`, entonces `months` será `c("enero", "febrero", "marzo")`.
 
-### 4. Inicializar un `data.table` vacío
+### 2.4.Inicializar un `data.table` vacío
 
 ```{r eval=FALSE}
 for (month in months) {
@@ -259,7 +259,7 @@ for (month in months) {
 
 Inicia un bucle `for` que iterará sobre cada mes en la lista `months`.
 
-### 6. Combinar datos para cada mes
+### 2.5 Combinar datos para cada mes
 
 ```{r eval=FALSE}
 if (length(all_months) == 0) {
@@ -281,7 +281,7 @@ Dentro del bucle, se verifica si `all_months` está vacío para decidir si se de
 
 -   `fill = T` asegura que se llenarán los datos faltantes con NA cuando las columnas no coincidan entre los `data.table`.
 
-### 7. Devolver el `data.table` combinado
+### 2.6 Devolver el `data.table` combinado
 
 ```{r eval=FALSE}
 return(all_months)
@@ -289,3 +289,13 @@ return(all_months)
 
 
 Finalmente, la función devuelve el `data.table` combinado (`all_months`) que contiene los datos de todos los meses procesados.
+
+## Apéndice
+
+### Función `merge_month()`
+
+La función `merge_month` toma como entrada el nombre de un mes y realiza la fusión de múltiples archivos CSV en un directorio específico del mes. Primero, define las variables a eliminar y las variables clave para la fusión. Luego, lista todos los archivos CSV en el directorio del mes, lee el primer archivo y lo usa como base. En un bucle, lee cada archivo restante, fusiona sus datos con la base usando las variables clave comunes, y elimina columnas innecesarias que puedan haber sido duplicadas en la fusión. Finalmente, devuelve el `data.table` consolidado con la información combinada.
+
+### Función `geih_completed()`
+
+La función `geih_completed` se encarga de consolidar los datos de todos los meses disponibles en el directorio `datos` en un único archivo CSV. Primero, define la ruta base y obtiene los nombres de los subdirectorios (que corresponden a los meses) en dicha ruta. Luego, inicializa un `data.table` vacío para almacenar los datos combinados. En un bucle, para cada mes, llama a la función `merge_month` para fusionar los archivos CSV del mes actual, y une estos datos con los datos acumulados anteriormente usando `rbindlist`. Finalmente, guarda el `data.table` completo en un archivo CSV llamado "geih_complete.csv" y devuelve el `data.table` resultante.

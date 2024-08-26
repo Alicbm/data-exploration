@@ -9,12 +9,14 @@ format:
     css: styles.css
 ---
 
+**Nota**: Para realizar la validación de datos es recomendable haber seguido previamente la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">guia sobre el pegado de la GEIH</a> o tener la base de datos completa de la GEIH descargada.
+
 ## Preparación de para la validación
 
 ```{r eval = FALSE}
 # Instalar y cargar el paquete 'data.table' si aún no está instalado
 # install.packages("data.table")
-# library(data.table)
+library(data.table)
 
 # Importar la base de datos consolidada
 data <- fread("C:/data-exploration/geih_complete.csv")
@@ -37,9 +39,11 @@ data <- fread("C:/data-exploration/geih_complete.csv")
 
 -   **Preparativos Adicionales:**
 
-    -   Asegúrate de que la función `merge_month()` esté disponible en tu entorno de trabajo, ya que es necesaria para las operaciones posteriores. Define o carga esta función según sea necesario.
+    -   Asegúrate de que la función `merge_month()` haya sido definida previamente como se indico en la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">guia sobre el pegado de la GEIH</a>, ya que es necesaria para las operaciones posteriores. Define o carga esta función según sea necesario.
 
-## 1. Verificar la Estructura de los Datos
+## 1. Función para verificar la estructura de los datos `verify_variables()`
+
+La función `verify_variables()` se utiliza para asegurar la consistencia en la estructura de los datos a través de diferentes meses. Su objetivo es garantizar que las columnas presentes en los datos de cada mes coincidan con las columnas de un conjunto de datos consolidado
 
 ```{r eval = FALSE}
 
@@ -47,59 +51,59 @@ base_dir <- file.path(getwd(), "datos")
 
 months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
 
-Verify_variables <- function() {
+verify_variables <- function() {
 
   for (month in months) {
   
   month_data <- merge_month(month)
   
   if (all(names(month_data) %in% names(data))) {
-    print(paste("Las variables son las mismas que las del mes de", month))
+    print(paste("Todas las variables presentes en", month, "están presentes en los datos consolidados"))
   } else {
-    print(paste("Las variables no son las mismas que las del mes de", month))
+    print(paste("Existen variables presentes en", month, "que no se encuentran presentes en los datos consolidados"))
   }
   
   } 
 }
 
-Verify_variables()
+verify_variables()
 ```
 
-### 1. 1 Definición del Directorio Base
+### 1.1 Definir el directorio base
 
 ```{r eval = FALSE}
 base_dir <- file.path(getwd(), "datos")
 ```
 
-En esta línea de código, se define una variable llamada base_dir que contiene la ruta de un directorio específico. Utilizando la función `file.path()`, se crea esta ruta combinando el directorio de trabajo actual `getwd()` con el subdirectorio "datos". La función `getwd()` obtiene el directorio de trabajo actual, es decir, la carpeta desde donde se está ejecutando el script. `file.path()` asegura que la ruta se construya correctamente, independientemente del sistema operativo, ya que maneja los separadores de ruta automáticamente.
+En esta línea de código, se define una variable llamada `base_dir` que contiene la ruta de un directorio específico. Utilizando la función `file.path()`, se crea esta ruta combinando el directorio de trabajo actual `getwd()` con el subdirectorio "datos". La función `getwd()` obtiene el directorio de trabajo actual, es decir, la carpeta desde donde se está ejecutando el script. `file.path()` asegura que la ruta se construya correctamente, independientemente del sistema operativo, ya que maneja los separadores de ruta automáticamente.
 
-### 1. 2 Creación de una Lista de Directorios (months)
+### 1.2 Listar los subdirectorios
 
 ```{r eval = FALSE}
 
 months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
 ```
 
-En esta línea, se utiliza la función `list.dirs()` para crear una lista de subdirectorios contenidos en el directorio especificado por base_dir. El argumento `path = base_dir` indica que se listarán los directorios dentro del directorio base definido anteriormente. `full.names = FALSE` significa que los nombres de los directorios se devolverán como nombres simples (sin incluir la ruta completa), mientras que `recursive = FALSE` especifica que solo se listarán los subdirectorios de nivel superior, es decir, no se explorarán subdirectorios dentro de otros subdirectorios. El resultado es una lista de nombres de directorios de nivel superior en la carpeta `datos`, que representa probablemente los datos organizados por meses.
+En esta línea, se utiliza la función `list.dirs()` para crear una lista de subdirectorios contenidos en el directorio especificado por `base_dir.` El argumento `path = base_dir` indica que se listarán los directorios dentro del directorio base definido anteriormente. `full.names = FALSE` significa que los nombres de los directorios se devolverán como nombres simples (sin incluir la ruta completa), mientras que `recursive = FALSE` especifica que solo se listarán los subdirectorios de nivel superior, es decir, no se explorarán subdirectorios dentro de otros subdirectorios. El resultado es una lista de nombres de directorios de nivel superior en la carpeta `datos`, que representa probablemente los datos organizados por meses.
 
-### 1. 3 Definición de la Función `verify_variables ()`
+### 1.3 Definición de la función
 
 ```{r eval = FALSE}
-Verify_variables <- function() {
+verify_variables <- function() {
 ```
 
 Aquí se define una nueva función llamada `verify_variables`. Esta función no toma ningún argumento y su propósito es verificar que las variables (columnas) en los datos de cada mes coincidan con las variables en la data consolidada.
 
-### 1. 4 Iteración sobre los Meses
+### 1.4 Iteración sobre los Meses
 
 ```{r eval = FALSE}
 
 for (month in months) {
 ```
 
-Se utiliza un bucle for para iterar sobre cada mes en el vector months. En cada iteración, la variable month tomará el valor de uno de los meses, por ejemplo, "enero", "febrero", etc.
+Se utiliza un bucle for para iterar sobre cada mes en el vector `months.` En cada iteración, la variable `month` tomará el valor de uno de los meses, por ejemplo, `"enero", "febrero", etc`.
 
-### 1. 5 Obtener Datos del Mes
+### 1.5 Obtener Datos del Mes
 
 ```{r eval = FALSE}
 month_data <- merge_month(month)
@@ -107,48 +111,50 @@ month_data <- merge_month(month)
 
 Dentro del bucle, se llama a la función `merge_month()` con el nombre del mes actual como argumento. Esta función debería devolver un data frame que contiene los datos para el mes especificado. El resultado se guarda en la variable `month_data.`
 
-### 1. 6 Comparación de Nombres de Columnas
+### 1.6 Comparación de Nombres de Columnas
 
 ```{r eval = FALSE}
 if (all(names(month_data) %in% names(data))) {
 ```
 
-Se verifica si todos los nombres de las columnas en month_data están presentes en `names(data)`, que es un vector con los nombres de las columnas en la data consolidada. La función `names()` obtiene los nombres de las columnas de un data frame, y `%in%` verifica si cada nombre de columna de month_data está en el conjunto de nombres de columnas de data. La función `all()` asegura que la condición sea verdadera para todas las columnas.
+Se verifica si todos los nombres de las columnas en month_data están presentes en `names(data)`, que es un vector con los nombres de las columnas en la data consolidada. La función `names()` obtiene los nombres de las columnas de un data frame, y `%in%` verifica si cada nombre de columna de `month_data` está en el conjunto de nombres de columnas de data. La función `all()` asegura que la condición sea verdadera para todas las columnas.
 
-### 1. 6 Mensaje de Resultados
-
-```{r eval = FALSE}
-print(paste("Las variables son las mismas que las del mes de", month))
-```
-
-Si todas las columnas de month_data están presentes en la data consolidada, se imprime un mensaje indicando que las variables son las mismas que las del mes actual.
+### 1.6 Mensaje de Resultados
 
 ```{r eval = FALSE}
-print(paste("Las variables no son las mismas que las del mes de", month))
+print(paste("Todas las variables presentes en", month, "están presentes en los datos consolidados"))
 ```
 
-Si alguna columna de month_data no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.
+Si todas las columnas de `month_data` están presentes en la data consolidada, se imprime un mensaje indicando que las variables son las mismas que las del mes actual.
 
-### 1. 7 Llamada a la Función
+```{r eval = FALSE}
+print(paste("Existen variables presentes en", month, "que no se encuentran presentes en los datos consolidados"))
+```
+
+Si alguna columna de `month_data` no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.
+
+### 1.7 Llamada a la Función
 
 ```{r eval = FALSE}
 verify_variables()
 ```
 
-Finalmente, la función `verificar_variables()` es llamada para ejecutar la verificación. Esto dispara la ejecución del bucle for y la verificación de columnas para cada mes especificado en el vector `months`.
+Finalmente, la función `verify_variables()` es llamada para ejecutar la verificación. Esto dispara la ejecución del bucle `for` y la verificación de columnas para cada mes especificado en el vector `months`.
 
-### 1. 8 Retorno de la función
+### 1.8 Retorno de la función
 
 ```{r eval = FALSE}
-[1] "Las variables son las mismas que las del mes de abril" 
-[1] "Las variables son las mismas que las del mes de enero" 
-[1] "Las variables son las mismas que las del mes de febrero" 
-[1] "Las variables son las mismas que las del mes de junio" 
-[1] "Las variables son las mismas que las del mes de marzo" 
-[1] "Las variables son las mismas que las del mes de mayo"
+[1] "Todas las variables presentes en abril están presentes en los datos consolidados"
+[1] "Todas las variables presentes en enero están presentes en los datos consolidados"
+[1] "Todas las variables presentes en febrero están presentes en los datos consolidados"
+[1] "Todas las variables presentes en junio están presentes en los datos consolidados"
+[1] "Todas las variables presentes en marzo están presentes en los datos consolidados"
+[1] "Todas las variables presentes en mayo están presentes en los datos consolidados"
 ```
 
-## 2. Conteo de Registros
+## 2. Función para el conteo de registros `observations()`
+
+La función `observations()` asegura la consistencia en el número de observaciones a lo largo de un conjunto de datos de diferentes meses.
 
 ```{r eval = FALSE}
 
@@ -157,12 +163,8 @@ observations <- function() {
   total_obs <- 0
   
   for (month in months) {
-  
-          
-  month_data <- merge_month(month)
-  
-  total_obs <- total_obs + nrow(month_data)
-  
+    month_data <- merge_month(month)
+    total_obs <- total_obs + nrow(month_data)
   }
   
   if (total_obs == nrow(data)) { 
@@ -176,7 +178,7 @@ observations <- function() {
 observations()
 ```
 
-### 2. 1 Definición de la Función `observations()`
+### 2.1 Definición de la función
 
 ```{r eval = FALSE}
 observations <- function() {
@@ -184,7 +186,7 @@ observations <- function() {
 
 Aquí se define una nueva función llamada `observations()`. Esta función no recibe ningún argumento y su objetivo es verificar si el número total de observaciones en la data consolidada coincide con la suma de las observaciones de cada mes.
 
-### 2. 2 Inicialización del Contador de Observaciones
+### 2.2 Inicialización del contador de observaciones
 
 ```{r eval = FALSE}
 total_obs <- 0
@@ -192,15 +194,15 @@ total_obs <- 0
 
 Se inicializa una variable llamada total_obs con el valor `0`. Esta variable se utilizará para acumular el total de observaciones de todos los meses.
 
-### 2. 3 Iteración sobre los Meses
+### 2.3 Iteración sobre los meses
 
 ```{r eval = FALSE}
 for (month in months) {
 ```
 
-Se utiliza un bucle for para iterar sobre cada mes en el vector `months.` En cada iteración, la variable month toma el valor de uno de los meses por ejemplo, "enero", "febrero", etc. ).
+Se utiliza un bucle `for` para iterar sobre cada mes en el vector `months.` En cada iteración, la variable `month` toma el valor de uno de los meses por ejemplo, `"enero", "febrero", etc.`.
 
-### 2. 4 Obtener Datos del Mes
+### 2.4 Obtener datos del mes iterado
 
 ```{r eval = FALSE}
 month_data <- merge_month(month)
@@ -208,7 +210,7 @@ month_data <- merge_month(month)
 
 Dentro del bucle, se llama a la función `merge_month()` con el nombre del mes actual como argumento. Esta función debería devolver un data frame que contiene los datos para el mes especificado. El resultado se guarda en la variable `month_data`.
 
-### 2. 5 Contar y Acumular Observaciones
+### 2.5 Contar y acumular observaciones
 
 ```{r eval = FALSE}
 total_obs <- total_obs + nrow(month_data)
@@ -216,15 +218,15 @@ total_obs <- total_obs + nrow(month_data)
 
 Se cuenta el número de filas (`observaciones`) en `month_data` utilizando `nrow(month_data)` y se suma al contador `total_obs.` Esta operación se repite para cada mes, acumulando el total de observaciones.
 
-### 2. 6 Verificación del Número de Observaciones
+### 2.6 Verificación del número de observaciones
 
 ```{r eval = FALSE}
 if (total_obs == nrow(data)) {
 ```
 
-Una vez que se ha acumulado el total de observaciones para todos los meses, se compara este total con el número de filas en la data consolidada (usando `nrow(data)`). La función `nrow()` obtiene el número de filas en un data frame o data table.
+Una vez que se ha acumulado el total de observaciones para todos los meses, se compara este total con el número de filas en la data consolidada (usando `nrow(data)`). La función `nrow()` obtiene el número de filas en un dataframe o data table.
 
-### 2. 7 Mensaje de Resultados
+### 2.7 Mensajes de resultado
 
 ```{r eval = FALSE}
 print("El número de observaciones es correcto")
@@ -238,7 +240,7 @@ print("El número de observaciones no es correcto")
 
 Si el total de observaciones calculado no coincide con el número de filas en la data consolidada, se imprime el mensaje `"El número de observaciones no es correcto"`.
 
-### 2. 8 Llamada a la Función
+### 2.8 Llamada a la Función
 
 ```{r eval = FALSE}
 observations()
@@ -246,14 +248,16 @@ observations()
 
 Finalmente, se llama a la función`observations()` para ejecutar el código y realizar la verificación del número total de observaciones.
 
-### 2. 9 Retorno de la función
+### 2.9 Retorno de la función
 
 ```{r eval = FALSE}
 
 [1] "El número de observaciones es correcto"
 ```
 
-## 3. Verificar Duplicados
+## 3. Función para verificar duplicados `duplicate()`
+
+La función `observations()` asegura la consistencia en el número de observaciones a lo largo de un conjunto de datos de diferentes meses.
 
 ```{r eval = FALSE}
 
@@ -272,7 +276,7 @@ duplicate <- function(data) {
 duplicate(data)
 ```
 
-### 3. 1 Definición de la Función `duplicate()`
+### 3.1 Definición de la Función
 
 ```{r eval = FALSE}
 duplicados <- function(data) {
@@ -280,23 +284,23 @@ duplicados <- function(data) {
 
 Esta línea define una nueva función llamada `duplicate.` La función toma un argumento data, que representa el conjunto de datos en el cual se quiere verificar la presencia de filas duplicadas.
 
-### 3. 2 Identificación de Filas Duplicadas
+### 3.2 Identificación de filas duplicadas
 
 ```{r eval = FALSE}
 duplicate <- data[duplicated(data)]
 ```
 
-En esta línea, se utiliza la función `duplicated(data)` para identificar las filas duplicadas en el conjunto de datos data. La función `duplicated()` devuelve un vector lógico del mismo largo que data, donde cada elemento es `TRUE` si la fila correspondiente es un duplicado de una fila anterior y `FALSE` en caso contrario. Al utilizar este vector lógico para indexar data, se obtienen todas las filas duplicadas y se almacenan en un nuevo data frame llamado duplicate.
+En esta línea, se utiliza la función `duplicated(data)` para identificar las filas duplicadas en el conjunto de datos `data`. La función `duplicated()` devuelve un vector lógico del mismo largo que data, donde cada elemento es `TRUE` si la fila correspondiente es un duplicado de una fila anterior y `FALSE` en caso contrario. Al utilizar este vector lógico para indexar `data`, se obtienen todas las filas duplicadas y se almacenan en un nuevo dataframe llamado `duplicate.`
 
-### 3. 3 Verificación de la Presencia de Duplicados
+### 3.3 Verificación de la presencia de duplicados
 
 ```{r eval = FALSE}
 if (nrow(duplicado) == 0) {
 ```
 
-Esta línea de código verifica si el número de filas en el data frame duplicate es igual a 0 utilizando la función `nrow()`, que cuenta el número de filas. Si`nrow(duplicado)` es 0, significa que no se encontraron filas duplicadas en el conjunto de datos original data.
+Esta línea de código verifica si el número de filas en el data frame duplicate es igual a `0` utilizando la función `nrow()`, que cuenta el número de filas. Si`nrow(duplicado)` es `0`, significa que no se encontraron filas duplicadas en el conjunto de datos original data.
 
-### 3. 4 Impresión de Mensajes de Resultados
+### 3.4 Retorno de mensajes de resultados
 
 ```{r eval = FALSE}
 print("No hay duplicados por fila")
@@ -310,32 +314,33 @@ print("Hay duplicados por fila")
 
 Si la verificación es falsa (es decir, hay al menos una fila duplicada), se imprime un mensaje indicando que `"Hay duplicados por fila"`. Esto señala que el conjunto de datos contiene duplicados y que es necesario manejarlos para asegurar la integridad de los datos.
 
-### 3. 5 Llamada a la Función
+### 3.5 Llamada a la función
 
 ```{r eval = FALSE}
 duplicate(data)
 ```
 
-Finalmente, se llama a la función `duplicate()` pasando como argumento el conjunto de datos data. Esta llamada ejecuta la función y realiza la verificación de duplicados en el conjunto de datos proporcionado.
+Finalmente, se llama a la función `duplicate()` pasando como argumento el conjunto de datos `data.` Esta llamada ejecuta la función y realiza la verificación de duplicados en el conjunto de datos proporcionado.
 
-### 3. 5 Retorno de la Función
+### 3.5 Retorno de la función
 
 ```{r eval = FALSE}
 [1] "No hay duplicados por fila"
 ```
 
-## 4. Completitud de Datos
+## 4. Función para validar la completitud de los datos en las variables clave `missing_values()`
+
+La función `duplicate()` se utiliza para verificar la existencia de filas duplicadas en un conjunto de datos específico.
 
 ```{r eval = FALSE}
 missing_values <- function(data, ...) {
-
   data[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = c(...)] 
 }
 
 missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
 ```
 
-### 4. 1 Definición de la Función `missing_values()`
+### 4.1 Definición de la función
 
 ```{r eval = FALSE}
 missing_values <- function(data, ...) {
@@ -343,40 +348,43 @@ missing_values <- function(data, ...) {
 
 Esta línea define una nueva función llamada missing_values. La función toma un argumento data, que es el conjunto de datos a analizar, y un argumento variable `...` que permite pasar múltiples nombres de columnas. Estos nombres de columnas representan las variables en las que se desea verificar la presencia de valores faltantes `NA`.
 
-### 4. 2 Aplicación de una Función para Contar Valores Faltantes
+### 4.2 Aplicación de una función para contar valores faltantes
 
 ```{r eval = FALSE}
 data[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = c(...)]
 ```
 
-Esta línea utiliza la sintaxis de data.table para contar los valores faltantes en las columnas especificadas. A continuación se desglosa cómo funciona esta línea:
+Esta línea utiliza la sintaxis de `data.table` para contar los valores faltantes en las columnas especificadas. A continuación se desglosa cómo funciona esta línea:
 
--   `data[, ...]`: Esto indica que se está aplicando una operación a data. La coma antes del paréntesis indica que se están seleccionando columnas específicas o realizando operaciones en columnas, sin modificar filas.
+-   `data[, ...]`: Esto indica que se está aplicando una operación a `data.` La coma antes del paréntesis indica que se están seleccionando columnas específicas o realizando operaciones en columnas, sin modificar filas.
 
 -   `lapply(.SD, function(x) sum(is.na(x)))`: Aquí se utiliza `lapply()` para aplicar una función a cada columna especificada. `.SD` (Subset of Data) es una característica de `data.table` que representa las columnas especificadas en `.SDcols`. La función anónima `function(x) sum(is.na(x))` cuenta el número de valores `NA` en cada columna al aplicar `is.na(x)` para identificar valores faltantes y `sum()` para contar cuántos de esos valores existen.
 
 -   `.SDcols = c(...)`: Esta parte especifica las columnas en las que se aplicará la función. `c(...)` indica que las columnas serán las proporcionadas como argumentos variables a la función`missing_values()`. Esto permite flexibilidad para verificar diferentes columnas según sea necesario.
 
-### 4. 3 Llamada a la Función para Identificar Valores Faltantes
-
+### 4.3 Llamada a la función para identificar valores faltantes
 ```{r eval = FALSE}
 missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
 ```
 
 Aquí se llama a la función `missing_values()` pasando el conjunto de datos data y una lista de nombres de columnas: `"DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", y "FEX_C18"`. Esta llamada a la función genera una tabla que muestra el número de valores faltantes en cada una de estas columnas.
 
-### 4. 4 Retorno de la función
+### 4.4 Retorno de la función
+
+Lo que se espera es que las variables seleccionadas (variables clave) no tengan ningún valor nulo.
 
 ```{r eval = FALSE}
       DIRECTORIO SECUENCIA_P ORDEN HOGAR FEX_C18
           <int>       <int> <int> <int>   <int>
-1:          0           0     0     0       0
+            0           0     0     0       0
 ```
 
-## 5. Validación de Contenidos
+## 5. Funcion para la validación de contenido `validation()`
+
+La función `validation()` se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado.
 
 ```{r eval = FALSE}
-validation <- function(data, month, by_col, ...) { 
+content_validation <- function(data, month, by_col, ...) { 
   months_dictionary <- list( 
     "enero" = 1, 
     "febrero" = 2, 
@@ -392,16 +400,22 @@ validation <- function(data, month, by_col, ...) {
     "diciembre" = 12 
   )
 
-  month_data <- merge_month(month) result1 <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col] 
-  result2 <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
+  month_data <- merge_month(month) 
+
+  total_complete_data <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col] 
+  total_month_data <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
   
-  if (all(result1 == result2)) { print("El contenido coincide") } else { print("El contenido no coincide") } 
+  if (all(total_complete_data == total_month_data)) { 
+    print("El contenido coincide") 
+  } else { 
+    print("El contenido no coincide") 
+  } 
 } 
 
-validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
+content_validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
 ```
 
-### 5. 1 Definición de la Función `validation()`
+### 5.1 Definición de la función
 
 ```{r eval = FALSE}
 validacion <- function(data, month, by_col, ...) {
@@ -417,7 +431,7 @@ Esta línea define una nueva función llamada `validation` La función toma cuat
 
 -   `...`: Un argumento variable que permite especificar múltiples columnas para las cuales se sumarán los valores durante la validación.
 
-### 5. 2 Creación de un Diccionario de Meses
+### 5.2 Creación de un diccionario de meses
 
 ```{r eval = FALSE}
 months_dictionary <- list( 
@@ -436,20 +450,20 @@ months_dictionary <- list(
 )
 ```
 
-Aquí se crea una lista llamada months_dictionary que asocia nombres de meses con sus correspondientes números de mes. Esta lista facilita la conversión del nombre del mes proporcionado en el argumento month a su número de mes equivalente.
+Aquí se crea una lista llamada `months_dictionary` que asocia nombres de meses con sus correspondientes números de mes. Esta lista facilita la conversión del nombre del mes proporcionado en el argumento `month` a su número de mes equivalente.
 
-### 5. 3 Obtención de los Datos del Mes Específico
+### 5.3 Obtención de los datos del mes específico
 
 ```{r eval = FALSE}
 month_data <- merge_month(month)
 ```
 
-Se llama a la función `merge_month()` con el nombre del mes especificado en month para obtener los datos correspondientes a ese mes. El resultado es un data frame llamado month_data que contiene la información para el mes actual.
+Se llama a la función `merge_month()` con el nombre del mes especificado en month para obtener los datos correspondientes a ese mes. El resultado es un data frame llamado `month_data` que contiene la información para el mes actual.
 
-### 5. 4 Cálculo de Resultados por Mes
+### 5.4 Cálculo de resultados por mes
 
 ```{r eval = FALSE}
-result1 <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
+total_complete_data <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
 ```
 
 -   `.SD`: Es un data table subset que contiene solo las columnas especificadas en `.SDcols`.
@@ -460,31 +474,35 @@ result1 <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols =
 
 -   `by = by_col`: Agrupa los resultados por la columna especificada en `by_col`.
 
-El resultado, `result1`, es un data frame con la suma de valores para cada columna especificada, agrupado por la columna de agrupamiento en month_data.
+El resultado, `total_complete_data`, es un data frame con la suma de valores para cada columna especificada, agrupado por la columna de agrupamiento en `month_data`.
 
-### 5. 5 Cálculo de Resultados en el Conjunto de Datos Consolidado
+### 5.5 Cálculo de resultados en el conjunto de datos consolidado
 
 ```{r eval = FALSE}
-result2 <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
+total_month_data <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
 ```
 
 -   `data[MES == months_dictionary[[month]]]`: Filtra el conjunto de datos consolidado data para seleccionar solo las filas correspondientes al mes especificado. El número del mes se obtiene del `months_dictionary`.
 
--   El cálculo realizado es similar al de `result1`: se suman los valores en las columnas especificadas, agrupados por la columna `by_col`.
+-   El cálculo realizado es similar al de `total_complete_data`: se suman los valores en las columnas especificadas, agrupados por la columna `by_col`.
 
-### 5. 6 Comparación de Resultados y Mensajes de Resultado
+### 5.6 Comparación de resultados y mensajes de resultado
 
 ```{r eval = FALSE}
-if (all(result1 == result2)) { print("El contenido coincide") } else { print("El contenido no coincide") }
+if (all(total_complete_data == total_month_data)) { 
+  print("El contenido coincide") 
+} else { 
+  print("El contenido no coincide") 
+}
 ```
 
--   `all(result1 == result2)`: Compara si todos los valores en `result1` son iguales a los valores en `result2.` La función `all()` devuelve `TRUE` si todas las comparaciones son verdaderas.
+-   `all(total_complete_data == total_month_data)`: Compara si todos los valores en `total_complete_data` son iguales a los valores en `total_month_data` La función `all()` devuelve `TRUE` si todas las comparaciones son verdaderas.
 
 -   `print("El contenido coincide")`: Si todos los valores coinciden, se imprime este mensaje.
 
--   `print("El contenido no coincide")`: Si hay alguna discrepancia entre `result1` y `result2`, se imprime este mensaje
+-   `print("El contenido no coincide")`: Si hay alguna discrepancia entre `total_complete_data` y `total_month_data`, se imprime este mensaje
 
-### 5. 7 Llamada a la Función para Validación
+### 5.7 Llamada a la función para validación
 
 ```{r eval = FALSE}
 validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
@@ -509,7 +527,7 @@ Esta llamada a la función ejecuta la validación para el mes de marzo, comparan
 
 ## Apéndice
 
-### Función `verify_variables ()`
+### Función `verify_variables()`
 
 La función `verify_variables()` se utiliza para garantizar la consistencia en la estructura de los datos a lo largo del tiempo. Itera a través de los datos de cada mes, verifica si las columnas en los datos de cada mes coinciden con las de un conjunto de datos consolidado, y proporciona retroalimentación sobre cualquier discrepancia encontrada. Esto es crucial para asegurar que el análisis posterior sea consistente y preciso, evitando errores debido a diferencias en la estructura de los datos.
 
@@ -521,7 +539,7 @@ La función `observations()` asegura la consistencia en el número de observacio
 
 La función `duplicate()` se utiliza para verificar la existencia de filas duplicadas en un conjunto de datos específico. Primero, identifica todas las filas duplicadas y las almacena en un nuevo data frame. Luego, verifica si hay o no filas duplicadas al comprobar el número de filas en el data frame de duplicados. Dependiendo del resultado, se imprime un mensaje para informar al usuario si hay duplicados en las filas o si todas las filas son únicas. Detectar y manejar duplicados es crucial en análisis de datos para evitar sesgos y asegurar que los resultados reflejen con precisión la realidad del fenómeno estudiado..
 
-### Función \`missing_values()\`\`
+### Función `missing_values()`
 
 La función `missing_values()` se utiliza para evaluar la completitud de datos en un conjunto específico de columnas dentro de un data frame. Al contar el número de valores faltantes `NA` en cada columna especificada, esta función ayuda a identificar problemas de calidad de datos, como la presencia de registros incompletos. Tener columnas clave con valores faltantes puede afectar negativamente los análisis posteriores, por lo que esta función es útil para realizar una limpieza de datos inicial y asegurar que las columnas esenciales estén completas antes de proceder con análisis más detallados
 

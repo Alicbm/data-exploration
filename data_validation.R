@@ -2,12 +2,11 @@
 # VALIDACIÓN DE DATA
 #######################################################
 
-install.packages("data.table")
+#DESCOMENTAR EN CASO DE QUE NO TENGAS INSTALADAS LAS LIBRERIAS
+#install.packages("data.table")
 library(data.table)
+
 data <- fread (file = "C:/data-exploration/geih_complete.csv" )
-
-getwd()
-
 
 # 1. Verificar la Estructura de los Datos
 
@@ -20,24 +19,22 @@ base_dir <- file.path(getwd(), "datos")
 
 months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
 
-Verify_variables <- function() {
-  
+verify_variables <- function() {
   
   for (month in months) {
     
-    # Aquí se asume que merge_month carga los datos del mes específico
     month_data <- merge_month(month)
     
-    # Verifica si los nombres de columnas en los datos del mes están en la data consolidada
     if (all(names(month_data) %in% names(data))) {
-      print(paste("Las variables son las mismas que las del mes de", month))
+      print(paste("Todas las variables presentes en", month, "están presentes en los datos consolidados"))
     } else {
-      print(paste("Las variables no son las mismas que las del mes de", month))
+      print(paste("Existen variables presentes en", month, "que no se encuentran presentes en los datos consolidados"))
     }
-  }
+    
+  } 
 }
 
-Verify_variables()
+verify_variables()
 
 
 
@@ -45,8 +42,7 @@ Verify_variables()
 
 # Este paso suma el número de observaciones de cada mes para asegurarse de que coincida con el número total de observaciones en la data consolidada.
 
-observaciones <- function() {
-  
+observations <- function() {
   
   total_obs <- 0
   
@@ -67,7 +63,7 @@ observaciones <- function() {
   }
 }
 
-observaciones()
+observations()
 
 # 3. Duplicados
 
@@ -108,7 +104,7 @@ missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
 
 # Comparamos la cantidad de ocupados en enero por departamento entre la data consolidada y la data específica de enero.
 
-validation <- function(data, month, by_col, ...) {
+content_validation <- function(data, month, by_col, ...) {
   
   months_dictionary <- list(
     "enero" = 1,
@@ -129,17 +125,17 @@ validation <- function(data, month, by_col, ...) {
   month_data <- merge_month(month)
   
   # Suma los valores en la data consolidada
-  result1 <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
+  total_complete_data <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
   
   # Suma los valores en la data específica del mes
-  result2 <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col] 
+  total_month_data <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col] 
   
   # Compara los resultados para verificar si coinciden
-  if (all(result1 == result2)) {
+  if (all(total_complete_data == total_month_data)) {
     print("El contenido coincide")
   } else {
     print("El contenido no coincide")
   }
 }
 
-validation (data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
+content_validation (data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))

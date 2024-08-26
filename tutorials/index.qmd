@@ -29,6 +29,8 @@ Cada una de estas secciones y funciones está detalladamente documentada, paso a
 
 Esperamos que este proyecto sea una valiosa adición a los recursos disponibles para el análisis de datos y que facilite el aprendizaje y la práctica de habilidades analíticas entre los estudiantes.
 
+## Sigue nuestras guias
+
 <ul>
   <li>
     <a href="merge_geih_explication_functions.html" target="_blank">1. Funciones Dinámicas para la Unión de Bases de Datos</a><br>

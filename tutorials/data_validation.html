@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Molina, Alic Barandica">
-<meta name="dcterms.date" content="2024-08-24">
+<meta name="dcterms.date" content="2024-08-26">
 
 <title>Revisión y Validación de Datos Consolidados (GEIH)</title>
 <style>
@@ -83,63 +83,63 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#preparación-de-para-la-validación" id="toc-preparación-de-para-la-validación" class="nav-link active" data-scroll-target="#preparación-de-para-la-validación">Preparación de para la validación</a></li>
-  <li><a href="#verificar-la-estructura-de-los-datos" id="toc-verificar-la-estructura-de-los-datos" class="nav-link" data-scroll-target="#verificar-la-estructura-de-los-datos">1. Verificar la Estructura de los Datos</a>
+  <li><a href="#función-para-verificar-la-estructura-de-los-datos-verify_variables" id="toc-función-para-verificar-la-estructura-de-los-datos-verify_variables" class="nav-link" data-scroll-target="#función-para-verificar-la-estructura-de-los-datos-verify_variables">1. Función para verificar la estructura de los datos <code>verify_variables()</code></a>
   <ul class="collapse">
-  <li><a href="#definición-del-directorio-base" id="toc-definición-del-directorio-base" class="nav-link" data-scroll-target="#definición-del-directorio-base">1. 1 Definición del Directorio Base</a></li>
-  <li><a href="#creación-de-una-lista-de-directorios-months" id="toc-creación-de-una-lista-de-directorios-months" class="nav-link" data-scroll-target="#creación-de-una-lista-de-directorios-months">1. 2 Creación de una Lista de Directorios (months)</a></li>
-  <li><a href="#definición-de-la-función-verify_variables" id="toc-definición-de-la-función-verify_variables" class="nav-link" data-scroll-target="#definición-de-la-función-verify_variables">1. 3 Definición de la Función <code>verify_variables ()</code></a></li>
-  <li><a href="#iteración-sobre-los-meses" id="toc-iteración-sobre-los-meses" class="nav-link" data-scroll-target="#iteración-sobre-los-meses">1. 4 Iteración sobre los Meses</a></li>
-  <li><a href="#obtener-datos-del-mes" id="toc-obtener-datos-del-mes" class="nav-link" data-scroll-target="#obtener-datos-del-mes">1. 5 Obtener Datos del Mes</a></li>
-  <li><a href="#comparación-de-nombres-de-columnas" id="toc-comparación-de-nombres-de-columnas" class="nav-link" data-scroll-target="#comparación-de-nombres-de-columnas">1. 6 Comparación de Nombres de Columnas</a></li>
-  <li><a href="#mensaje-de-resultados" id="toc-mensaje-de-resultados" class="nav-link" data-scroll-target="#mensaje-de-resultados">1. 6 Mensaje de Resultados</a></li>
-  <li><a href="#llamada-a-la-función" id="toc-llamada-a-la-función" class="nav-link" data-scroll-target="#llamada-a-la-función">1. 7 Llamada a la Función</a></li>
-  <li><a href="#retorno-de-la-función" id="toc-retorno-de-la-función" class="nav-link" data-scroll-target="#retorno-de-la-función">1. 8 Retorno de la función</a></li>
+  <li><a href="#definir-el-directorio-base" id="toc-definir-el-directorio-base" class="nav-link" data-scroll-target="#definir-el-directorio-base">1.1 Definir el directorio base</a></li>
+  <li><a href="#listar-los-subdirectorios" id="toc-listar-los-subdirectorios" class="nav-link" data-scroll-target="#listar-los-subdirectorios">1.2 Listar los subdirectorios</a></li>
+  <li><a href="#definición-de-la-función" id="toc-definición-de-la-función" class="nav-link" data-scroll-target="#definición-de-la-función">1.3 Definición de la función</a></li>
+  <li><a href="#iteración-sobre-los-meses" id="toc-iteración-sobre-los-meses" class="nav-link" data-scroll-target="#iteración-sobre-los-meses">1.4 Iteración sobre los Meses</a></li>
+  <li><a href="#obtener-datos-del-mes" id="toc-obtener-datos-del-mes" class="nav-link" data-scroll-target="#obtener-datos-del-mes">1.5 Obtener Datos del Mes</a></li>
+  <li><a href="#comparación-de-nombres-de-columnas" id="toc-comparación-de-nombres-de-columnas" class="nav-link" data-scroll-target="#comparación-de-nombres-de-columnas">1.6 Comparación de Nombres de Columnas</a></li>
+  <li><a href="#mensaje-de-resultados" id="toc-mensaje-de-resultados" class="nav-link" data-scroll-target="#mensaje-de-resultados">1.6 Mensaje de Resultados</a></li>
+  <li><a href="#llamada-a-la-función" id="toc-llamada-a-la-función" class="nav-link" data-scroll-target="#llamada-a-la-función">1.7 Llamada a la Función</a></li>
+  <li><a href="#retorno-de-la-función" id="toc-retorno-de-la-función" class="nav-link" data-scroll-target="#retorno-de-la-función">1.8 Retorno de la función</a></li>
   </ul></li>
-  <li><a href="#conteo-de-registros" id="toc-conteo-de-registros" class="nav-link" data-scroll-target="#conteo-de-registros">2. Conteo de Registros</a>
+  <li><a href="#función-para-el-conteo-de-registros-observations" id="toc-función-para-el-conteo-de-registros-observations" class="nav-link" data-scroll-target="#función-para-el-conteo-de-registros-observations">2. Función para el conteo de registros <code>observations()</code></a>
   <ul class="collapse">
-  <li><a href="#definición-de-la-función-observations" id="toc-definición-de-la-función-observations" class="nav-link" data-scroll-target="#definición-de-la-función-observations">2. 1 Definición de la Función <code>observations()</code></a></li>
-  <li><a href="#inicialización-del-contador-de-observaciones" id="toc-inicialización-del-contador-de-observaciones" class="nav-link" data-scroll-target="#inicialización-del-contador-de-observaciones">2. 2 Inicialización del Contador de Observaciones</a></li>
-  <li><a href="#iteración-sobre-los-meses-1" id="toc-iteración-sobre-los-meses-1" class="nav-link" data-scroll-target="#iteración-sobre-los-meses-1">2. 3 Iteración sobre los Meses</a></li>
-  <li><a href="#obtener-datos-del-mes-1" id="toc-obtener-datos-del-mes-1" class="nav-link" data-scroll-target="#obtener-datos-del-mes-1">2. 4 Obtener Datos del Mes</a></li>
-  <li><a href="#contar-y-acumular-observaciones" id="toc-contar-y-acumular-observaciones" class="nav-link" data-scroll-target="#contar-y-acumular-observaciones">2. 5 Contar y Acumular Observaciones</a></li>
-  <li><a href="#verificación-del-número-de-observaciones" id="toc-verificación-del-número-de-observaciones" class="nav-link" data-scroll-target="#verificación-del-número-de-observaciones">2. 6 Verificación del Número de Observaciones</a></li>
-  <li><a href="#mensaje-de-resultados-1" id="toc-mensaje-de-resultados-1" class="nav-link" data-scroll-target="#mensaje-de-resultados-1">2. 7 Mensaje de Resultados</a></li>
-  <li><a href="#llamada-a-la-función-1" id="toc-llamada-a-la-función-1" class="nav-link" data-scroll-target="#llamada-a-la-función-1">2. 8 Llamada a la Función</a></li>
-  <li><a href="#retorno-de-la-función-1" id="toc-retorno-de-la-función-1" class="nav-link" data-scroll-target="#retorno-de-la-función-1">2. 9 Retorno de la función</a></li>
+  <li><a href="#definición-de-la-función-1" id="toc-definición-de-la-función-1" class="nav-link" data-scroll-target="#definición-de-la-función-1">2.1 Definición de la función</a></li>
+  <li><a href="#inicialización-del-contador-de-observaciones" id="toc-inicialización-del-contador-de-observaciones" class="nav-link" data-scroll-target="#inicialización-del-contador-de-observaciones">2.2 Inicialización del contador de observaciones</a></li>
+  <li><a href="#iteración-sobre-los-meses-1" id="toc-iteración-sobre-los-meses-1" class="nav-link" data-scroll-target="#iteración-sobre-los-meses-1">2.3 Iteración sobre los meses</a></li>
+  <li><a href="#obtener-datos-del-mes-iterado" id="toc-obtener-datos-del-mes-iterado" class="nav-link" data-scroll-target="#obtener-datos-del-mes-iterado">2.4 Obtener datos del mes iterado</a></li>
+  <li><a href="#contar-y-acumular-observaciones" id="toc-contar-y-acumular-observaciones" class="nav-link" data-scroll-target="#contar-y-acumular-observaciones">2.5 Contar y acumular observaciones</a></li>
+  <li><a href="#verificación-del-número-de-observaciones" id="toc-verificación-del-número-de-observaciones" class="nav-link" data-scroll-target="#verificación-del-número-de-observaciones">2.6 Verificación del número de observaciones</a></li>
+  <li><a href="#mensajes-de-resultado" id="toc-mensajes-de-resultado" class="nav-link" data-scroll-target="#mensajes-de-resultado">2.7 Mensajes de resultado</a></li>
+  <li><a href="#llamada-a-la-función-1" id="toc-llamada-a-la-función-1" class="nav-link" data-scroll-target="#llamada-a-la-función-1">2.8 Llamada a la Función</a></li>
+  <li><a href="#retorno-de-la-función-1" id="toc-retorno-de-la-función-1" class="nav-link" data-scroll-target="#retorno-de-la-función-1">2.9 Retorno de la función</a></li>
   </ul></li>
-  <li><a href="#verificar-duplicados" id="toc-verificar-duplicados" class="nav-link" data-scroll-target="#verificar-duplicados">3. Verificar Duplicados</a>
+  <li><a href="#función-para-verificar-duplicados-duplicate" id="toc-función-para-verificar-duplicados-duplicate" class="nav-link" data-scroll-target="#función-para-verificar-duplicados-duplicate">3. Función para verificar duplicados <code>duplicate()</code></a>
   <ul class="collapse">
-  <li><a href="#definición-de-la-función-duplicate" id="toc-definición-de-la-función-duplicate" class="nav-link" data-scroll-target="#definición-de-la-función-duplicate">3. 1 Definición de la Función <code>duplicate()</code></a></li>
-  <li><a href="#identificación-de-filas-duplicadas" id="toc-identificación-de-filas-duplicadas" class="nav-link" data-scroll-target="#identificación-de-filas-duplicadas">3. 2 Identificación de Filas Duplicadas</a></li>
-  <li><a href="#verificación-de-la-presencia-de-duplicados" id="toc-verificación-de-la-presencia-de-duplicados" class="nav-link" data-scroll-target="#verificación-de-la-presencia-de-duplicados">3. 3 Verificación de la Presencia de Duplicados</a></li>
-  <li><a href="#impresión-de-mensajes-de-resultados" id="toc-impresión-de-mensajes-de-resultados" class="nav-link" data-scroll-target="#impresión-de-mensajes-de-resultados">3. 4 Impresión de Mensajes de Resultados</a></li>
-  <li><a href="#llamada-a-la-función-2" id="toc-llamada-a-la-función-2" class="nav-link" data-scroll-target="#llamada-a-la-función-2">3. 5 Llamada a la Función</a></li>
-  <li><a href="#retorno-de-la-función-2" id="toc-retorno-de-la-función-2" class="nav-link" data-scroll-target="#retorno-de-la-función-2">3. 5 Retorno de la Función</a></li>
+  <li><a href="#definición-de-la-función-2" id="toc-definición-de-la-función-2" class="nav-link" data-scroll-target="#definición-de-la-función-2">3.1 Definición de la Función</a></li>
+  <li><a href="#identificación-de-filas-duplicadas" id="toc-identificación-de-filas-duplicadas" class="nav-link" data-scroll-target="#identificación-de-filas-duplicadas">3.2 Identificación de filas duplicadas</a></li>
+  <li><a href="#verificación-de-la-presencia-de-duplicados" id="toc-verificación-de-la-presencia-de-duplicados" class="nav-link" data-scroll-target="#verificación-de-la-presencia-de-duplicados">3.3 Verificación de la presencia de duplicados</a></li>
+  <li><a href="#retorno-de-mensajes-de-resultados" id="toc-retorno-de-mensajes-de-resultados" class="nav-link" data-scroll-target="#retorno-de-mensajes-de-resultados">3.4 Retorno de mensajes de resultados</a></li>
+  <li><a href="#llamada-a-la-función-2" id="toc-llamada-a-la-función-2" class="nav-link" data-scroll-target="#llamada-a-la-función-2">3.5 Llamada a la función</a></li>
+  <li><a href="#retorno-de-la-función-2" id="toc-retorno-de-la-función-2" class="nav-link" data-scroll-target="#retorno-de-la-función-2">3.5 Retorno de la función</a></li>
   </ul></li>
-  <li><a href="#completitud-de-datos" id="toc-completitud-de-datos" class="nav-link" data-scroll-target="#completitud-de-datos">4. Completitud de Datos</a>
+  <li><a href="#función-para-validar-la-completitud-de-los-datos-en-las-variables-clave-missing_values" id="toc-función-para-validar-la-completitud-de-los-datos-en-las-variables-clave-missing_values" class="nav-link" data-scroll-target="#función-para-validar-la-completitud-de-los-datos-en-las-variables-clave-missing_values">4. Función para validar la completitud de los datos en las variables clave <code>missing_values()</code></a>
   <ul class="collapse">
-  <li><a href="#definición-de-la-función-missing_values" id="toc-definición-de-la-función-missing_values" class="nav-link" data-scroll-target="#definición-de-la-función-missing_values">4. 1 Definición de la Función <code>missing_values()</code></a></li>
-  <li><a href="#aplicación-de-una-función-para-contar-valores-faltantes" id="toc-aplicación-de-una-función-para-contar-valores-faltantes" class="nav-link" data-scroll-target="#aplicación-de-una-función-para-contar-valores-faltantes">4. 2 Aplicación de una Función para Contar Valores Faltantes</a></li>
-  <li><a href="#llamada-a-la-función-para-identificar-valores-faltantes" id="toc-llamada-a-la-función-para-identificar-valores-faltantes" class="nav-link" data-scroll-target="#llamada-a-la-función-para-identificar-valores-faltantes">4. 3 Llamada a la Función para Identificar Valores Faltantes</a></li>
-  <li><a href="#retorno-de-la-función-3" id="toc-retorno-de-la-función-3" class="nav-link" data-scroll-target="#retorno-de-la-función-3">4. 4 Retorno de la función</a></li>
+  <li><a href="#definición-de-la-función-3" id="toc-definición-de-la-función-3" class="nav-link" data-scroll-target="#definición-de-la-función-3">4.1 Definición de la función</a></li>
+  <li><a href="#aplicación-de-una-función-para-contar-valores-faltantes" id="toc-aplicación-de-una-función-para-contar-valores-faltantes" class="nav-link" data-scroll-target="#aplicación-de-una-función-para-contar-valores-faltantes">4.2 Aplicación de una función para contar valores faltantes</a></li>
+  <li><a href="#llamada-a-la-función-para-identificar-valores-faltantes" id="toc-llamada-a-la-función-para-identificar-valores-faltantes" class="nav-link" data-scroll-target="#llamada-a-la-función-para-identificar-valores-faltantes">4.3 Llamada a la función para identificar valores faltantes</a></li>
+  <li><a href="#retorno-de-la-función-3" id="toc-retorno-de-la-función-3" class="nav-link" data-scroll-target="#retorno-de-la-función-3">4.4 Retorno de la función</a></li>
   </ul></li>
-  <li><a href="#validación-de-contenidos" id="toc-validación-de-contenidos" class="nav-link" data-scroll-target="#validación-de-contenidos">5. Validación de Contenidos</a>
+  <li><a href="#funcion-para-la-validación-de-contenido-validation" id="toc-funcion-para-la-validación-de-contenido-validation" class="nav-link" data-scroll-target="#funcion-para-la-validación-de-contenido-validation">5. Funcion para la validación de contenido <code>validation()</code></a>
   <ul class="collapse">
-  <li><a href="#definición-de-la-función-validation" id="toc-definición-de-la-función-validation" class="nav-link" data-scroll-target="#definición-de-la-función-validation">5. 1 Definición de la Función <code>validation()</code></a></li>
-  <li><a href="#creación-de-un-diccionario-de-meses" id="toc-creación-de-un-diccionario-de-meses" class="nav-link" data-scroll-target="#creación-de-un-diccionario-de-meses">5. 2 Creación de un Diccionario de Meses</a></li>
-  <li><a href="#obtención-de-los-datos-del-mes-específico" id="toc-obtención-de-los-datos-del-mes-específico" class="nav-link" data-scroll-target="#obtención-de-los-datos-del-mes-específico">5. 3 Obtención de los Datos del Mes Específico</a></li>
-  <li><a href="#cálculo-de-resultados-por-mes" id="toc-cálculo-de-resultados-por-mes" class="nav-link" data-scroll-target="#cálculo-de-resultados-por-mes">5. 4 Cálculo de Resultados por Mes</a></li>
-  <li><a href="#cálculo-de-resultados-en-el-conjunto-de-datos-consolidado" id="toc-cálculo-de-resultados-en-el-conjunto-de-datos-consolidado" class="nav-link" data-scroll-target="#cálculo-de-resultados-en-el-conjunto-de-datos-consolidado">5. 5 Cálculo de Resultados en el Conjunto de Datos Consolidado</a></li>
-  <li><a href="#comparación-de-resultados-y-mensajes-de-resultado" id="toc-comparación-de-resultados-y-mensajes-de-resultado" class="nav-link" data-scroll-target="#comparación-de-resultados-y-mensajes-de-resultado">5. 6 Comparación de Resultados y Mensajes de Resultado</a></li>
-  <li><a href="#llamada-a-la-función-para-validación" id="toc-llamada-a-la-función-para-validación" class="nav-link" data-scroll-target="#llamada-a-la-función-para-validación">5. 7 Llamada a la Función para Validación</a></li>
+  <li><a href="#definición-de-la-función-4" id="toc-definición-de-la-función-4" class="nav-link" data-scroll-target="#definición-de-la-función-4">5.1 Definición de la función</a></li>
+  <li><a href="#creación-de-un-diccionario-de-meses" id="toc-creación-de-un-diccionario-de-meses" class="nav-link" data-scroll-target="#creación-de-un-diccionario-de-meses">5.2 Creación de un diccionario de meses</a></li>
+  <li><a href="#obtención-de-los-datos-del-mes-específico" id="toc-obtención-de-los-datos-del-mes-específico" class="nav-link" data-scroll-target="#obtención-de-los-datos-del-mes-específico">5.3 Obtención de los datos del mes específico</a></li>
+  <li><a href="#cálculo-de-resultados-por-mes" id="toc-cálculo-de-resultados-por-mes" class="nav-link" data-scroll-target="#cálculo-de-resultados-por-mes">5.4 Cálculo de resultados por mes</a></li>
+  <li><a href="#cálculo-de-resultados-en-el-conjunto-de-datos-consolidado" id="toc-cálculo-de-resultados-en-el-conjunto-de-datos-consolidado" class="nav-link" data-scroll-target="#cálculo-de-resultados-en-el-conjunto-de-datos-consolidado">5.5 Cálculo de resultados en el conjunto de datos consolidado</a></li>
+  <li><a href="#comparación-de-resultados-y-mensajes-de-resultado" id="toc-comparación-de-resultados-y-mensajes-de-resultado" class="nav-link" data-scroll-target="#comparación-de-resultados-y-mensajes-de-resultado">5.6 Comparación de resultados y mensajes de resultado</a></li>
+  <li><a href="#llamada-a-la-función-para-validación" id="toc-llamada-a-la-función-para-validación" class="nav-link" data-scroll-target="#llamada-a-la-función-para-validación">5.7 Llamada a la función para validación</a></li>
   <li><a href="#retorno-de-la-función-4" id="toc-retorno-de-la-función-4" class="nav-link" data-scroll-target="#retorno-de-la-función-4">5. 8 Retorno de la función</a></li>
   </ul></li>
   <li><a href="#apéndice" id="toc-apéndice" class="nav-link" data-scroll-target="#apéndice">Apéndice</a>
   <ul class="collapse">
-  <li><a href="#función-verify_variables" id="toc-función-verify_variables" class="nav-link" data-scroll-target="#función-verify_variables">Función <code>verify_variables ()</code></a></li>
+  <li><a href="#función-verify_variables" id="toc-función-verify_variables" class="nav-link" data-scroll-target="#función-verify_variables">Función <code>verify_variables()</code></a></li>
   <li><a href="#función-observations" id="toc-función-observations" class="nav-link" data-scroll-target="#función-observations">Función <code>observations()</code></a></li>
   <li><a href="#función-duplicate" id="toc-función-duplicate" class="nav-link" data-scroll-target="#función-duplicate">Función <code>duplicate()</code></a></li>
-  <li><a href="#función-missing_values" id="toc-función-missing_values" class="nav-link" data-scroll-target="#función-missing_values">Función `missing_values()``</a></li>
+  <li><a href="#función-missing_values" id="toc-función-missing_values" class="nav-link" data-scroll-target="#función-missing_values">Función <code>missing_values()</code></a></li>
   <li><a href="#función-validation" id="toc-función-validation" class="nav-link" data-scroll-target="#función-validation">Función <code>validation()</code></a></li>
   </ul></li>
   </ul>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 24, 2024</p>
+      <p class="date">August 26, 2024</p>
     </div>
   </div>
   
@@ -176,12 +176,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p><strong>Nota</strong>: Para realizar la validación de datos es recomendable haber seguido previamente la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">guia sobre el pegado de la GEIH</a> o tener la base de datos completa de la GEIH descargada.</p>
 <section id="preparación-de-para-la-validación" class="level2">
 <h2 class="anchored" data-anchor-id="preparación-de-para-la-validación">Preparación de para la validación</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Instalar y cargar el paquete 'data.table' si aún no está instalado</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("data.table")</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># library(data.table)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Importar la base de datos consolidada</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"C:/data-exploration/geih_complete.csv"</span>)</span>
@@ -202,176 +203,174 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><p><strong>Preparativos Adicionales:</strong></p>
 <ul>
-<li>Asegúrate de que la función <code>merge_month()</code> esté disponible en tu entorno de trabajo, ya que es necesaria para las operaciones posteriores. Define o carga esta función según sea necesario.</li>
+<li>Asegúrate de que la función <code>merge_month()</code> haya sido definida previamente como se indico en la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">guia sobre el pegado de la GEIH</a>, ya que es necesaria para las operaciones posteriores. Define o carga esta función según sea necesario.</li>
 </ul></li>
 </ul>
 </section>
-<section id="verificar-la-estructura-de-los-datos" class="level2">
-<h2 class="anchored" data-anchor-id="verificar-la-estructura-de-los-datos">1. Verificar la Estructura de los Datos</h2>
+<section id="función-para-verificar-la-estructura-de-los-datos-verify_variables" class="level2">
+<h2 class="anchored" data-anchor-id="función-para-verificar-la-estructura-de-los-datos-verify_variables">1. Función para verificar la estructura de los datos <code>verify_variables()</code></h2>
+<p>La función <code>verify_variables()</code> se utiliza para asegurar la consistencia en la estructura de los datos a través de diferentes meses. Su objetivo es garantizar que las columnas presentes en los datos de cada mes coincidan con las columnas de un conjunto de datos consolidado</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>months <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="at">path =</span> base_dir, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>Verify_variables <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>verify_variables <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (month <span class="cf">in</span> months) {</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">names</span>(month_data) <span class="sc">%in%</span> <span class="fu">names</span>(data))) {</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Las variables son las mismas que las del mes de"</span>, month))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Todas las variables presentes en"</span>, month, <span class="st">"están presentes en los datos consolidados"</span>))</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Las variables no son las mismas que las del mes de"</span>, month))</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Existen variables presentes en"</span>, month, <span class="st">"que no se encuentran presentes en los datos consolidados"</span>))</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  } </span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">Verify_variables</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">verify_variables</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="definición-del-directorio-base" class="level3">
-<h3 class="anchored" data-anchor-id="definición-del-directorio-base">1. 1 Definición del Directorio Base</h3>
+<section id="definir-el-directorio-base" class="level3">
+<h3 class="anchored" data-anchor-id="definir-el-directorio-base">1.1 Definir el directorio base</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>En esta línea de código, se define una variable llamada base_dir que contiene la ruta de un directorio específico. Utilizando la función <code>file.path()</code>, se crea esta ruta combinando el directorio de trabajo actual <code>getwd()</code> con el subdirectorio “datos”. La función <code>getwd()</code> obtiene el directorio de trabajo actual, es decir, la carpeta desde donde se está ejecutando el script. <code>file.path()</code> asegura que la ruta se construya correctamente, independientemente del sistema operativo, ya que maneja los separadores de ruta automáticamente.</p>
+<p>En esta línea de código, se define una variable llamada <code>base_dir</code> que contiene la ruta de un directorio específico. Utilizando la función <code>file.path()</code>, se crea esta ruta combinando el directorio de trabajo actual <code>getwd()</code> con el subdirectorio “datos”. La función <code>getwd()</code> obtiene el directorio de trabajo actual, es decir, la carpeta desde donde se está ejecutando el script. <code>file.path()</code> asegura que la ruta se construya correctamente, independientemente del sistema operativo, ya que maneja los separadores de ruta automáticamente.</p>
 </section>
-<section id="creación-de-una-lista-de-directorios-months" class="level3">
-<h3 class="anchored" data-anchor-id="creación-de-una-lista-de-directorios-months">1. 2 Creación de una Lista de Directorios (months)</h3>
+<section id="listar-los-subdirectorios" class="level3">
+<h3 class="anchored" data-anchor-id="listar-los-subdirectorios">1.2 Listar los subdirectorios</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>months <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="at">path =</span> base_dir, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>En esta línea, se utiliza la función <code>list.dirs()</code> para crear una lista de subdirectorios contenidos en el directorio especificado por base_dir. El argumento <code>path = base_dir</code> indica que se listarán los directorios dentro del directorio base definido anteriormente. <code>full.names = FALSE</code> significa que los nombres de los directorios se devolverán como nombres simples (sin incluir la ruta completa), mientras que <code>recursive = FALSE</code> especifica que solo se listarán los subdirectorios de nivel superior, es decir, no se explorarán subdirectorios dentro de otros subdirectorios. El resultado es una lista de nombres de directorios de nivel superior en la carpeta <code>datos</code>, que representa probablemente los datos organizados por meses.</p>
+<p>En esta línea, se utiliza la función <code>list.dirs()</code> para crear una lista de subdirectorios contenidos en el directorio especificado por <code>base_dir.</code> El argumento <code>path = base_dir</code> indica que se listarán los directorios dentro del directorio base definido anteriormente. <code>full.names = FALSE</code> significa que los nombres de los directorios se devolverán como nombres simples (sin incluir la ruta completa), mientras que <code>recursive = FALSE</code> especifica que solo se listarán los subdirectorios de nivel superior, es decir, no se explorarán subdirectorios dentro de otros subdirectorios. El resultado es una lista de nombres de directorios de nivel superior en la carpeta <code>datos</code>, que representa probablemente los datos organizados por meses.</p>
 </section>
-<section id="definición-de-la-función-verify_variables" class="level3">
-<h3 class="anchored" data-anchor-id="definición-de-la-función-verify_variables">1. 3 Definición de la Función <code>verify_variables ()</code></h3>
+<section id="definición-de-la-función" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función">1.3 Definición de la función</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Verify_variables <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>verify_variables <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Aquí se define una nueva función llamada <code>verify_variables</code>. Esta función no toma ningún argumento y su propósito es verificar que las variables (columnas) en los datos de cada mes coincidan con las variables en la data consolidada.</p>
 </section>
 <section id="iteración-sobre-los-meses" class="level3">
-<h3 class="anchored" data-anchor-id="iteración-sobre-los-meses">1. 4 Iteración sobre los Meses</h3>
+<h3 class="anchored" data-anchor-id="iteración-sobre-los-meses">1.4 Iteración sobre los Meses</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (month <span class="cf">in</span> months) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Se utiliza un bucle for para iterar sobre cada mes en el vector months. En cada iteración, la variable month tomará el valor de uno de los meses, por ejemplo, “enero”, “febrero”, etc.</p>
+<p>Se utiliza un bucle for para iterar sobre cada mes en el vector <code>months.</code> En cada iteración, la variable <code>month</code> tomará el valor de uno de los meses, por ejemplo, <code>"enero", "febrero", etc</code>.</p>
 </section>
 <section id="obtener-datos-del-mes" class="level3">
-<h3 class="anchored" data-anchor-id="obtener-datos-del-mes">1. 5 Obtener Datos del Mes</h3>
+<h3 class="anchored" data-anchor-id="obtener-datos-del-mes">1.5 Obtener Datos del Mes</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Dentro del bucle, se llama a la función <code>merge_month()</code> con el nombre del mes actual como argumento. Esta función debería devolver un data frame que contiene los datos para el mes especificado. El resultado se guarda en la variable <code>month_data.</code></p>
 </section>
 <section id="comparación-de-nombres-de-columnas" class="level3">
-<h3 class="anchored" data-anchor-id="comparación-de-nombres-de-columnas">1. 6 Comparación de Nombres de Columnas</h3>
+<h3 class="anchored" data-anchor-id="comparación-de-nombres-de-columnas">1.6 Comparación de Nombres de Columnas</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">all</span>(<span class="fu">names</span>(month_data) <span class="sc">%in%</span> <span class="fu">names</span>(data))) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Se verifica si todos los nombres de las columnas en month_data están presentes en <code>names(data)</code>, que es un vector con los nombres de las columnas en la data consolidada. La función <code>names()</code> obtiene los nombres de las columnas de un data frame, y <code>%in%</code> verifica si cada nombre de columna de month_data está en el conjunto de nombres de columnas de data. La función <code>all()</code> asegura que la condición sea verdadera para todas las columnas.</p>
+<p>Se verifica si todos los nombres de las columnas en month_data están presentes en <code>names(data)</code>, que es un vector con los nombres de las columnas en la data consolidada. La función <code>names()</code> obtiene los nombres de las columnas de un data frame, y <code>%in%</code> verifica si cada nombre de columna de <code>month_data</code> está en el conjunto de nombres de columnas de data. La función <code>all()</code> asegura que la condición sea verdadera para todas las columnas.</p>
 </section>
 <section id="mensaje-de-resultados" class="level3">
-<h3 class="anchored" data-anchor-id="mensaje-de-resultados">1. 6 Mensaje de Resultados</h3>
+<h3 class="anchored" data-anchor-id="mensaje-de-resultados">1.6 Mensaje de Resultados</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Las variables son las mismas que las del mes de"</span>, month))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Todas las variables presentes en"</span>, month, <span class="st">"están presentes en los datos consolidados"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Si todas las columnas de month_data están presentes en la data consolidada, se imprime un mensaje indicando que las variables son las mismas que las del mes actual.</p>
+<p>Si todas las columnas de <code>month_data</code> están presentes en la data consolidada, se imprime un mensaje indicando que las variables son las mismas que las del mes actual.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Las variables no son las mismas que las del mes de"</span>, month))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Existen variables presentes en"</span>, month, <span class="st">"que no se encuentran presentes en los datos consolidados"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Si alguna columna de month_data no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.</p>
+<p>Si alguna columna de <code>month_data</code> no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.</p>
 </section>
 <section id="llamada-a-la-función" class="level3">
-<h3 class="anchored" data-anchor-id="llamada-a-la-función">1. 7 Llamada a la Función</h3>
+<h3 class="anchored" data-anchor-id="llamada-a-la-función">1.7 Llamada a la Función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">verify_variables</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Finalmente, la función <code>verificar_variables()</code> es llamada para ejecutar la verificación. Esto dispara la ejecución del bucle for y la verificación de columnas para cada mes especificado en el vector <code>months</code>.</p>
+<p>Finalmente, la función <code>verify_variables()</code> es llamada para ejecutar la verificación. Esto dispara la ejecución del bucle <code>for</code> y la verificación de columnas para cada mes especificado en el vector <code>months</code>.</p>
 </section>
 <section id="retorno-de-la-función" class="level3">
-<h3 class="anchored" data-anchor-id="retorno-de-la-función">1. 8 Retorno de la función</h3>
+<h3 class="anchored" data-anchor-id="retorno-de-la-función">1.8 Retorno de la función</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Las variables son las mismas que las del mes de abril"</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Las variables son las mismas que las del mes de enero"</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Las variables son las mismas que las del mes de febrero"</span> </span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Las variables son las mismas que las del mes de junio"</span> </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Las variables son las mismas que las del mes de marzo"</span> </span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Las variables son las mismas que las del mes de mayo"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en abril están presentes en los datos consolidados"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en enero están presentes en los datos consolidados"</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en febrero están presentes en los datos consolidados"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en junio están presentes en los datos consolidados"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en marzo están presentes en los datos consolidados"</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en mayo están presentes en los datos consolidados"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="conteo-de-registros" class="level2">
-<h2 class="anchored" data-anchor-id="conteo-de-registros">2. Conteo de Registros</h2>
+<section id="función-para-el-conteo-de-registros-observations" class="level2">
+<h2 class="anchored" data-anchor-id="función-para-el-conteo-de-registros-observations">2. Función para el conteo de registros <code>observations()</code></h2>
+<p>La función <code>observations()</code> asegura la consistencia en el número de observaciones a lo largo de un conjunto de datos de diferentes meses.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>observations <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  total_obs <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (month <span class="cf">in</span> months) {</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>          </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    total_obs <span class="ot">&lt;-</span> total_obs <span class="sc">+</span> <span class="fu">nrow</span>(month_data)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  total_obs <span class="ot">&lt;-</span> total_obs <span class="sc">+</span> <span class="fu">nrow</span>(month_data)</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (total_obs <span class="sc">==</span> <span class="fu">nrow</span>(data)) { </span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"El número de observaciones es correcto"</span>) </span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> { </span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">"El número de observaciones no es correcto"</span>) </span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  } </span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="fu">observations</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (total_obs <span class="sc">==</span> <span class="fu">nrow</span>(data)) { </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"El número de observaciones es correcto"</span>) </span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> { </span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">print</span>(<span class="st">"El número de observaciones no es correcto"</span>) </span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="fu">observations</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="definición-de-la-función-observations" class="level3">
-<h3 class="anchored" data-anchor-id="definición-de-la-función-observations">2. 1 Definición de la Función <code>observations()</code></h3>
+<section id="definición-de-la-función-1" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función-1">2.1 Definición de la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>observations <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Aquí se define una nueva función llamada <code>observations()</code>. Esta función no recibe ningún argumento y su objetivo es verificar si el número total de observaciones en la data consolidada coincide con la suma de las observaciones de cada mes.</p>
 </section>
 <section id="inicialización-del-contador-de-observaciones" class="level3">
-<h3 class="anchored" data-anchor-id="inicialización-del-contador-de-observaciones">2. 2 Inicialización del Contador de Observaciones</h3>
+<h3 class="anchored" data-anchor-id="inicialización-del-contador-de-observaciones">2.2 Inicialización del contador de observaciones</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Se inicializa una variable llamada total_obs con el valor <code>0</code>. Esta variable se utilizará para acumular el total de observaciones de todos los meses.</p>
 </section>
 <section id="iteración-sobre-los-meses-1" class="level3">
-<h3 class="anchored" data-anchor-id="iteración-sobre-los-meses-1">2. 3 Iteración sobre los Meses</h3>
+<h3 class="anchored" data-anchor-id="iteración-sobre-los-meses-1">2.3 Iteración sobre los meses</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (month <span class="cf">in</span> months) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Se utiliza un bucle for para iterar sobre cada mes en el vector <code>months.</code> En cada iteración, la variable month toma el valor de uno de los meses por ejemplo, “enero”, “febrero”, etc. ).</p>
+<p>Se utiliza un bucle <code>for</code> para iterar sobre cada mes en el vector <code>months.</code> En cada iteración, la variable <code>month</code> toma el valor de uno de los meses por ejemplo, <code>"enero", "febrero", etc.</code>.</p>
 </section>
-<section id="obtener-datos-del-mes-1" class="level3">
-<h3 class="anchored" data-anchor-id="obtener-datos-del-mes-1">2. 4 Obtener Datos del Mes</h3>
+<section id="obtener-datos-del-mes-iterado" class="level3">
+<h3 class="anchored" data-anchor-id="obtener-datos-del-mes-iterado">2.4 Obtener datos del mes iterado</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Dentro del bucle, se llama a la función <code>merge_month()</code> con el nombre del mes actual como argumento. Esta función debería devolver un data frame que contiene los datos para el mes especificado. El resultado se guarda en la variable <code>month_data</code>.</p>
 </section>
 <section id="contar-y-acumular-observaciones" class="level3">
-<h3 class="anchored" data-anchor-id="contar-y-acumular-observaciones">2. 5 Contar y Acumular Observaciones</h3>
+<h3 class="anchored" data-anchor-id="contar-y-acumular-observaciones">2.5 Contar y acumular observaciones</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> total_obs <span class="sc">+</span> <span class="fu">nrow</span>(month_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Se cuenta el número de filas (<code>observaciones</code>) en <code>month_data</code> utilizando <code>nrow(month_data)</code> y se suma al contador <code>total_obs.</code> Esta operación se repite para cada mes, acumulando el total de observaciones.</p>
 </section>
 <section id="verificación-del-número-de-observaciones" class="level3">
-<h3 class="anchored" data-anchor-id="verificación-del-número-de-observaciones">2. 6 Verificación del Número de Observaciones</h3>
+<h3 class="anchored" data-anchor-id="verificación-del-número-de-observaciones">2.6 Verificación del número de observaciones</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (total_obs <span class="sc">==</span> <span class="fu">nrow</span>(data)) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Una vez que se ha acumulado el total de observaciones para todos los meses, se compara este total con el número de filas en la data consolidada (usando <code>nrow(data)</code>). La función <code>nrow()</code> obtiene el número de filas en un data frame o data table.</p>
+<p>Una vez que se ha acumulado el total de observaciones para todos los meses, se compara este total con el número de filas en la data consolidada (usando <code>nrow(data)</code>). La función <code>nrow()</code> obtiene el número de filas en un dataframe o data table.</p>
 </section>
-<section id="mensaje-de-resultados-1" class="level3">
-<h3 class="anchored" data-anchor-id="mensaje-de-resultados-1">2. 7 Mensaje de Resultados</h3>
+<section id="mensajes-de-resultado" class="level3">
+<h3 class="anchored" data-anchor-id="mensajes-de-resultado">2.7 Mensajes de resultado</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"El número de observaciones es correcto"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -382,21 +381,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Si el total de observaciones calculado no coincide con el número de filas en la data consolidada, se imprime el mensaje <code>"El número de observaciones no es correcto"</code>.</p>
 </section>
 <section id="llamada-a-la-función-1" class="level3">
-<h3 class="anchored" data-anchor-id="llamada-a-la-función-1">2. 8 Llamada a la Función</h3>
+<h3 class="anchored" data-anchor-id="llamada-a-la-función-1">2.8 Llamada a la Función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">observations</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finalmente, se llama a la función<code>observations()</code> para ejecutar el código y realizar la verificación del número total de observaciones.</p>
 </section>
 <section id="retorno-de-la-función-1" class="level3">
-<h3 class="anchored" data-anchor-id="retorno-de-la-función-1">2. 9 Retorno de la función</h3>
+<h3 class="anchored" data-anchor-id="retorno-de-la-función-1">2.9 Retorno de la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"El número de observaciones es correcto"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="verificar-duplicados" class="level2">
-<h2 class="anchored" data-anchor-id="verificar-duplicados">3. Verificar Duplicados</h2>
+<section id="función-para-verificar-duplicados-duplicate" class="level2">
+<h2 class="anchored" data-anchor-id="función-para-verificar-duplicados-duplicate">3. Función para verificar duplicados <code>duplicate()</code></h2>
+<p>La función <code>observations()</code> asegura la consistencia en el número de observaciones a lo largo de un conjunto de datos de diferentes meses.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>duplicate <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -412,29 +412,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="fu">duplicate</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="definición-de-la-función-duplicate" class="level3">
-<h3 class="anchored" data-anchor-id="definición-de-la-función-duplicate">3. 1 Definición de la Función <code>duplicate()</code></h3>
+<section id="definición-de-la-función-2" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función-2">3.1 Definición de la Función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>duplicados <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Esta línea define una nueva función llamada <code>duplicate.</code> La función toma un argumento data, que representa el conjunto de datos en el cual se quiere verificar la presencia de filas duplicadas.</p>
 </section>
 <section id="identificación-de-filas-duplicadas" class="level3">
-<h3 class="anchored" data-anchor-id="identificación-de-filas-duplicadas">3. 2 Identificación de Filas Duplicadas</h3>
+<h3 class="anchored" data-anchor-id="identificación-de-filas-duplicadas">3.2 Identificación de filas duplicadas</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>duplicate <span class="ot">&lt;-</span> data[<span class="fu">duplicated</span>(data)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>En esta línea, se utiliza la función <code>duplicated(data)</code> para identificar las filas duplicadas en el conjunto de datos data. La función <code>duplicated()</code> devuelve un vector lógico del mismo largo que data, donde cada elemento es <code>TRUE</code> si la fila correspondiente es un duplicado de una fila anterior y <code>FALSE</code> en caso contrario. Al utilizar este vector lógico para indexar data, se obtienen todas las filas duplicadas y se almacenan en un nuevo data frame llamado duplicate.</p>
+<p>En esta línea, se utiliza la función <code>duplicated(data)</code> para identificar las filas duplicadas en el conjunto de datos <code>data</code>. La función <code>duplicated()</code> devuelve un vector lógico del mismo largo que data, donde cada elemento es <code>TRUE</code> si la fila correspondiente es un duplicado de una fila anterior y <code>FALSE</code> en caso contrario. Al utilizar este vector lógico para indexar <code>data</code>, se obtienen todas las filas duplicadas y se almacenan en un nuevo dataframe llamado <code>duplicate.</code></p>
 </section>
 <section id="verificación-de-la-presencia-de-duplicados" class="level3">
-<h3 class="anchored" data-anchor-id="verificación-de-la-presencia-de-duplicados">3. 3 Verificación de la Presencia de Duplicados</h3>
+<h3 class="anchored" data-anchor-id="verificación-de-la-presencia-de-duplicados">3.3 Verificación de la presencia de duplicados</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">nrow</span>(duplicado) <span class="sc">==</span> <span class="dv">0</span>) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Esta línea de código verifica si el número de filas en el data frame duplicate es igual a 0 utilizando la función <code>nrow()</code>, que cuenta el número de filas. Si<code>nrow(duplicado)</code> es 0, significa que no se encontraron filas duplicadas en el conjunto de datos original data.</p>
+<p>Esta línea de código verifica si el número de filas en el data frame duplicate es igual a <code>0</code> utilizando la función <code>nrow()</code>, que cuenta el número de filas. Si<code>nrow(duplicado)</code> es <code>0</code>, significa que no se encontraron filas duplicadas en el conjunto de datos original data.</p>
 </section>
-<section id="impresión-de-mensajes-de-resultados" class="level3">
-<h3 class="anchored" data-anchor-id="impresión-de-mensajes-de-resultados">3. 4 Impresión de Mensajes de Resultados</h3>
+<section id="retorno-de-mensajes-de-resultados" class="level3">
+<h3 class="anchored" data-anchor-id="retorno-de-mensajes-de-resultados">3.4 Retorno de mensajes de resultados</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"No hay duplicados por fila"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -445,68 +445,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Si la verificación es falsa (es decir, hay al menos una fila duplicada), se imprime un mensaje indicando que <code>"Hay duplicados por fila"</code>. Esto señala que el conjunto de datos contiene duplicados y que es necesario manejarlos para asegurar la integridad de los datos.</p>
 </section>
 <section id="llamada-a-la-función-2" class="level3">
-<h3 class="anchored" data-anchor-id="llamada-a-la-función-2">3. 5 Llamada a la Función</h3>
+<h3 class="anchored" data-anchor-id="llamada-a-la-función-2">3.5 Llamada a la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">duplicate</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Finalmente, se llama a la función <code>duplicate()</code> pasando como argumento el conjunto de datos data. Esta llamada ejecuta la función y realiza la verificación de duplicados en el conjunto de datos proporcionado.</p>
+<p>Finalmente, se llama a la función <code>duplicate()</code> pasando como argumento el conjunto de datos <code>data.</code> Esta llamada ejecuta la función y realiza la verificación de duplicados en el conjunto de datos proporcionado.</p>
 </section>
 <section id="retorno-de-la-función-2" class="level3">
-<h3 class="anchored" data-anchor-id="retorno-de-la-función-2">3. 5 Retorno de la Función</h3>
+<h3 class="anchored" data-anchor-id="retorno-de-la-función-2">3.5 Retorno de la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"No hay duplicados por fila"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="completitud-de-datos" class="level2">
-<h2 class="anchored" data-anchor-id="completitud-de-datos">4. Completitud de Datos</h2>
+<section id="función-para-validar-la-completitud-de-los-datos-en-las-variables-clave-missing_values" class="level2">
+<h2 class="anchored" data-anchor-id="función-para-validar-la-completitud-de-los-datos-en-las-variables-clave-missing_values">4. Función para validar la completitud de los datos en las variables clave <code>missing_values()</code></h2>
+<p>La función <code>duplicate()</code> se utiliza para verificar la existencia de filas duplicadas en un conjunto de datos específico.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="cf">function</span>(data, ...) {</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...)] </span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="fu">missing_values</span>(data, <span class="st">"DIRECTORIO"</span>, <span class="st">"SECUENCIA_P"</span>, <span class="st">"ORDEN"</span>, <span class="st">"HOGAR"</span>, <span class="st">"FEX_C18"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...)] </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">missing_values</span>(data, <span class="st">"DIRECTORIO"</span>, <span class="st">"SECUENCIA_P"</span>, <span class="st">"ORDEN"</span>, <span class="st">"HOGAR"</span>, <span class="st">"FEX_C18"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="definición-de-la-función-missing_values" class="level3">
-<h3 class="anchored" data-anchor-id="definición-de-la-función-missing_values">4. 1 Definición de la Función <code>missing_values()</code></h3>
+<section id="definición-de-la-función-3" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función-3">4.1 Definición de la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="cf">function</span>(data, ...) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Esta línea define una nueva función llamada missing_values. La función toma un argumento data, que es el conjunto de datos a analizar, y un argumento variable <code>...</code> que permite pasar múltiples nombres de columnas. Estos nombres de columnas representan las variables en las que se desea verificar la presencia de valores faltantes <code>NA</code>.</p>
 </section>
 <section id="aplicación-de-una-función-para-contar-valores-faltantes" class="level3">
-<h3 class="anchored" data-anchor-id="aplicación-de-una-función-para-contar-valores-faltantes">4. 2 Aplicación de una Función para Contar Valores Faltantes</h3>
+<h3 class="anchored" data-anchor-id="aplicación-de-una-función-para-contar-valores-faltantes">4.2 Aplicación de una función para contar valores faltantes</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Esta línea utiliza la sintaxis de data.table para contar los valores faltantes en las columnas especificadas. A continuación se desglosa cómo funciona esta línea:</p>
+<p>Esta línea utiliza la sintaxis de <code>data.table</code> para contar los valores faltantes en las columnas especificadas. A continuación se desglosa cómo funciona esta línea:</p>
 <ul>
-<li><p><code>data[, ...]</code>: Esto indica que se está aplicando una operación a data. La coma antes del paréntesis indica que se están seleccionando columnas específicas o realizando operaciones en columnas, sin modificar filas.</p></li>
+<li><p><code>data[, ...]</code>: Esto indica que se está aplicando una operación a <code>data.</code> La coma antes del paréntesis indica que se están seleccionando columnas específicas o realizando operaciones en columnas, sin modificar filas.</p></li>
 <li><p><code>lapply(.SD, function(x) sum(is.na(x)))</code>: Aquí se utiliza <code>lapply()</code> para aplicar una función a cada columna especificada. <code>.SD</code> (Subset of Data) es una característica de <code>data.table</code> que representa las columnas especificadas en <code>.SDcols</code>. La función anónima <code>function(x) sum(is.na(x))</code> cuenta el número de valores <code>NA</code> en cada columna al aplicar <code>is.na(x)</code> para identificar valores faltantes y <code>sum()</code> para contar cuántos de esos valores existen.</p></li>
 <li><p><code>.SDcols = c(...)</code>: Esta parte especifica las columnas en las que se aplicará la función. <code>c(...)</code> indica que las columnas serán las proporcionadas como argumentos variables a la función<code>missing_values()</code>. Esto permite flexibilidad para verificar diferentes columnas según sea necesario.</p></li>
 </ul>
 </section>
 <section id="llamada-a-la-función-para-identificar-valores-faltantes" class="level3">
-<h3 class="anchored" data-anchor-id="llamada-a-la-función-para-identificar-valores-faltantes">4. 3 Llamada a la Función para Identificar Valores Faltantes</h3>
+<h3 class="anchored" data-anchor-id="llamada-a-la-función-para-identificar-valores-faltantes">4.3 Llamada a la función para identificar valores faltantes</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">missing_values</span>(data, <span class="st">"DIRECTORIO"</span>, <span class="st">"SECUENCIA_P"</span>, <span class="st">"ORDEN"</span>, <span class="st">"HOGAR"</span>, <span class="st">"FEX_C18"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Aquí se llama a la función <code>missing_values()</code> pasando el conjunto de datos data y una lista de nombres de columnas: <code>"DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", y "FEX_C18"</code>. Esta llamada a la función genera una tabla que muestra el número de valores faltantes en cada una de estas columnas.</p>
 </section>
 <section id="retorno-de-la-función-3" class="level3">
-<h3 class="anchored" data-anchor-id="retorno-de-la-función-3">4. 4 Retorno de la función</h3>
+<h3 class="anchored" data-anchor-id="retorno-de-la-función-3">4.4 Retorno de la función</h3>
+<p>Lo que se espera es que las variables seleccionadas (variables clave) no tengan ningún valor nulo.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>      DIRECTORIO SECUENCIA_P ORDEN HOGAR FEX_C18</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>          <span class="sc">&lt;</span>int<span class="sc">&gt;</span>       <span class="er">&lt;</span>int<span class="sc">&gt;</span> <span class="er">&lt;</span>int<span class="sc">&gt;</span> <span class="er">&lt;</span>int<span class="sc">&gt;</span>   <span class="er">&lt;</span>int<span class="sc">&gt;</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span>          <span class="dv">0</span>           <span class="dv">0</span>     <span class="dv">0</span>     <span class="dv">0</span>       <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>            <span class="dv">0</span>           <span class="dv">0</span>     <span class="dv">0</span>     <span class="dv">0</span>       <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
-<section id="validación-de-contenidos" class="level2">
-<h2 class="anchored" data-anchor-id="validación-de-contenidos">5. Validación de Contenidos</h2>
+<section id="funcion-para-la-validación-de-contenido-validation" class="level2">
+<h2 class="anchored" data-anchor-id="funcion-para-la-validación-de-contenido-validation">5. Funcion para la validación de contenido <code>validation()</code></h2>
+<p>La función <code>validation()</code> se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>validation <span class="ot">&lt;-</span> <span class="cf">function</span>(data, month, by_col, ...) { </span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>content_validation <span class="ot">&lt;-</span> <span class="cf">function</span>(data, month, by_col, ...) { </span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  months_dictionary <span class="ot">&lt;-</span> <span class="fu">list</span>( </span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"enero"</span> <span class="ot">=</span> <span class="dv">1</span>, </span>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"febrero"</span> <span class="ot">=</span> <span class="dv">2</span>, </span>
@@ -522,16 +524,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"diciembre"</span> <span class="ot">=</span> <span class="dv">12</span> </span>
 <span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month) result1 <span class="ot">&lt;-</span> month_data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col] </span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>  result2 <span class="ot">&lt;-</span> data[MES <span class="sc">==</span> months_dictionary[[month]], <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col]</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(result1 <span class="sc">==</span> result2)) { <span class="fu">print</span>(<span class="st">"El contenido coincide"</span>) } <span class="cf">else</span> { <span class="fu">print</span>(<span class="st">"El contenido no coincide"</span>) } </span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>} </span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a><span class="fu">validation</span>(data, <span class="st">"marzo"</span>, <span class="st">"DPTO"</span>, <span class="fu">c</span>(<span class="st">"OCI"</span>, <span class="st">"P7360"</span>, <span class="st">"P9460"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>  month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month) </span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>  total_complete_data <span class="ot">&lt;-</span> month_data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col] </span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>  total_month_data <span class="ot">&lt;-</span> data[MES <span class="sc">==</span> months_dictionary[[month]], <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col]</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">all</span>(total_complete_data <span class="sc">==</span> total_month_data)) { </span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"El contenido coincide"</span>) </span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> { </span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">"El contenido no coincide"</span>) </span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>  } </span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a><span class="fu">content_validation</span>(data, <span class="st">"marzo"</span>, <span class="st">"DPTO"</span>, <span class="fu">c</span>(<span class="st">"OCI"</span>, <span class="st">"P7360"</span>, <span class="st">"P9460"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="definición-de-la-función-validation" class="level3">
-<h3 class="anchored" data-anchor-id="definición-de-la-función-validation">5. 1 Definición de la Función <code>validation()</code></h3>
+<section id="definición-de-la-función-4" class="level3">
+<h3 class="anchored" data-anchor-id="definición-de-la-función-4">5.1 Definición de la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>validacion <span class="ot">&lt;-</span> <span class="cf">function</span>(data, month, by_col, ...) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -544,7 +552,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 <section id="creación-de-un-diccionario-de-meses" class="level3">
-<h3 class="anchored" data-anchor-id="creación-de-un-diccionario-de-meses">5. 2 Creación de un Diccionario de Meses</h3>
+<h3 class="anchored" data-anchor-id="creación-de-un-diccionario-de-meses">5.2 Creación de un diccionario de meses</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>months_dictionary <span class="ot">&lt;-</span> <span class="fu">list</span>( </span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"enero"</span> <span class="ot">=</span> <span class="dv">1</span>, </span>
@@ -561,19 +569,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"diciembre"</span> <span class="ot">=</span> <span class="dv">12</span> </span>
 <span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Aquí se crea una lista llamada months_dictionary que asocia nombres de meses con sus correspondientes números de mes. Esta lista facilita la conversión del nombre del mes proporcionado en el argumento month a su número de mes equivalente.</p>
+<p>Aquí se crea una lista llamada <code>months_dictionary</code> que asocia nombres de meses con sus correspondientes números de mes. Esta lista facilita la conversión del nombre del mes proporcionado en el argumento <code>month</code> a su número de mes equivalente.</p>
 </section>
 <section id="obtención-de-los-datos-del-mes-específico" class="level3">
-<h3 class="anchored" data-anchor-id="obtención-de-los-datos-del-mes-específico">5. 3 Obtención de los Datos del Mes Específico</h3>
+<h3 class="anchored" data-anchor-id="obtención-de-los-datos-del-mes-específico">5.3 Obtención de los datos del mes específico</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>month_data <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Se llama a la función <code>merge_month()</code> con el nombre del mes especificado en month para obtener los datos correspondientes a ese mes. El resultado es un data frame llamado month_data que contiene la información para el mes actual.</p>
+<p>Se llama a la función <code>merge_month()</code> con el nombre del mes especificado en month para obtener los datos correspondientes a ese mes. El resultado es un data frame llamado <code>month_data</code> que contiene la información para el mes actual.</p>
 </section>
 <section id="cálculo-de-resultados-por-mes" class="level3">
-<h3 class="anchored" data-anchor-id="cálculo-de-resultados-por-mes">5. 4 Cálculo de Resultados por Mes</h3>
+<h3 class="anchored" data-anchor-id="cálculo-de-resultados-por-mes">5.4 Cálculo de resultados por mes</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>result1 <span class="ot">&lt;-</span> month_data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>total_complete_data <span class="ot">&lt;-</span> month_data[, <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p><code>.SD</code>: Es un data table subset que contiene solo las columnas especificadas en <code>.SDcols</code>.</p></li>
@@ -581,31 +589,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><code>.SDcols = c(...)</code>: Especifica las columnas a las cuales aplicar la función. <code>c(...)</code> permite pasar múltiples nombres de columnas.</p></li>
 <li><p><code>by = by_col</code>: Agrupa los resultados por la columna especificada en <code>by_col</code>.</p></li>
 </ul>
-<p>El resultado, <code>result1</code>, es un data frame con la suma de valores para cada columna especificada, agrupado por la columna de agrupamiento en month_data.</p>
+<p>El resultado, <code>total_complete_data</code>, es un data frame con la suma de valores para cada columna especificada, agrupado por la columna de agrupamiento en <code>month_data</code>.</p>
 </section>
 <section id="cálculo-de-resultados-en-el-conjunto-de-datos-consolidado" class="level3">
-<h3 class="anchored" data-anchor-id="cálculo-de-resultados-en-el-conjunto-de-datos-consolidado">5. 5 Cálculo de Resultados en el Conjunto de Datos Consolidado</h3>
+<h3 class="anchored" data-anchor-id="cálculo-de-resultados-en-el-conjunto-de-datos-consolidado">5.5 Cálculo de resultados en el conjunto de datos consolidado</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>result2 <span class="ot">&lt;-</span> data[MES <span class="sc">==</span> months_dictionary[[month]], <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>total_month_data <span class="ot">&lt;-</span> data[MES <span class="sc">==</span> months_dictionary[[month]], <span class="fu">lapply</span>(.SD, <span class="cf">function</span>(x) <span class="fu">sum</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), .SDcols <span class="ot">=</span> <span class="fu">c</span>(...), by <span class="ot">=</span> by_col]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p><code>data[MES == months_dictionary[[month]]]</code>: Filtra el conjunto de datos consolidado data para seleccionar solo las filas correspondientes al mes especificado. El número del mes se obtiene del <code>months_dictionary</code>.</p></li>
-<li><p>El cálculo realizado es similar al de <code>result1</code>: se suman los valores en las columnas especificadas, agrupados por la columna <code>by_col</code>.</p></li>
+<li><p>El cálculo realizado es similar al de <code>total_complete_data</code>: se suman los valores en las columnas especificadas, agrupados por la columna <code>by_col</code>.</p></li>
 </ul>
 </section>
 <section id="comparación-de-resultados-y-mensajes-de-resultado" class="level3">
-<h3 class="anchored" data-anchor-id="comparación-de-resultados-y-mensajes-de-resultado">5. 6 Comparación de Resultados y Mensajes de Resultado</h3>
+<h3 class="anchored" data-anchor-id="comparación-de-resultados-y-mensajes-de-resultado">5.6 Comparación de resultados y mensajes de resultado</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">all</span>(result1 <span class="sc">==</span> result2)) { <span class="fu">print</span>(<span class="st">"El contenido coincide"</span>) } <span class="cf">else</span> { <span class="fu">print</span>(<span class="st">"El contenido no coincide"</span>) }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">all</span>(total_complete_data <span class="sc">==</span> total_month_data)) { </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"El contenido coincide"</span>) </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> { </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="st">"El contenido no coincide"</span>) </span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li><p><code>all(result1 == result2)</code>: Compara si todos los valores en <code>result1</code> son iguales a los valores en <code>result2.</code> La función <code>all()</code> devuelve <code>TRUE</code> si todas las comparaciones son verdaderas.</p></li>
+<li><p><code>all(total_complete_data == total_month_data)</code>: Compara si todos los valores en <code>total_complete_data</code> son iguales a los valores en <code>total_month_data</code> La función <code>all()</code> devuelve <code>TRUE</code> si todas las comparaciones son verdaderas.</p></li>
 <li><p><code>print("El contenido coincide")</code>: Si todos los valores coinciden, se imprime este mensaje.</p></li>
-<li><p><code>print("El contenido no coincide")</code>: Si hay alguna discrepancia entre <code>result1</code> y <code>result2</code>, se imprime este mensaje</p></li>
+<li><p><code>print("El contenido no coincide")</code>: Si hay alguna discrepancia entre <code>total_complete_data</code> y <code>total_month_data</code>, se imprime este mensaje</p></li>
 </ul>
 </section>
 <section id="llamada-a-la-función-para-validación" class="level3">
-<h3 class="anchored" data-anchor-id="llamada-a-la-función-para-validación">5. 7 Llamada a la Función para Validación</h3>
+<h3 class="anchored" data-anchor-id="llamada-a-la-función-para-validación">5.7 Llamada a la función para validación</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">validation</span>(data, <span class="st">"marzo"</span>, <span class="st">"DPTO"</span>, <span class="fu">c</span>(<span class="st">"OCI"</span>, <span class="st">"P7360"</span>, <span class="st">"P9460"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -627,7 +639,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="apéndice" class="level2">
 <h2 class="anchored" data-anchor-id="apéndice">Apéndice</h2>
 <section id="función-verify_variables" class="level3">
-<h3 class="anchored" data-anchor-id="función-verify_variables">Función <code>verify_variables ()</code></h3>
+<h3 class="anchored" data-anchor-id="función-verify_variables">Función <code>verify_variables()</code></h3>
 <p>La función <code>verify_variables()</code> se utiliza para garantizar la consistencia en la estructura de los datos a lo largo del tiempo. Itera a través de los datos de cada mes, verifica si las columnas en los datos de cada mes coinciden con las de un conjunto de datos consolidado, y proporciona retroalimentación sobre cualquier discrepancia encontrada. Esto es crucial para asegurar que el análisis posterior sea consistente y preciso, evitando errores debido a diferencias en la estructura de los datos.</p>
 </section>
 <section id="función-observations" class="level3">
@@ -639,7 +651,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>La función <code>duplicate()</code> se utiliza para verificar la existencia de filas duplicadas en un conjunto de datos específico. Primero, identifica todas las filas duplicadas y las almacena en un nuevo data frame. Luego, verifica si hay o no filas duplicadas al comprobar el número de filas en el data frame de duplicados. Dependiendo del resultado, se imprime un mensaje para informar al usuario si hay duplicados en las filas o si todas las filas son únicas. Detectar y manejar duplicados es crucial en análisis de datos para evitar sesgos y asegurar que los resultados reflejen con precisión la realidad del fenómeno estudiado..</p>
 </section>
 <section id="función-missing_values" class="level3">
-<h3 class="anchored" data-anchor-id="función-missing_values">Función `missing_values()``</h3>
+<h3 class="anchored" data-anchor-id="función-missing_values">Función <code>missing_values()</code></h3>
 <p>La función <code>missing_values()</code> se utiliza para evaluar la completitud de datos en un conjunto específico de columnas dentro de un data frame. Al contar el número de valores faltantes <code>NA</code> en cada columna especificada, esta función ayuda a identificar problemas de calidad de datos, como la presencia de registros incompletos. Tener columnas clave con valores faltantes puede afectar negativamente los análisis posteriores, por lo que esta función es útil para realizar una limpieza de datos inicial y asegurar que las columnas esenciales estén completas antes de proceder con análisis más detallados</p>
 </section>
 <section id="función-validation" class="level3">
