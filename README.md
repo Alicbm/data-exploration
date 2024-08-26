@@ -69,10 +69,10 @@ En la GEIH, el cálculo incluye:
 
 Para aplicar el factor de expansión:
 
-- **Identificación del Factor de Expansión:** Busca la variable que representa el factor de expansión en los microdatos, como `FEX_C18`.
+- **Identificación del Factor de Expansión:** Busca la variable que representa el factor de expansión en los microdatos, como FEX_C18.
 - **Uso en Cálculos:** Multiplica cada observación por su factor de expansión para ajustar a la población total. Ejemplo:
 
-  ```plaintext
+  plaintext
   Estimación Total = ∑ (Valor de la Observación × Factor de Expansión)
 
 Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1 si está ocupado, 0 si no) por el factor de expansión y suma los valores ajustados.
@@ -155,4 +155,181 @@ Al filtrar, toma nota de los nombres de las variables y cómo se codifican para 
 
 
 ![image](https://github.com/user-attachments/assets/6146a553-b2d3-4e22-bbbe-14d4d01b0fb5)
+
+
+
+
+
+
+
+
+# Funciones para el Pegado de Datos GEIH
+
+Este documento proporciona las funciones en R necesarias para combinar los datos de la Gran Encuesta Integrada de Hogares (GEIH) por mes y por año.
+
+## merge_month
+
+Función para el pegado de todos los módulos de un mes específico, La función merge_month combina todos los archivos CSV de un mes específico en un solo data frame.
+
+    Carga de Librerías
+	
+	library(data.table)
+	
+	merge_month <- function(month) {
+      
+      variables_to_delete <- c("PERIODO", "MES", "PER", "REGIS", "AREA", "CLASE", "DPTO")
+      key_variables <- c("DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
+      
+      base_dir <- file.path(getwd(), "datos", month)
+      
+      all_files <- list.files(path = base_dir, pattern = "*.csv", full.names = TRUE, ignore.case = TRUE)
+      
+      final_df <- fread(file = all_files[1])
+      
+      for (file in all_files[-1]) {
+      
+       df <- fread(file = file)
+        new_key_variables <- intersect(colnames(df),  key_variables)
+        
+        final_df <- merge(final_df, df, by = new_key_variables, all.x = TRUE)
+        
+        if ("PERIODO.x" %in% colnames(final_df)) {
+          setnames(final_df, old = paste0(variables_to_delete, ".x"), new = gsub("\\.x$", "", variables_to_delete))
+          final_df[, c(paste0(variables_to_delete, ".y")) := NULL]
+        }
+      }
+      
+      return(final_df)
+    }
+
+##geih_completed
+
+Función para el pegado de todos los meses, La función geih_completed utiliza merge_month para combinar los datos de todos los meses en un solo archivo CSV.
+
+    geih_completed <- function () {
+    
+      base_dir <- file.path(getwd(), "datos")
+      months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
+      all_months <- data.table()
+    
+      for (month in months) {
+        if (length(all_months) == 0) {
+          all_months <- merge_month(month)
+        } else {
+          all_months <- rbindlist(list(all_months, merge_month(month)), fill = T)
+        }
+      }
+      
+      fwrite(all_months, file = "geih_complete.csv")
+      return (all_months)
+    }
+	# geih_completed()
+	
+
+
+
+[Documentación de funciones   `merge_month` y `geih_completed` ](https://github.com/usuario/ejemplo-geih) "Documentación de funciones   `merge_month` y `geih_completed` ")
+
+
+
+# Validación de Datos GEIH
+
+Este documento proporciona las funciones en R necesarias para validar los datos de la Gran Encuesta Integrada de Hogares (GEIH). Estas funciones verifican la consistencia de los datos consolidados (ten en cuenta que en este ejercicio solo hemos unido los datos de 6 meses, ya que son los únicos datos recolectados por el DANE en lo que va del año), el conteo de registros, la presencia de duplicados, la completitud de datos y la validación de contenidos específicos.
+
+    #Lectura de Datos Consolidados
+	
+    data <- fread(file = "C:/data-exploration/geih_complete.csv")
+    getwd()
+	
+
+##1. Verificar la Estructura de los Datos
+####Columnas Comunes
+Este paso verifica si los nombres de las columnas en los datos de cada mes son iguales a los de la data consolidada. Se toma cada mes de datos para asegurar que la estructura de columnas es consistente.
+
+    base_dir <- file.path(getwd(), "datos")
+    months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
+    
+    Verify_variables <- function() {
+      for (month in months) {
+        month_data <- merge_month(month)
+        if (all(names(month_data) %in% names(data))) {
+          print(paste("Las variables son las mismas que las del mes de", month))
+        } else {
+          print(paste("Las variables no son las mismas que las del mes de", month))
+        }
+      }
+    }
+    
+    Verify_variables()
+
+
+## 2. Conteo de Registros
+
+Este paso suma el número de observaciones de cada mes para asegurarse de que coincida con el número total de observaciones en la data consolidada.
+
+    observaciones <- function() {
+      total_obs <- 0
+      for (month in months) {
+        month_data <- merge_month(month)
+        total_obs <- total_obs + nrow(month_data)
+      }
+      if (total_obs == nrow(data)) {
+        print("El número de observaciones es correcto")
+      } else {
+        print("El número de observaciones no es correcto")
+      }
+    }
+    
+    observaciones()
+
+## 3. Verificar Duplicados
+
+Identifica si hay filas duplicadas en la data consolidada.
+
+    duplicate <- function(data) {
+      duplicate <- data[duplicated(data)]
+      if (nrow(duplicate) == 0) {
+        print("No hay duplicados por fila")
+      } else {
+        print("Hay duplicados por fila")
+      }
+    }
+    
+    duplicate(data)
+	
+
+##4. Completitud de Datos
+Este paso cuenta los valores faltantes en columnas clave para asegurarse de que no haya datos faltantes.
+
+    missing_values <- function(data, ...) {
+      data[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = c(...)]
+    }
+    
+    # Contamos valores faltantes en las columnas especificadas
+    missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
+	
+
+##5. Validación de Contenidos
+Compara la cantidad de ocupados en un mes específico por departamento entre la data consolidada y la data específica de ese mes.
+
+    validation <- function(data, month, by_col, ...) {
+      months_dictionary <- list(
+        "enero" = 1, "febrero" = 2, "marzo" = 3, "abril" = 4,
+        "mayo" = 5, "junio" = 6, "julio" = 7, "agosto" = 8,
+        "septiembre" = 9, "octubre" = 10, "noviembre" = 11, "diciembre" = 12
+      )
+      month_data <- merge_month(month)
+      result1 <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
+      result2 <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
+      if (all(result1 == result2)) {
+        print("El contenido coincide")
+      } else {
+        print("El contenido no coincide")
+      }
+    }
+    
+    validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
+	
+
+[Documentación de funciones   `merge_month` y `geih_completed` ](https://github.com/usuario/ejemplo-geih) "Documentación de funciones   `merge_month` y `geih_completed` 
 
