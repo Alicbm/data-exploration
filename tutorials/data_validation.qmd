@@ -9,7 +9,7 @@ format:
     css: styles.css
 ---
 
-**Nota**: Para realizar la validación de datos es recomendable haber seguido previamente la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">guia sobre el pegado de la GEIH</a> o tener la base de datos completa de la GEIH descargada.
+**Nota**: Para realizar la validación de datos es recomendable haber seguido previamente la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">Guia: Pegado de la GEIH</a> o tener la base de datos completa de la GEIH descargada.
 
 ## Preparación de para la validación
 
@@ -75,7 +75,7 @@ verify_variables()
 base_dir <- file.path(getwd(), "datos")
 ```
 
-En esta línea de código, se define una variable llamada `base_dir` que contiene la ruta de un directorio específico. Utilizando la función `file.path()`, se crea esta ruta combinando el directorio de trabajo actual `getwd()` con el subdirectorio "datos". La función `getwd()` obtiene el directorio de trabajo actual, es decir, la carpeta desde donde se está ejecutando el script. `file.path()` asegura que la ruta se construya correctamente, independientemente del sistema operativo, ya que maneja los separadores de ruta automáticamente.
+La variable `base_dir` almacena la ruta hacia un subdirectorio llamado "datos" dentro del directorio de trabajo actual, obtenido mediante `getwd()`. La función `file.path()` se encarga de construir la ruta de forma segura y correcta, adaptándose automáticamente al sistema operativo, lo que asegura la portabilidad del código al manejar los separadores de ruta apropiados.
 
 ### 1.2 Listar los subdirectorios
 
@@ -119,7 +119,7 @@ if (all(names(month_data) %in% names(data))) {
 
 Se verifica si todos los nombres de las columnas en month_data están presentes en `names(data)`, que es un vector con los nombres de las columnas en la data consolidada. La función `names()` obtiene los nombres de las columnas de un data frame, y `%in%` verifica si cada nombre de columna de `month_data` está en el conjunto de nombres de columnas de data. La función `all()` asegura que la condición sea verdadera para todas las columnas.
 
-### 1.6 Mensaje de Resultados
+### 1.7 Mensaje de Resultados
 
 ```{r eval = FALSE}
 print(paste("Todas las variables presentes en", month, "están presentes en los datos consolidados"))
@@ -133,7 +133,7 @@ print(paste("Existen variables presentes en", month, "que no se encuentran prese
 
 Si alguna columna de `month_data` no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.
 
-### 1.7 Llamada a la Función
+### 1.8 Llamada a la Función
 
 ```{r eval = FALSE}
 verify_variables()
@@ -141,7 +141,7 @@ verify_variables()
 
 Finalmente, la función `verify_variables()` es llamada para ejecutar la verificación. Esto dispara la ejecución del bucle `for` y la verificación de columnas para cada mes especificado en el vector `months`.
 
-### 1.8 Retorno de la función
+### 1.9 Retorno de la función
 
 ```{r eval = FALSE}
 [1] "Todas las variables presentes en abril están presentes en los datos consolidados"
@@ -363,6 +363,7 @@ Esta línea utiliza la sintaxis de `data.table` para contar los valores faltante
 -   `.SDcols = c(...)`: Esta parte especifica las columnas en las que se aplicará la función. `c(...)` indica que las columnas serán las proporcionadas como argumentos variables a la función`missing_values()`. Esto permite flexibilidad para verificar diferentes columnas según sea necesario.
 
 ### 4.3 Llamada a la función para identificar valores faltantes
+
 ```{r eval = FALSE}
 missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
 ```
@@ -379,7 +380,7 @@ Lo que se espera es que las variables seleccionadas (variables clave) no tengan 
             0           0     0     0       0
 ```
 
-## 5. Funcion para la validación de contenido `validation()`
+## 5. Funcion para la validación de contenido `content_alidation()`
 
 La función `validation()` se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado.
 
@@ -421,7 +422,7 @@ content_validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
 validacion <- function(data, month, by_col, ...) {
 ```
 
-Esta línea define una nueva función llamada `validation` La función toma cuatro argumentos:
+Esta línea define una nueva función llamada `content_alidation()` La función toma cuatro argumentos:
 
 -   `data`: El conjunto de datos consolidado en el que se verificará la consistencia.
 
@@ -505,7 +506,7 @@ if (all(total_complete_data == total_month_data)) {
 ### 5.7 Llamada a la función para validación
 
 ```{r eval = FALSE}
-validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
+content_alidation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
 ```
 
 -   `data`: Conjunto de datos consolidado.
@@ -543,6 +544,6 @@ La función `duplicate()` se utiliza para verificar la existencia de filas dupli
 
 La función `missing_values()` se utiliza para evaluar la completitud de datos en un conjunto específico de columnas dentro de un data frame. Al contar el número de valores faltantes `NA` en cada columna especificada, esta función ayuda a identificar problemas de calidad de datos, como la presencia de registros incompletos. Tener columnas clave con valores faltantes puede afectar negativamente los análisis posteriores, por lo que esta función es útil para realizar una limpieza de datos inicial y asegurar que las columnas esenciales estén completas antes de proceder con análisis más detallados
 
-### Función `validation()`
+### Función `content_alidation()`
 
-La función `validation()` se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado. Primero, obtiene los datos del mes especificado y calcula las sumas de ciertas columnas agrupadas por una columna clave. Luego, realiza el mismo cálculo en el conjunto de datos consolidado para el mes correspondiente y compara los resultados. Esta función es esencial para asegurar que los datos de los meses individuales coincidan con los datos en el conjunto consolidado, garantizando así la integridad y precisión de los datos en el análisis.
+La función `content_alidation()` se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado. Primero, obtiene los datos del mes especificado y calcula las sumas de ciertas columnas agrupadas por una columna clave. Luego, realiza el mismo cálculo en el conjunto de datos consolidado para el mes correspondiente y compara los resultados. Esta función es esencial para asegurar que los datos de los meses individuales coincidan con los datos en el conjunto consolidado, garantizando así la integridad y precisión de los datos en el análisis.

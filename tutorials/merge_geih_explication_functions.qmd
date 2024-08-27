@@ -1,5 +1,5 @@
 ---
-title: "Guia paso a paso para el pegado de la GEIH"
+title: "Guia: Pegado de la GEIH"
 author: "Alic Barandica, Daniel Molina"
 date: "`r Sys.Date()`"
 format:
@@ -207,6 +207,34 @@ Esto ejecutará la función y devolverá un `data.table` llamado `merged_data` q
 
 En esta función se uniran todos los meses antes creados, para formar una sola base de datos, el resultado de esta sería la GEIH.
 
+```{r eval=FALSE}
+geih_completed <- function () {
+
+  base_dir <- file.path(getwd(), "datos")
+  
+  months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
+  
+  all_months <- data.table()
+
+  for (month in months) {
+    
+    if (length(all_months) == 0) {
+      all_months <- merge_month(month)
+    } else {
+      all_months <- rbindlist(list(all_months, merge_month(month)), fill = T)
+    }
+    
+  }
+  
+  fwrite(all_months, file = "geih_complete.csv")
+  return (all_months)
+     
+}
+
+geih_completed()
+
+```
+
 ### 2.1 Definición de la función
 
 ```{r eval=FALSE}
@@ -251,7 +279,7 @@ Esta línea obtiene una lista de subdirectorios dentro de `base_dir`, que se esp
 
 **Ejemplo:** Si `base_dir` contiene subdirectorios `"enero"`, `"febrero"`, y `"marzo"`, entonces `months` será `c("enero", "febrero", "marzo")`.
 
-### 2.4.Inicializar un `data.table` vacío
+### 2.4 Inicializar un `data.table` vacío
 
 ```{r eval=FALSE}
 for (month in months) {
@@ -287,8 +315,16 @@ Dentro del bucle, se verifica si `all_months` está vacío para decidir si se de
 return(all_months)
 ```
 
-
 Finalmente, la función devuelve el `data.table` combinado (`all_months`) que contiene los datos de todos los meses procesados.
+
+### 2.7 Llamada a la Función
+
+```{r eval = FALSE}
+
+geih_completed()
+```
+
+Finalmente, se llama a la función`geih_completed()` para ejecutar el código y consolidar los datos de todos los meses disponibles en el directorio `datos` en un único archivo CSV.
 
 ## Apéndice
 

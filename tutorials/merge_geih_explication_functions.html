@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alic Barandica, Daniel Molina">
-<meta name="dcterms.date" content="2024-08-26">
+<meta name="dcterms.date" content="2024-08-27">
 
-<title>Guia paso a paso para el pegado de la GEIH</title>
+<title>Guia: Pegado de la GEIH</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -99,9 +99,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#definición-de-la-función-1" id="toc-definición-de-la-función-1" class="nav-link" data-scroll-target="#definición-de-la-función-1">2.1 Definición de la función</a></li>
   <li><a href="#definir-el-directorio-base-1" id="toc-definir-el-directorio-base-1" class="nav-link" data-scroll-target="#definir-el-directorio-base-1">2.2 Definir el directorio base</a></li>
   <li><a href="#listar-los-subdirectorios-meses" id="toc-listar-los-subdirectorios-meses" class="nav-link" data-scroll-target="#listar-los-subdirectorios-meses">2.3 Listar los subdirectorios (meses)</a></li>
-  <li><a href="#inicializar-un-data.table-vacío" id="toc-inicializar-un-data.table-vacío" class="nav-link" data-scroll-target="#inicializar-un-data.table-vacío">2.4.Inicializar un <code>data.table</code> vacío</a></li>
+  <li><a href="#inicializar-un-data.table-vacío" id="toc-inicializar-un-data.table-vacío" class="nav-link" data-scroll-target="#inicializar-un-data.table-vacío">2.4 Inicializar un <code>data.table</code> vacío</a></li>
   <li><a href="#combinar-datos-para-cada-mes" id="toc-combinar-datos-para-cada-mes" class="nav-link" data-scroll-target="#combinar-datos-para-cada-mes">2.5 Combinar datos para cada mes</a></li>
   <li><a href="#devolver-el-data.table-combinado" id="toc-devolver-el-data.table-combinado" class="nav-link" data-scroll-target="#devolver-el-data.table-combinado">2.6 Devolver el <code>data.table</code> combinado</a></li>
+  <li><a href="#llamada-a-la-función" id="toc-llamada-a-la-función" class="nav-link" data-scroll-target="#llamada-a-la-función">2.7 Llamada a la Función</a></li>
   </ul></li>
   <li><a href="#apéndice" id="toc-apéndice" class="nav-link" data-scroll-target="#apéndice">Apéndice</a>
   <ul class="collapse">
@@ -115,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Guia paso a paso para el pegado de la GEIH</h1>
+<h1 class="title">Guia: Pegado de la GEIH</h1>
 </div>
 
 
@@ -132,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 26, 2024</p>
+      <p class="date">August 27, 2024</p>
     </div>
   </div>
   
@@ -302,17 +303,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="función-para-el-pegado-de-todos-los-meses-geih_completed" class="level2">
 <h2 class="anchored" data-anchor-id="función-para-el-pegado-de-todos-los-meses-geih_completed"><em>2. Función para el pegado de todos los meses (<code>geih_completed</code>)</em></h2>
 <p>En esta función se uniran todos los meses antes creados, para formar una sola base de datos, el resultado de esta sería la GEIH.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>geih_completed <span class="ot">&lt;-</span> <span class="cf">function</span> () {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  months <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="at">path =</span> base_dir, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">data.table</span>()</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (month <span class="cf">in</span> months) {</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(all_months) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>      all_months <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>      all_months <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">list</span>(all_months, <span class="fu">merge_month</span>(month)), <span class="at">fill =</span> T)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fwrite</span>(all_months, <span class="at">file =</span> <span class="st">"geih_complete.csv"</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span> (all_months)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="fu">geih_completed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <section id="definición-de-la-función-1" class="level3">
 <h3 class="anchored" data-anchor-id="definición-de-la-función-1">2.1 Definición de la función</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>geih_completed <span class="ot">&lt;-</span> <span class="cf">function</span> () {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>geih_completed <span class="ot">&lt;-</span> <span class="cf">function</span> () {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La función <code>geih_completed</code> no toma ningún argumento. Su propósito es ejecutar un proceso de combinación de datos en función de los archivos CSV presentes en subdirectorios de la carpeta <code>"datos"</code>.</p>
 </section>
 <section id="definir-el-directorio-base-1" class="level3">
 <h3 class="anchored" data-anchor-id="definir-el-directorio-base-1">2.2 Definir el directorio base</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Aquí se define el directorio base (<code>base_dir</code>) que contiene los subdirectorios con los datos.</p>
 <p><strong>¿Cómo funciona?</strong></p>
@@ -325,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="listar-los-subdirectorios-meses" class="level3">
 <h3 class="anchored" data-anchor-id="listar-los-subdirectorios-meses">2.3 Listar los subdirectorios (meses)</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>months <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="at">path =</span> base_dir, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>months <span class="ot">&lt;-</span> <span class="fu">list.dirs</span>(<span class="at">path =</span> base_dir, <span class="at">full.names =</span> <span class="cn">FALSE</span>, <span class="at">recursive =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Esta línea obtiene una lista de subdirectorios dentro de <code>base_dir</code>, que se espera que correspondan a diferentes meses.</p>
 <p><strong>Detalles:</strong></p>
@@ -338,20 +365,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Ejemplo:</strong> Si <code>base_dir</code> contiene subdirectorios <code>"enero"</code>, <code>"febrero"</code>, y <code>"marzo"</code>, entonces <code>months</code> será <code>c("enero", "febrero", "marzo")</code>.</p>
 </section>
 <section id="inicializar-un-data.table-vacío" class="level3">
-<h3 class="anchored" data-anchor-id="inicializar-un-data.table-vacío">2.4.Inicializar un <code>data.table</code> vacío</h3>
+<h3 class="anchored" data-anchor-id="inicializar-un-data.table-vacío">2.4 Inicializar un <code>data.table</code> vacío</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (month <span class="cf">in</span> months) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (month <span class="cf">in</span> months) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Inicia un bucle <code>for</code> que iterará sobre cada mes en la lista <code>months</code>.</p>
 </section>
 <section id="combinar-datos-para-cada-mes" class="level3">
 <h3 class="anchored" data-anchor-id="combinar-datos-para-cada-mes">2.5 Combinar datos para cada mes</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_months) <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">list</span>(all_months, <span class="fu">merge_month</span>(month)), <span class="at">fill =</span> T)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">length</span>(all_months) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">merge_month</span>(month)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  all_months <span class="ot">&lt;-</span> <span class="fu">rbindlist</span>(<span class="fu">list</span>(all_months, <span class="fu">merge_month</span>(month)), <span class="at">fill =</span> T)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Dentro del bucle, se verifica si <code>all_months</code> está vacío para decidir si se debe inicializar con los datos del primer mes o fusionar con los datos de meses adicionales.</p>
 <p><strong>Detalles:</strong></p>
@@ -365,9 +392,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="devolver-el-data.table-combinado" class="level3">
 <h3 class="anchored" data-anchor-id="devolver-el-data.table-combinado">2.6 Devolver el <code>data.table</code> combinado</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(all_months)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">return</span>(all_months)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finalmente, la función devuelve el <code>data.table</code> combinado (<code>all_months</code>) que contiene los datos de todos los meses procesados.</p>
+</section>
+<section id="llamada-a-la-función" class="level3">
+<h3 class="anchored" data-anchor-id="llamada-a-la-función">2.7 Llamada a la Función</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">geih_completed</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finalmente, se llama a la función<code>geih_completed()</code> para ejecutar el código y consolidar los datos de todos los meses disponibles en el directorio <code>datos</code> en un único archivo CSV.</p>
 </section>
 </section>
 <section id="apéndice" class="level2">

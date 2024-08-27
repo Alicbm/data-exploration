@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Daniel Molina, Alic Barandica">
-<meta name="dcterms.date" content="2024-08-26">
+<meta name="dcterms.date" content="2024-08-27">
 
 <title>Revisión y Validación de Datos Consolidados (GEIH)</title>
 <style>
@@ -91,9 +91,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#iteración-sobre-los-meses" id="toc-iteración-sobre-los-meses" class="nav-link" data-scroll-target="#iteración-sobre-los-meses">1.4 Iteración sobre los Meses</a></li>
   <li><a href="#obtener-datos-del-mes" id="toc-obtener-datos-del-mes" class="nav-link" data-scroll-target="#obtener-datos-del-mes">1.5 Obtener Datos del Mes</a></li>
   <li><a href="#comparación-de-nombres-de-columnas" id="toc-comparación-de-nombres-de-columnas" class="nav-link" data-scroll-target="#comparación-de-nombres-de-columnas">1.6 Comparación de Nombres de Columnas</a></li>
-  <li><a href="#mensaje-de-resultados" id="toc-mensaje-de-resultados" class="nav-link" data-scroll-target="#mensaje-de-resultados">1.6 Mensaje de Resultados</a></li>
-  <li><a href="#llamada-a-la-función" id="toc-llamada-a-la-función" class="nav-link" data-scroll-target="#llamada-a-la-función">1.7 Llamada a la Función</a></li>
-  <li><a href="#retorno-de-la-función" id="toc-retorno-de-la-función" class="nav-link" data-scroll-target="#retorno-de-la-función">1.8 Retorno de la función</a></li>
+  <li><a href="#mensaje-de-resultados" id="toc-mensaje-de-resultados" class="nav-link" data-scroll-target="#mensaje-de-resultados">1.7 Mensaje de Resultados</a></li>
+  <li><a href="#llamada-a-la-función" id="toc-llamada-a-la-función" class="nav-link" data-scroll-target="#llamada-a-la-función">1.8 Llamada a la Función</a></li>
+  <li><a href="#retorno-de-la-función" id="toc-retorno-de-la-función" class="nav-link" data-scroll-target="#retorno-de-la-función">1.9 Retorno de la función</a></li>
   </ul></li>
   <li><a href="#función-para-el-conteo-de-registros-observations" id="toc-función-para-el-conteo-de-registros-observations" class="nav-link" data-scroll-target="#función-para-el-conteo-de-registros-observations">2. Función para el conteo de registros <code>observations()</code></a>
   <ul class="collapse">
@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#llamada-a-la-función-para-identificar-valores-faltantes" id="toc-llamada-a-la-función-para-identificar-valores-faltantes" class="nav-link" data-scroll-target="#llamada-a-la-función-para-identificar-valores-faltantes">4.3 Llamada a la función para identificar valores faltantes</a></li>
   <li><a href="#retorno-de-la-función-3" id="toc-retorno-de-la-función-3" class="nav-link" data-scroll-target="#retorno-de-la-función-3">4.4 Retorno de la función</a></li>
   </ul></li>
-  <li><a href="#funcion-para-la-validación-de-contenido-validation" id="toc-funcion-para-la-validación-de-contenido-validation" class="nav-link" data-scroll-target="#funcion-para-la-validación-de-contenido-validation">5. Funcion para la validación de contenido <code>validation()</code></a>
+  <li><a href="#funcion-para-la-validación-de-contenido-content_alidation" id="toc-funcion-para-la-validación-de-contenido-content_alidation" class="nav-link" data-scroll-target="#funcion-para-la-validación-de-contenido-content_alidation">5. Funcion para la validación de contenido <code>content_alidation()</code></a>
   <ul class="collapse">
   <li><a href="#definición-de-la-función-4" id="toc-definición-de-la-función-4" class="nav-link" data-scroll-target="#definición-de-la-función-4">5.1 Definición de la función</a></li>
   <li><a href="#creación-de-un-diccionario-de-meses" id="toc-creación-de-un-diccionario-de-meses" class="nav-link" data-scroll-target="#creación-de-un-diccionario-de-meses">5.2 Creación de un diccionario de meses</a></li>
@@ -140,7 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#función-observations" id="toc-función-observations" class="nav-link" data-scroll-target="#función-observations">Función <code>observations()</code></a></li>
   <li><a href="#función-duplicate" id="toc-función-duplicate" class="nav-link" data-scroll-target="#función-duplicate">Función <code>duplicate()</code></a></li>
   <li><a href="#función-missing_values" id="toc-función-missing_values" class="nav-link" data-scroll-target="#función-missing_values">Función <code>missing_values()</code></a></li>
-  <li><a href="#función-validation" id="toc-función-validation" class="nav-link" data-scroll-target="#función-validation">Función <code>validation()</code></a></li>
+  <li><a href="#función-content_alidation" id="toc-función-content_alidation" class="nav-link" data-scroll-target="#función-content_alidation">Función <code>content_alidation()</code></a></li>
   </ul></li>
   </ul>
 </nav>
@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 26, 2024</p>
+      <p class="date">August 27, 2024</p>
     </div>
   </div>
   
@@ -176,7 +176,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p><strong>Nota</strong>: Para realizar la validación de datos es recomendable haber seguido previamente la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">guia sobre el pegado de la GEIH</a> o tener la base de datos completa de la GEIH descargada.</p>
+<p><strong>Nota</strong>: Para realizar la validación de datos es recomendable haber seguido previamente la <a href="https://data-exploration.vercel.app/merge_geih_explication_functions.html" target="_blank">Guia: Pegado de la GEIH</a> o tener la base de datos completa de la GEIH descargada.</p>
 <section id="preparación-de-para-la-validación" class="level2">
 <h2 class="anchored" data-anchor-id="preparación-de-para-la-validación">Preparación de para la validación</h2>
 <div class="cell">
@@ -237,7 +237,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>base_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="fu">getwd</span>(), <span class="st">"datos"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>En esta línea de código, se define una variable llamada <code>base_dir</code> que contiene la ruta de un directorio específico. Utilizando la función <code>file.path()</code>, se crea esta ruta combinando el directorio de trabajo actual <code>getwd()</code> con el subdirectorio “datos”. La función <code>getwd()</code> obtiene el directorio de trabajo actual, es decir, la carpeta desde donde se está ejecutando el script. <code>file.path()</code> asegura que la ruta se construya correctamente, independientemente del sistema operativo, ya que maneja los separadores de ruta automáticamente.</p>
+<p>La variable <code>base_dir</code> almacena la ruta hacia un subdirectorio llamado “datos” dentro del directorio de trabajo actual, obtenido mediante <code>getwd()</code>. La función <code>file.path()</code> se encarga de construir la ruta de forma segura y correcta, adaptándose automáticamente al sistema operativo, lo que asegura la portabilidad del código al manejar los separadores de ruta apropiados.</p>
 </section>
 <section id="listar-los-subdirectorios" class="level3">
 <h3 class="anchored" data-anchor-id="listar-los-subdirectorios">1.2 Listar los subdirectorios</h3>
@@ -275,7 +275,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Se verifica si todos los nombres de las columnas en month_data están presentes en <code>names(data)</code>, que es un vector con los nombres de las columnas en la data consolidada. La función <code>names()</code> obtiene los nombres de las columnas de un data frame, y <code>%in%</code> verifica si cada nombre de columna de <code>month_data</code> está en el conjunto de nombres de columnas de data. La función <code>all()</code> asegura que la condición sea verdadera para todas las columnas.</p>
 </section>
 <section id="mensaje-de-resultados" class="level3">
-<h3 class="anchored" data-anchor-id="mensaje-de-resultados">1.6 Mensaje de Resultados</h3>
+<h3 class="anchored" data-anchor-id="mensaje-de-resultados">1.7 Mensaje de Resultados</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Todas las variables presentes en"</span>, month, <span class="st">"están presentes en los datos consolidados"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -286,14 +286,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Si alguna columna de <code>month_data</code> no está en la data consolidada, se imprime un mensaje indicando que las variables no son las mismas que las del mes actual.</p>
 </section>
 <section id="llamada-a-la-función" class="level3">
-<h3 class="anchored" data-anchor-id="llamada-a-la-función">1.7 Llamada a la Función</h3>
+<h3 class="anchored" data-anchor-id="llamada-a-la-función">1.8 Llamada a la Función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">verify_variables</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finalmente, la función <code>verify_variables()</code> es llamada para ejecutar la verificación. Esto dispara la ejecución del bucle <code>for</code> y la verificación de columnas para cada mes especificado en el vector <code>months</code>.</p>
 </section>
 <section id="retorno-de-la-función" class="level3">
-<h3 class="anchored" data-anchor-id="retorno-de-la-función">1.8 Retorno de la función</h3>
+<h3 class="anchored" data-anchor-id="retorno-de-la-función">1.9 Retorno de la función</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en abril están presentes en los datos consolidados"</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"Todas las variables presentes en enero están presentes en los datos consolidados"</span></span>
@@ -504,8 +504,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="funcion-para-la-validación-de-contenido-validation" class="level2">
-<h2 class="anchored" data-anchor-id="funcion-para-la-validación-de-contenido-validation">5. Funcion para la validación de contenido <code>validation()</code></h2>
+<section id="funcion-para-la-validación-de-contenido-content_alidation" class="level2">
+<h2 class="anchored" data-anchor-id="funcion-para-la-validación-de-contenido-content_alidation">5. Funcion para la validación de contenido <code>content_alidation()</code></h2>
 <p>La función <code>validation()</code> se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>content_validation <span class="ot">&lt;-</span> <span class="cf">function</span>(data, month, by_col, ...) { </span>
@@ -543,7 +543,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>validacion <span class="ot">&lt;-</span> <span class="cf">function</span>(data, month, by_col, ...) {</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Esta línea define una nueva función llamada <code>validation</code> La función toma cuatro argumentos:</p>
+<p>Esta línea define una nueva función llamada <code>content_alidation()</code> La función toma cuatro argumentos:</p>
 <ul>
 <li><p><code>data</code>: El conjunto de datos consolidado en el que se verificará la consistencia.</p></li>
 <li><p><code>month</code>: El mes específico que se quiere validar.</p></li>
@@ -619,7 +619,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="llamada-a-la-función-para-validación" class="level3">
 <h3 class="anchored" data-anchor-id="llamada-a-la-función-para-validación">5.7 Llamada a la función para validación</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">validation</span>(data, <span class="st">"marzo"</span>, <span class="st">"DPTO"</span>, <span class="fu">c</span>(<span class="st">"OCI"</span>, <span class="st">"P7360"</span>, <span class="st">"P9460"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">content_alidation</span>(data, <span class="st">"marzo"</span>, <span class="st">"DPTO"</span>, <span class="fu">c</span>(<span class="st">"OCI"</span>, <span class="st">"P7360"</span>, <span class="st">"P9460"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p><code>data</code>: Conjunto de datos consolidado.</p></li>
@@ -654,9 +654,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="función-missing_values">Función <code>missing_values()</code></h3>
 <p>La función <code>missing_values()</code> se utiliza para evaluar la completitud de datos en un conjunto específico de columnas dentro de un data frame. Al contar el número de valores faltantes <code>NA</code> en cada columna especificada, esta función ayuda a identificar problemas de calidad de datos, como la presencia de registros incompletos. Tener columnas clave con valores faltantes puede afectar negativamente los análisis posteriores, por lo que esta función es útil para realizar una limpieza de datos inicial y asegurar que las columnas esenciales estén completas antes de proceder con análisis más detallados</p>
 </section>
-<section id="función-validation" class="level3">
-<h3 class="anchored" data-anchor-id="función-validation">Función <code>validation()</code></h3>
-<p>La función <code>validation()</code> se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado. Primero, obtiene los datos del mes especificado y calcula las sumas de ciertas columnas agrupadas por una columna clave. Luego, realiza el mismo cálculo en el conjunto de datos consolidado para el mes correspondiente y compara los resultados. Esta función es esencial para asegurar que los datos de los meses individuales coincidan con los datos en el conjunto consolidado, garantizando así la integridad y precisión de los datos en el análisis.</p>
+<section id="función-content_alidation" class="level3">
+<h3 class="anchored" data-anchor-id="función-content_alidation">Función <code>content_alidation()</code></h3>
+<p>La función <code>content_alidation()</code> se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado. Primero, obtiene los datos del mes especificado y calcula las sumas de ciertas columnas agrupadas por una columna clave. Luego, realiza el mismo cálculo en el conjunto de datos consolidado para el mes correspondiente y compara los resultados. Esta función es esencial para asegurar que los datos de los meses individuales coincidan con los datos en el conjunto consolidado, garantizando así la integridad y precisión de los datos en el análisis.</p>
 </section>
 </section>
 
