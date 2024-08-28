@@ -86,84 +86,178 @@ Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1
 
 ### Guía Paso a Paso para Buscar Variables en la GEIH del DANE
 
-#### 1. Ir al Sitio Web de DANE:
+#### 1. Ir al Sitio Web de DANE
 
-Abre tu navegador web y ve a la página principal del DANE: DANE Colombia.
-
-
-![image](https://github.com/user-attachments/assets/5d13ff9b-f2ac-466b-bdd1-7607c7f89cf5)
+>Abre tu navegador web y ve a la página principal del [DANE](https://www.dane.gov.co/ "DANE") Colombia.
 
 
-#### 2. Navegar al Área de Encuestas:
-
-En la página principal, busca la sección llamada "Estadísticas por Tema".
-
-Haz clic en "Mercado laboral"
-
-
-![image](https://github.com/user-attachments/assets/e4835043-04b6-4d4b-b174-4385c8b7f630)
-
-
-Luego haz clic en "Accesos directos", luego en "Datos abiertos: microdatos y metadatos".
-
-
-![image](https://github.com/user-attachments/assets/1cb4b362-065f-4340-a05d-a335154b52e9)
-
-
-Después de los anterior, vas nuevamende donde dice "Mercado laboral"
-
-
-![image](https://github.com/user-attachments/assets/70358261-937b-4c20-b86c-a14aeb3d2c51)
-
-
-Luego busca la "Gran Encuesta Integrada de Hogares (GEIH)" que para este ejemplo tomamos la del 2024.
-
-
-![image](https://github.com/user-attachments/assets/d4e90642-a858-45e7-8e7d-8485e7f20721)
-
-
-#### 3. Acceder a Microdatos:
-En la página de la GEIH, busca una opción que diga "Microdatos".
-
-Haz clic en ella para acceder a la sección donde puedes descargar los datos detallados de la encuesta.
-
-
-![image](https://github.com/user-attachments/assets/66c3cb67-4ae9-4f78-a8d7-86cacbf88422)
-
-
-Una vez ahi, podrás seleccionar el mes y descarga el archivo zip el cual ofrece datos en diferentes formatos, como .csv, .sav (SPSS), o .dta (Stata), para este ejecicio se uso (csv).
-
-
-![image](https://github.com/user-attachments/assets/ea30a3e9-1ad7-49b7-a656-1cc9a51dbaab)
-
-
-#### 4. Buscar Variables Específicas:
-
-Generalmente, junto con los datos, se proporciona un diccionario de datos o un documento de metadatos que describe todas las variables incluidas en la encuesta, que se encuentra.
-
-Descarga este diccionario de datos para entender qué variables están disponibles y cómo se denominan.
-
-
-![image](https://github.com/user-attachments/assets/ee7fff1e-623c-4082-97d6-be1ad9b101a2)
-
-
-#### 5. Filtrar y Seleccionar Variables:
-
-Utiliza el diccionario de datos para identificar las variables de interés. Puedes buscar por temas específicos como empleo, ingresos, educación, etc.
-
-Al filtrar, toma nota de los nombres de las variables y cómo se codifican para que puedas trabajar con ellas en tu software de análisis.
-
-
-![image](https://github.com/user-attachments/assets/6146a553-b2d3-4e22-bbbe-14d4d01b0fb5)
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/dane_intro.png?raw=true)
 
 
 
+#### 2. Navegar a la sección de **Estadísticas por Tema**
+
+>Haz clic en **"Mercado laboral"**
+
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/2.estadistica_por_tema.png?raw=true)
+
+
+>Después haz clic en** "Accesos directos"**, luego en **"Datos abiertos: microdatos y metadatos"**.
+
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/3.acceseo_directo.png?raw=true)
+
+
+>Después de lo anterior, ve a la sección de **"Mercado laboral"**
+
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/4.mercado_laboral.png?raw=true)
+
+
+>Luego busca la **"Gran Encuesta Integrada de Hogares (GEIH)"** , puedes utilizar la sección de filtros o el buscador (para este ejemplo tomamos la del 2024).
+
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/5.geih.png?raw=true)
+
+
+#### 3. Acceder a Microdatos
+>En la página de la GEIH, busca una opción que diga **"Microdatos"**
+
+>Haz clic en ella para acceder a la sección donde puedes descargar los datos detallados de la encuesta.
+
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/6.microdatos.png?raw=true)
+
+Una vez ahí podrás seleccionar el mes que desees utilizar, estos datos se desacrgaran en un archivo .zip, el ofrece datos en diferentes formatos, como lo son `.csv, .sav y .dta`, por temas de practicidad en este ejercicio utilizaremos el de tipo` .CSV`.
+
+En estos datos descargados tendremos una serie de modulos disponibles, como lo son los siguentes:
+- Caracteristicas generales, seguridad social en salud y educacion
+- Ocupados
+- Fuerza de trabajo
+- No ocupados
+- Otras formas de trabajo
+- Migración
+- Datos del hogar y la vivienda
+- Otros ingresos e impuestos
+
+>**Nota**: Dependiendo el año que descarguemos de la GEIH podemos tener ciertas variaciones en los modulos disponibles.
+
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/7.un_mes.png?raw=true)
+
+
+#### 4. Buscar Variables Específicas
+
+En esta misa sección se encuentra el **Diccionario de Datos**, en ella se detallan los diferentes módulos disponibles en nuestra base de datos. Para cada módulo, se proporciona una lista de las variables incluidas, junto con un código y una descripción para cada una. Esto permite identificar claramente qué representa cada variable.
+
+El [DANE](https://dane.gov.co/ "DANE") utiliza códigos en lugar de nombres extensos para las variables, ya que las preguntas a las que responden pueden ser muy detalladas. Estos códigos simplifican la representación de la información en la base de datos.
+
+En el Diccionario de Datos, encontrarás una explicación de cada código para todos los módulos, incluyendo el de Ocupados, No Ocupados, y otros módulos previamente mencionados. Esta sección es fundamental para entender el significado de cada código y facilitar la interpretación de los datos.
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/8.diccionario_datos.png?raw=true)
 
 
 
+#### 5. Filtrar y Seleccionar Variables
+
+Utiliza el **Diccionario de Datos** para identificar las variables de interés en tu análisis. Puedes buscar por temas específicos, como empleo, ingresos, educación, entre otros.
+
+Al filtrar las variables, toma nota de los nombres y códigos asignados a cada una para su integración en tu software de análisis. Cada variable en el diccionario incluye una breve descripción de su contenido y una lista de las posibles respuestas o valores que puede tomar.
+
+Este proceso te permitirá trabajar de manera más efectiva con los datos al tener una comprensión clara de cada variable y sus opciones de respuesta.
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/10.opciones_respuesta.png?raw=true)
 
 
-# Funciones para el Pegado de Datos GEIH
+##Prepara el Entorno Para el Desarrollo
+
+###1. Tener R y RStudio instalado:
+En esta guía, utilizamos **R** como lenguaje de programación base y **RStudio** como nuestro editor de código. Por lo tanto, es necesario tener ambas herramientas instaladas en tu dispositivo.
+
+Si aún no las tienes, sigue el siguiente enlace y aprende como instalarlos en menos de dos minutos [Clic aquí.](https://www.youtube.com/watch?v=hbgzW3Cvda4 "Clic aquí.")
+
+###2. Crear un proyecto:
+
+Para desarrollar de manera optima todo el proyecto es recomendable crear un nuevo proyecto, puedes hacerlo con los siguientes pasos:
+
+1. Ve a la vista superior izquierda  y presiona **File** o **Archivo** (dependiendo el idioma en el cual está tu RStudio) y selecciona **New Porject...** o **Nuevo Proyecto...*
+
+	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/11.nuevo_proyecto.png?raw=true)
+
+2. Crea un nuevo proyecto seleccionando **New Directory** o **Nuevo Directorio**
+
+	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/12.nuevo_directorio.png?raw=true)
+
+3. Seleccionando **New Proyect** o **Nuevo Proyecto**
+
+	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/13.nuevo_proyecto.png?raw=true)
+
+4. Crea una nueva carpeta, en el input **Directory Name** asigna el nombre que desees, en este caso será **data-exploration**.
+>**Nota:** Puedes elegir la ruta donde prefieras guardar el proyecto, en este caso será en la carpeta raíz de nuestro computador, en tu caso puedes dejarla por defecto o escoger la que prefieras.
+
+	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/14.crear_carpeta.png?raw=true)
+
+5. Luego de crear el proyecto RStudio lo redireccionará al proyecto creado, estando en este cree un archivo llamado join_geih.R
+
+	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/15.crear_archivo.png?raw=true)
+
+6. Crea una carpeta llamada **datos** en la ruta raíz del proyecto (es necesario que se llame datos)
+
+	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/16.crear_carpeta.png?raw=true)
+
+
+##Pasos para Organizar los Datos Descargados
+**1. Descargar y Descomprimir los Datos:**
+	Primero, descarga los datos de la fuente correspondiente. Una vez descargados, descomprime los archivos. Este paso 		generalmente implica extraer un archivo .zip o .rar que contiene todos los datos que necesitas.
+
+**2. Crear Carpetas para Cada Mes:**
+Dentro de la carpeta "datos"  (creada en la raíz del proyecto), crea una subcarpeta para cada uno de los meses de los cuales has descargado los datos. Por ejemplo:
+
+>datos/enero
+
+>datos/febrero
+
+>datos/marzo
+
+Y así sucesivamente para cada mes que corresponda a los datos que has descargado.
+
+**3. Organizar los Módulos Dentro de Cada Carpeta de Mes:**
+
+Dentro de cada carpeta de mes, coloca los 8 módulos correspondientes a ese mes. Cada módulo debe estar en formato .CSV. La estructura final debería verse así:
+
+```markdown
+datos/
+├── enero/
+│   ├── Características generales, seguridad social y educación.CSV
+│   ├── Datos del hogar y la vivienda.CSV
+│   ├── Fuerza de trabajo.CSV
+│   ├── Migración.CSV
+│   ├── No ocupados.CSV
+│   ├── Ocupados.CSV
+│   ├── Otras formas de trabajo.CSV
+│   └── Otros ingresos e impuestos.CSV
+├── febrero/
+│   ├── Características generales, seguridad social y educación.CSV
+│   ├── Datos del hogar y la vivienda.CSV
+│   ├── Fuerza de trabajo.CSV
+│   ├── Migración.CSV
+│   ├── No ocupados.CSV
+│   ├── Ocupados.CSV
+│   ├── Otras formas de trabajo.CSV
+│   └── Otros ingresos e impuestos.CSV
+└── marzo/
+    ├── Características generales, seguridad social y educación.CSV
+    ├── Datos del hogar y la vivienda.CSV
+    ├── Fuerza de trabajo.CSV
+    ├── Migración.CSV
+    ├── No ocupados.CSV
+    ├── Ocupados.CSV
+    ├── Otras formas de trabajo.CSV
+    └── Otros ingresos e impuestos.CSV
+```
+
+##Funciones para el Pegado de Datos de la GEIH
 
 Este documento proporciona las funciones en R necesarias para combinar los datos de la Gran Encuesta Integrada de Hogares (GEIH) por mes y por año.
 
@@ -171,7 +265,6 @@ Este documento proporciona las funciones en R necesarias para combinar los datos
 
 Función para el pegado de todos los módulos de un mes específico, La función merge_month combina todos los archivos CSV de un mes específico en un solo data frame.
 
-    Carga de Librerías
 	
 	library(data.table)
 	
@@ -333,3 +426,4 @@ Compara la cantidad de ocupados en un mes específico por departamento entre la 
 
 [Documentación de funciones   `merge_month` y `geih_completed` ](https://github.com/usuario/ejemplo-geih) "Documentación de funciones   `merge_month` y `geih_completed` 
 
+ 
