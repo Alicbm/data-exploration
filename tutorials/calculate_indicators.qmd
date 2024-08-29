@@ -296,7 +296,7 @@ graph_variables <- function(df, variable, title_graph, title_y) {
       hjust = ifelse(desc_data$var < 5, -0.2, 1.5),
       angle = 90, 
       size = 3, 
-      color = ifelse(desc_data$var < 5, "#000", "white")
+      color = ifelse(desc_data$var < 5, "#000000", "white")
     )
   
 }
@@ -501,7 +501,7 @@ geom_text(aes(
   hjust = ifelse(desc_data$var < 5, -0.2, 1.5),
   angle = 90, 
   size = 3, 
-  color = ifelse(desc_data$var < 5, "#000", "white")
+  color = ifelse(desc_data$var < 5, "#000000", "white")
 )
 ```
 
@@ -533,11 +533,11 @@ geom_text(aes(
 
     -   Establece el tamaño de las etiquetas en 3 puntos, haciendo que el texto sea pequeño pero legible.
 
--   **`color = ifelse(desc_data$var < 5, "#000", "white")`:**
+-   **`color = ifelse(desc_data$var < 5, "#000000", "white")`:**
 
     -   Cambia el color del texto dependiendo del valor de `var`.
 
-    -   Si `var` es menor a 5, el texto es negro (`"#000"`).
+    -   Si `var` es menor a 5, el texto es negro (`"#000000"`).
 
     -   Si `var` es mayor o igual a 5, el texto es blanco, lo que asegura que sea visible contra el fondo de la barra.
 

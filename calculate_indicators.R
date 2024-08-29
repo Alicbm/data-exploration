@@ -64,8 +64,11 @@ data_geih[, DPTO := fcase(
 # - el número de ocupados
 # - el número de desocupados
 #A nivel departaemntal
+
 group_variables <- function() {
+  
   base_dir <- file.path(getwd(), "datos")
+  
   months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
   
   factor_expansion <- data_geih[MES == length(months), .(factor_expansion = sum(FEX_C18)), by = DPTO]
@@ -126,7 +129,7 @@ graph_variables <- function(df, variable, title_graph, title_y) {
       hjust = ifelse(desc_data$var < 5, -0.2, 1.5),
       angle = 90, 
       size = 3, 
-      color = ifelse(desc_data$var < 5, "#000", "white")
+      color = ifelse(desc_data$var < 5, "#000000", "white")
     )
   
 }
@@ -146,6 +149,13 @@ graph_variables(
   "Tasa de Ocupación para los\nDepartamentos de Colombia en el año 2024",
   "Tasa de Ocupación"
 )
+
+
+table_variables_to_graph[,sum(ocupados)] / table_variables_to_graph[,sum(poblacion_edad_trabajar)]
+
+
+
+data_geih[, DPTO]
 
 
 
