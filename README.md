@@ -2,7 +2,7 @@
 
 1. [¿Qué es el DANE?](#1-qué-es-el-dane)
 2. [¿Qué es la GEIH?](#2-qué-es-la-geih)
-3. [¿Para qué sirve y por qué importa?](#3-para-qué-sirve-y-por-quÉ-importa)
+3. [¿Para qué sirve y por qué importa?](#3-para-qué-sirve-y-por-qué-importa)
 4. [Cobertura de la GEIH](#4-cobertura-de-la-geih)
 5. [Variables Claves para Unificar Datos Mensuales](#5-variables-claves-para-unificar-datos-mensuales)
 6. [Factor de Expansión](#6-factor-de-expansión)
@@ -10,22 +10,37 @@
    - [Cálculo del Factor de Expansión](#2-cálculo-del-factor-de-expansión)
    - [Aplicación del Factor de Expansión](#3-aplicación-del-factor-de-expansión)
    - [Consideraciones Adicionales](#4-consideraciones-adicionales)
-7. [Cómo Descargar Datos del DANE](#7-cómo-descargar-datos-del-dane)
-   - [Guía Paso a Paso para Buscar Variables en la GEIH del DANE](#1-guía-paso-a-paso-para-buscar-variables-en-la-geih-del-dane)
-8. [Preparar el Entorno Para el Desarrollo](#8-preparar-el-entorno-para-el-desarrollo)
+7. [Guía Paso a Paso para Buscar Variables en la GEIH del DANE](#7-guía-paso-a-paso-para-buscar-variables-en-la-geih-del-dane)
+   - [Ir al Sitio Web de DANE](#1-ir-al-sitio-web-de-dane)
+   - [Navegar a la sección de Estadísticas por Tema](#2-navegar-a-la-sección-de-estadísticas-por-tema)
+   - [Acceder a Microdatos](#3-acceder-a-microdatos)
+   - [Buscar Variables Específicas](#4-buscar-variables-específicas)
+   - [Filtrar y Seleccionar Variables](#5-filtrar-y-seleccionar-variables)
+8. [Prepara el Entorno Para el Desarrollo](#8-prepara-el-entorno-para-el-desarrollo)
    - [Tener R y RStudio Instalado](#1-tener-r-y-rstudio-instalado)
    - [Crear un Proyecto](#2-crear-un-proyecto)
 9. [Pasos para Organizar los Datos Descargados](#9-pasos-para-organizar-los-datos-descargados)
+   -  [Descargar y Descomprimir los Datos](#1-descargar-y-descomprimir-los-datos)
+   -  [Crear Carpetas para Cada Mes](#2-crear-carpetas-para-cada-mes)
+   -  [Organizar los Módulos Dentro de Cada Carpeta de Mes](#3-organizar-los-módulos-dentro-de-cada-carpeta-de-mes)
 10. [Funciones para el Pegado de Datos de la GEIH](#10-funciones-para-el-pegado-de-datos-de-la-geih)
-    - [merge_month](#1-merge_month)
-    - [geih_completed](#2-geih_completed)
+    - [Función para el pegado de todos los módulos en un mes determinado](#1-función-para-el-pegado-de-todos-los-módulos-en-un-mes-determinado)
+    - [Función para el pegado de todos los meses](#2-función-para-el-pegado-de-todos-los-meses)
 11. [Validación de Datos GEIH](#11-validación-de-datos-geih)
-    - [Lectura de Datos Consolidados](#1-lectura-de-datos-consolidados)
-    - [Verificar la Estructura de los Datos](#2-verificar-la-estructura-de-los-datos)
-    - [Conteo de Registros](#3-conteo-de-registros)
-    - [Verificar Duplicados](#4-verificar-duplicados)
-    - [Completitud de Datos](#5-completitud-de-datos)
-    - [Validación de Contenidos](#6-validación-de-contenidos)
+    - [Verificar la Estructura de los Datos](#1-verificar-la-estructura-de-los-datos)
+    - [Conteo de Registros](#2-conteo-de-registros)
+    - [Verificar Duplicados](#3-verificar-duplicados)
+    - [Completitud de Datos](#4-completitud-de-datos)
+    - [Validación de Contenidos](#5-validación-de-contenidos)
+12. [Cálculo y Gráfico de Indicadores](#12-cálculo-y-gráfico-de-indicadores)
+    - [Instalación de Librerias](#1-instalación-de-librerias)
+    - [Lectura del Archivo GEIH](#2-lectura-del-archivo-geih)
+    - [Reemplazo de Códigos de Departamentos por Nombres](#3-reemplazo-de-códigos-de-departamentos-por-nombres)
+    - [Función Para el Cálculo de Indicadores](#4-función-para-el-cálculo-de-indicadores)
+    - [Función Para Graficar Indicadores](#5-función-para-graficar-indicadores)
+    - [Retorno de la Función](#6-retorno-de-la-función)
+13. [Conclusión](#13-conclusión)
+
 
 # Gran Encuesta Integrada de Hogares (GEIH) – Información Clave
 
@@ -111,16 +126,14 @@ Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1
 -   **Ajustes de Diseño Muestral:** Incluye ajustes para el diseño muestral como estratificación y muestreo por conglomerados.
 -   **Validación de Datos:** Verifica que los factores de expansión se apliquen correctamente y que los datos ajustados reflejen la población.
 
-## 7. Cómo Descargar Datos del DANE
-
-### Guía Paso a Paso para Buscar Variables en la GEIH del DANE
+## 7. Guía Paso a Paso para Buscar Variables en la GEIH del DANE
 
 #### 1. Ir al Sitio Web de DANE
 
 >Abre tu navegador web y ve a la página principal del [DANE](https://www.dane.gov.co/ "DANE") Colombia.
 
 
-![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/1.dane_intro.png?raw=true)
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/1.1.dane_intro.png?raw=true)
 
 
 
@@ -199,18 +212,18 @@ Este proceso te permitirá trabajar de manera más efectiva con los datos al ten
 ![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/10.opciones_respuesta.png?raw=true)
 
 
-## 8. Prepara el Entorno Para el Desarrollo
+## 8.  8. Prepara el Entorno Para el Desarrollo
 
-### 1. Tener R y RStudio instalado:
+###  1. Tener R y RStudio instalado:
 En esta guía, utilizamos **R** como lenguaje de programación base y **RStudio** como nuestro editor de código. Por lo tanto, es necesario tener ambas herramientas instaladas en tu dispositivo.
 
 Si aún no las tienes, sigue el siguiente enlace y aprende como instalarlos en menos de dos minutos [Clic aquí.](https://www.youtube.com/watch?v=hbgzW3Cvda4 "Clic aquí.")
 
-### 2. Crear un proyecto:
+###  2. Crear un proyecto:
 
 Para desarrollar de manera optima todo el proyecto es recomendable crear un nuevo proyecto, puedes hacerlo con los siguientes pasos:
 
-1. Ve a la vista superior izquierda  y presiona **File** o **Archivo** (dependiendo el idioma en el cual está tu RStudio) y selecciona **New Porject...** o **Nuevo Proyecto...**
+1. Ve a la vista superior izquierda  y presiona **File** o **Archivo** (dependiendo el idioma en el cual está tu RStudio) y selecciona **New Porject...** o **Nuevo Proyecto...***
 
 	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/11.nuevo_proyecto.png?raw=true)
 
@@ -225,7 +238,7 @@ Para desarrollar de manera optima todo el proyecto es recomendable crear un nuev
 4. Crea una nueva carpeta, en el input **Directory Name** asigna el nombre que desees, en este caso será **data-exploration**.
 >**Nota:** Puedes elegir la ruta donde prefieras guardar el proyecto, en este caso será en la carpeta raíz de nuestro computador, en tu caso puedes dejarla por defecto o escoger la que prefieras.
 
-	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/14.crear_carpeta.png?raw=true)
+  ![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/14.crear_carpeta.png?raw=true)
 
 5. Luego de crear el proyecto RStudio lo redireccionará al proyecto creado, estando en este cree un archivo llamado join_geih.R
 
@@ -236,13 +249,13 @@ Para desarrollar de manera optima todo el proyecto es recomendable crear un nuev
 	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/16.crear_carpeta.png?raw=true)
 
 
-## 9. Pasos para Organizar los Datos Descargado
+## 9. Pasos para Organizar los Datos Descargados
 
-**1. Descargar y Descomprimir los Datos:**
+1. **Descargar y Descomprimir los Datos**
 
 Primero, descarga los datos de la fuente correspondiente. Una vez descargados, descomprime los archivos. Este paso 		generalmente implica extraer un archivo .zip o .rar que contiene todos los datos que necesitas.
 
-**2. Crear Carpetas para Cada Mes:**
+2. **Crear Carpetas para Cada Mes**
 
 Dentro de la carpeta "datos"  (creada en la raíz del proyecto), crea una subcarpeta para cada uno de los meses de los cuales has descargado los datos. Por ejemplo:
 
@@ -254,7 +267,7 @@ Dentro de la carpeta "datos"  (creada en la raíz del proyecto), crea una subcar
 
 Y así sucesivamente para cada mes que corresponda a los datos que has descargado.
 
-**3. Organizar los Módulos Dentro de Cada Carpeta de Mes:**
+3. **Organizar los Módulos Dentro de Cada Carpeta de Mes**
 
 Dentro de cada carpeta de mes, coloca los 8 módulos correspondientes a ese mes. Cada módulo debe estar en formato .CSV. La estructura final debería verse así:
 
@@ -295,7 +308,14 @@ Este documento proporciona las funciones en R necesarias para combinar los datos
 
 >**Nota**: Para utilizar las siguientes funciones basta con que las copies y pregues en tu archivo **join_geih.R** anteriormente creado. 
 
-### 1. Función para el pegado de todos los modulos en un mes determinado  (merge_month)
+### 1. Función para el pegado de todos los módulos en un mes determinado
+
+#### Instalación de Librerias
+
+    #Descomentar eliminando el (#) en caso de no tener instalada la libreria data.table
+    #install.packages("data.table")
+    
+    library(data.table)
 
 La función `merge_month` toma como entrada el nombre de un mes y realiza la fusión de múltiples archivos CSV en un directorio específico del mes. Primero, define las variables a eliminar y las variables clave para la fusión. Luego, lista todos los archivos CSV en el directorio del mes, lee el primer archivo y lo usa como base. En un bucle, lee cada archivo restante, fusiona sus datos con la base usando las variables clave comunes, y elimina columnas innecesarias que puedan haber sido duplicadas en la fusión. Finalmente, devuelve el data.table consolidado con la información combinada.
 
@@ -328,10 +348,12 @@ Para obtener información detallada de esta función te recomendamos seguir el s
       
       return(final_df)
     }
+	
+	merged_data <- merge_month("enero")
     				
     
 
-### 2. Función para el pegado de todos los meses (geih_completed)
+### 2. Función para el pegado de todos los meses
 
 La función geih_completed se encarga de consolidar los datos de todos los meses disponibles en el directorio datos en un único archivo `CSV`. Primero, define la ruta base y obtiene los nombres de los subdirectorios (que corresponden a los meses) en dicha ruta. Luego, inicializa un data.table vacío para almacenar los datos combinados. En un bucle, para cada mes, llama a la función `merge_month` para fusionar los archivos `CSV` del mes actual, y une estos datos con los datos acumulados anteriormente usando rbindlist. Finalmente, guarda el data.table completo en un archivo `CSV` llamado `geih_complete.csv`  y devuelve el data.table resultante.
 
@@ -367,11 +389,9 @@ Para obtener información detallada de esta función te recomendamos seguir el s
 
 Este documento proporciona las funciones en R necesarias para validar los datos de la Gran Encuesta Integrada de Hogares (GEIH). Estas funciones verifican la consistencia de los datos consolidados (ten en cuenta que en este ejercicio solo hemos unido los datos de 6 meses, ya que son los únicos datos recolectados por el DANE en lo que va del año), el conteo de registros, la presencia de duplicados, la completitud de datos y la validación de contenidos específicos.
 
-    #Lectura de Datos Consolidados
-	
+>**Nota:** En este caso cargamos la base de datos en la variable `data` desde la ruta `C:/data-exploration/geih_complete.csv` debido a que es la ruta donde se descargo anteriormente la base de datos de la geih (la cual obtuvimos en la función [geih_completed](#función-para-el-pegado-de-todos-los-módulos-en-un-mes-determinado))
+
     data <- fread(file = "C:/data-exploration/geih_complete.csv")
-    getwd()
-	
 
 ### 1. Verificar la Estructura de los Datos
 La función `verify_variables` se utiliza para garantizar la consistencia en la estructura de los datos a lo largo del tiempo. Itera a través de los datos de cada mes, verifica si las columnas en los datos de cada mes coinciden con las de un conjunto de datos consolidado, y proporciona retroalimentación sobre cualquier discrepancia encontrada. Esto es crucial para asegurar que el análisis posterior sea consistente y preciso, evitando errores debido a diferencias en la estructura de los datos.
@@ -416,8 +436,7 @@ Para obtener información detallada de esta función te recomendamos seguir el s
           print("El número de observaciones no es correcto") 
       } 
     }
-    
-    
+     
     observations()
 
 ### 3. Verificar Duplicados
@@ -487,7 +506,176 @@ Para obtener información detallada de esta función te recomendamos seguir el s
     
     content_validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
 
-## Conclusión
+
+## 12. Cálculo y Gráfico de Indicadores
+
+### 1. Instalación de Librerias
+
+    #DESCOMENTAR EN CASO DE QUE NO TENGAS INSTALADAS LAS LIBRERIAS
+    #install.packages("data.table")
+    #install.packages("ggplot2")
+    #install.packages("dplyr")
+    
+    library(data.table)
+    library(ggplot2)
+    library(dplyr)
+
+### 2. Lectura del Archivo GEIH
+
+    #LEER EL ARCHIVO DE LA GEIH
+    #NOTA: Este archivo solo estará disponible si ejecuto las funciones "merge_month" y "geih_completed" las cuales se encuentran en el archivo join_geih.R
+    
+    data_geih <- fread(file = "C:/data-exploration/geih_complete.csv")
+
+### 3. Reemplazo de Códigos de Departamentos por Nombres
+
+ Este bloque de código usa la función fcase() de data.table para reemplazar los códigos numéricos de los departamentos por sus nombres. Cada condición `por ejemplo, DPTO == "5"` se empareja con un valor ("Antioquia"), y así sucesivamente.
+
+    data_geih[, DPTO := fcase(
+      DPTO == "5", "Antioquia",
+      DPTO == "8", "Atlántico",
+      DPTO == "11", "Bogotá D.C.",
+      DPTO == "13", "Bolívar",
+      DPTO == "15", "Boyacá",
+      DPTO == "17", "Caldas",
+      DPTO == "18", "Caquetá",
+      DPTO == "19", "Cauca",
+      DPTO == "20", "Cesar",
+      DPTO == "23", "Córdoba",
+      DPTO == "25", "Cundinamarca",
+      DPTO == "27", "Chocó",
+      DPTO == "41", "Huila",
+      DPTO == "44", "La Guajira",
+      DPTO == "47", "Magdalena",
+      DPTO == "50", "Meta",
+      DPTO == "52", "Nariño",
+      DPTO == "54", "Norte de Santander",
+      DPTO == "63", "Quindío",
+      DPTO == "66", "Risaralda",
+      DPTO == "68", "Santander",
+      DPTO == "70", "Sucre",
+      DPTO == "73", "Tolima",
+      DPTO == "76", "Valle del Cauca",
+      DPTO == "81", "Arauca",
+      DPTO == "85", "Casanare",
+      DPTO == "86", "Putumayo",
+      DPTO == "88", "San Andrés y Providencia",
+      DPTO == "91", "Amazonas",
+      DPTO == "94", "Guainía",
+      DPTO == "95", "Guaviare",
+      DPTO == "97", "Vaupés",
+      DPTO == "99", "Vichada",
+      default = NA_character_
+    )]
+
+
+### Guardar el Archivo Modificado (opcional)
+
+Esta línea te permite guardar la versión modificada del archivo `data_geih` en un nuevo `CSV` llamado `geih_modify.csv`. Si deseas hacerlo, solo necesitas descomentar la línea.
+
+    #fwrite(data_geih, file = "geih_modify.csv")
+
+### 4. Función Para el Cálculo de Indicadores
+
+La función `group_variables` tiene como objetivo crear un dataframe que incluya variables e indicadores clave para la práctica. Entre los datos que se generarán se encuentran la población por departamento `factor_expansion`, el número de ocupados y desocupados, así como las tasas de desempleo y de ocupación para cada uno de los departamentos de Colombia.
+
+    group_variables <- function() {
+      base_dir <- file.path(getwd(), "datos")
+      months <- list.dirs(path = base_dir, full.names = FALSE, recursive = FALSE)
+      
+      factor_expansion <- data_geih[MES == length(months), .(factor_expansion = sum(FEX_C18)), by = DPTO]
+      
+      ocupados <- data_geih[, .(ocupados = sum(OCI * FEX_C18, na.rm = TRUE) / length(months)), by = DPTO]
+      
+      desocupados <- data_geih[, .(desocupados = sum(DSI * FEX_C18, na.rm = TRUE) / length(months)), by = DPTO]
+      
+      poblacion_edad_trabajar <- data_geih[P6040 >= 15, 
+                                           .(poblacion_edad_trabajar = sum(FEX_C18, na.rm = TRUE) / length(unique(MES))), by = DPTO]
+      
+      combined <- factor_expansion[ocupados, on = "DPTO"][desocupados, on = "DPTO"][poblacion_edad_trabajar, on = "DPTO"]
+      
+      combined[, fuerza_trabajo := (ocupados + desocupados) ] #POBLACIÓN ACTIVA
+      combined[, tasa_desempleo := (desocupados / fuerza_trabajo) * 100] #TASA DE DESEMPLEO
+      combined[, tasa_ocupacion := (ocupados / poblacion_edad_trabajar) * 100] #TASA DE OCUPACIÓN
+      
+      return (combined)
+    }
+	
+	table_variables_to_graph <- group_variables()
+
+### 5. Función Para Graficar Indicadores
+
+La función `graph_variables` crea un gráfico de barras para visualizar tasas de desempleo u ocupación por departamento. Toma un `data.table`, el nombre de la variable a graficar, y los títulos del gráfico. Prepara y ordena los datos, asigna colores a los departamentos, y usa `ggplot2` para generar el gráfico. Ajusta el estilo del gráfico y añade etiquetas con los valores exactos en las barras. El resultado es un gráfico claro y visualmente atractivo que muestra las tasas por departamento.
+
+    graph_variables <- function(df, variable, title_graph, title_y) {
+      
+      new_df <- data.table()
+      new_df[, `:=` (DPTO = df$DPTO, var = variable)]
+      
+      desc_data <- new_df %>% arrange(desc(var))
+      
+      colors <- ifelse(desc_data$DPTO == "Cesar" | desc_data$DPTO == "Magdalena", '#147582', '#123344')
+      colors_filter <- setNames(colors, levels(factor(desc_data$DPTO, levels = reorder(desc_data$DPTO, -desc_data$var))))
+      
+      ggplot(desc_data, aes(x = reorder(DPTO, -var), y = var, fill = DPTO)) +
+        geom_bar(stat = "identity", size = 0.6) +
+        scale_fill_manual(values = colors_filter) +
+        theme_minimal() +
+        theme(
+          axis.text.x = element_text(angle = 90, hjust = 1, size = 9),
+          axis.text.y = element_text(size = 10),
+          axis.title.x = element_text(size = 12),
+          axis.title.y = element_text(size = 12),
+          plot.title = element_text(size = 14, face = "bold", hjust = 0.5, margin = margin(b = 10, t = 10)),
+          panel.grid.major.y = element_line(color = "#959595", linetype = "dashed"),
+          panel.grid.minor.y = element_blank(),
+          legend.position = "none"
+        ) +
+        labs(
+          title = title_graph,
+          x = "Departamentos",
+          y = "Tasa de Desempleo"
+        ) +
+        geom_text(aes(
+          label = sprintf("%.1f%%", var)), 
+          vjust = 0.4, 
+          hjust = ifelse(desc_data$var < 5, -0.2, 1.5),
+          angle = 90, 
+          size = 3, 
+          color = ifelse(desc_data$var < 5, "#000", "white")
+        )
+      
+    }
+
+### 6. Retorno de la Función
+
+#### 1. Tasa de Desempleo
+
+    graph_variables(
+      table_variables_to_graph, 
+      table_variables_to_graph$tasa_desempleo, 
+      "Tasa de Desempleo para los\nDepartamentos de Colombia en el año 2024",
+      "Tasa de Desempleo"
+    )
+
+#### Retorno de la Función
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/images/tasa_desempleo.png?raw=true)
+
+#### 2. Tasa de Ocupación
+
+    graph_variables(
+      table_variables_to_graph, 
+      table_variables_to_graph$tasa_ocupacion, 
+      "Tasa de Ocupación para los\nDepartamentos de Colombia en el año 2024",
+      "Tasa de Ocupación"
+    )
+
+#### Retorno de la Función
+
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/images/tasa_ocupacion.png?raw=true)
+
+## 13. Conclusión
 
 Este proyecto nos ha permitido aplicar nuestros conocimientos en economía y analítica de datos para crear herramientas que facilitan el manejo y análisis de bases de datos complejas, como las del DANE. Las funciones desarrolladas mejoran la eficiencia y precisión en la unión de datos, la validación de información y el cálculo de indicadores del mercado laboral.
 
