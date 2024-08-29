@@ -251,11 +251,11 @@ Para desarrollar de manera optima todo el proyecto es recomendable crear un nuev
 
 ## 9. Pasos para Organizar los Datos Descargados
 
-1. **Descargar y Descomprimir los Datos**
+### 1. Descargar y Descomprimir los Datos
 
 Primero, descarga los datos de la fuente correspondiente. Una vez descargados, descomprime los archivos. Este paso 		generalmente implica extraer un archivo .zip o .rar que contiene todos los datos que necesitas.
 
-2. **Crear Carpetas para Cada Mes**
+### 2. Crear Carpetas para Cada Mes
 
 Dentro de la carpeta "datos"  (creada en la raíz del proyecto), crea una subcarpeta para cada uno de los meses de los cuales has descargado los datos. Por ejemplo:
 
@@ -267,7 +267,7 @@ Dentro de la carpeta "datos"  (creada en la raíz del proyecto), crea una subcar
 
 Y así sucesivamente para cada mes que corresponda a los datos que has descargado.
 
-3. **Organizar los Módulos Dentro de Cada Carpeta de Mes**
+### 3. Organizar los Módulos Dentro de Cada Carpeta de Mes
 
 Dentro de cada carpeta de mes, coloca los 8 módulos correspondientes a ese mes. Cada módulo debe estar en formato .CSV. La estructura final debería verse así:
 
