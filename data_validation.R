@@ -97,10 +97,37 @@ missing_values <- function(data, ...) {
 }
 
 # Contamos valores faltantes en las columnas especificadas
-missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
+missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18", "FT", "FFT", "DPTO")
 
 
-# 5. Validación de Contenidos
+# 5. verifiación de variables con sufijos
+
+# Función para seleccionar columnas que terminan con ciertos sufijos
+select_suffix <- function(data, sufijos = "x") {
+  
+  # Crear patrón de búsqueda para los sufijos proporcionados
+  regex_pattern <- paste0("\\.(", paste(sufijos, collapse = "|"), ")$")
+  
+  # Buscar columnas que coincidan con el patrón
+  matching_cols <- grep(regex_pattern, names(data), value = TRUE)
+  
+  # Verificar si se encontraron columnas coincidentes
+  if (length(matching_cols) > 0) {
+    # Mostrar las columnas coincidentes
+    result <- data[, ..matching_cols]
+    print(result)
+  } else {
+    # Mostrar mensaje si no se encontraron coincidencias
+    print(paste0("No hay variables que terminen en ", paste(sufijos, collapse = ", ")))
+  }
+}
+
+# Ejemplo de uso de la función
+select_suffix(data, c("x", "y", "z"))
+
+
+
+# 6. Validación de Contenidos
 
 # Comparamos la cantidad de ocupados en enero por departamento entre la data consolidada y la data específica de enero.
 
@@ -139,3 +166,7 @@ content_validation <- function(data, month, by_col, ...) {
 }
 
 content_validation (data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
+
+
+
+

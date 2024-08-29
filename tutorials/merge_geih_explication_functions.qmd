@@ -17,33 +17,42 @@ La siguiente función (`merge_month`) tiene como objetivo unir todos los modulos
 
 ```{r eval=FALSE}
 
-merge_month <- function(month) {
+mmerge_month <- function(month) {
   
   key_variables <- c("DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
-  
-  variables_to_delete <- c("PERIODO", "MES", "PER", "REGIS", "AREA", "CLASE", "DPTO")
   
   base_dir <- file.path(getwd(), "datos", month)
   
   all_files <- list.files(path = base_dir, pattern = "*.csv", full.names = TRUE, ignore.case = TRUE)
   
+  # Leer el primer archivo para inicializar el data.table final
   final_df <- fread(file = all_files[1])
   
+  # Iterar sobre los archivos restantes
   for (file in all_files[-1]) {
     df <- fread(file = file)
     
+    # Encontrar las claves comunes para el merge
     new_key_variables <- intersect(colnames(df), key_variables)
     
+    # Realizar el merge
     final_df <- merge(final_df, df, by = new_key_variables, all.x = TRUE)
     
-    if ("PERIODO.x" %in% colnames(final_df)) {
-      setnames(final_df, old = paste0(variables_to_delete, ".x"), new = gsub("\\.x$", "", variables_to_delete))
-      final_df[, c(paste0(variables_to_delete, ".y")) := NULL]
-    }
+    
+    # Encontrar y renombrar columnas que terminan en .x
+    cols_x <- grep("\\.x$", colnames(final_df), value = TRUE)
+    setnames(final_df, old = cols_x, new = gsub("\\.x$", "", cols_x))
+    
+    
+    # Encontrar y eliminar columnas que terminan en .y
+    cols_y <- grep("\\.y$", colnames(final_df), value = TRUE)
+    final_df[, (cols_y) := NULL]
+    
   }
   
   return(final_df)
 }
+
 
 ```
 
@@ -64,16 +73,6 @@ Aquí defines una función llamada `merge_month`. Las funciones en R son bloques
 En este paso, defines un vector llamado `key_variables` que contiene los nombres de las columnas que actuarán como claves para la fusión de los archivos CSV.
 
 **¿Por qué necesitas claves?** Al fusionar datos de múltiples archivos, es común que haya algunas columnas (variables) que son compartidas por todos los archivos y que identifican de manera única cada registro. Estas son las claves. Al fusionar, R combinará los datos que comparten estas claves para asegurarse de que los datos coincidan correctamente. Por ejemplo, si `DIRECTORIO`, `SECUENCIA_P`, `ORDEN`, `HOGAR` y `FEX_C18` son variables que están presentes en todos los archivos, los registros se combinarán en base a la coincidencia de valores en estas columnas.
-
-### 1.3 Definir las variables a eliminar
-
-```{r eval=FALSE}
-variables_to_delete <- c("PERIODO", "MES", "PER", "REGIS", "AREA", "CLASE", "DPTO")
-```
-
-Aquí defines otro vector llamado `variables_to_delete`, que contiene los nombres de las columnas que serán eliminadas después de la fusión.
-
-**¿Por qué eliminar columnas?** Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, `PERIODO.x`, `PERIODO.y`). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el `data.table` final limpio y manejable.
 
 ### 1.4 Definir el directorio base
 
@@ -165,27 +164,32 @@ for (file in all_files[-1]) {
 
     -   Finalmente, se fusiona con `archivo3.csv`.
 
-### 1.8 Eliminar columnas duplicadas
+### 1.8 Columnas con Sufijo `(.x |.y)`
+
+**¿Por qué eliminar columnas?** Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, `PERIODO.x`, `PERIODO.y`). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el `data.table` final limpio y manejable.
+
+- #### Renombrar Columnas con Sufijo `.x`
 
 ```{r eval=FALSE}
-  if ("PERIODO.x" %in% colnames(final_df)) {
-    setnames(final_df, old = paste0(variables_to_delete, ".x"), new = gsub("\\.x$", "", variables_to_delete))
-    final_df[, c(paste0(variables_to_delete, ".y")) := NULL]
-  }
-
+ cols_x <- grep("\\.x$", colnames(final_df), value = TRUE)
+setnames(final_df, old = cols_x, new = gsub("\\.x$", "", cols_x))
 ```
 
--   Este bloque se encarga de eliminar cualquier duplicado de las columnas especificadas en `variables_to_delete`.
+-   **`grep("\\.x$", colnames(final_df), value = TRUE)`**: Busca y lista las columnas en `final_df` que terminan en `.x`.
 
-    **Detalles:**
+-   **`setnames()`**: Renombra estas columnas eliminando el sufijo `.x`.
 
--   `if ("PERIODO.x" %in% colnames(final_df))` verifica si hay columnas duplicadas con el sufijo `.x` (como `PERIODO.x`).
+- #### Eliminar Columnas con Sufijo `.y`
 
--   `setnames(final_df, old = paste0(variables_to_delete, ".x"), new = gsub("\\.x$", "", variables_to_delete))` renombra estas columnas, eliminando el sufijo `.x`.
 
--   `final_df[, c(paste0(variables_to_delete, ".y")) := NULL]` elimina las versiones `.y` de estas columnas, si existen.
+```{r eval=FALSE}
+cols_y <- grep("\\.y$", colnames(final_df), value = TRUE)
+final_df[, (cols_y) := NULL]
+```
 
-    **Ejemplo:** Si después de la fusión tienes columnas como `PERIODO.x` y `PERIODO.y`, este código renombrará `PERIODO.x` a `PERIODO` y eliminará `PERIODO.y`.
+-   **`grep("\\.y$", colnames(final_df), value = TRUE)`**: Busca y lista las columnas en `final_df` que terminan en `.y`.
+
+-   **`final_df[, (cols_y) := NULL]`**: Elimina estas columnas del `data.table`.
 
 ### 1.9 Devolver el data.table final
 

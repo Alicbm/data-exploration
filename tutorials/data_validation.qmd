@@ -380,7 +380,111 @@ Lo que se espera es que las variables seleccionadas (variables clave) no tengan 
             0           0     0     0       0
 ```
 
-## 5. Funcion para la validación de contenido `content_alidation()`
+## 5. Funcion para la validación de contenido `select_suffix()`
+
+```{r eval = FALSE}
+select_suffix <- function(data, sufijos = "x") {
+  
+  regex_pattern <- paste0("\\.(", paste(sufijos, collapse = "|"), ")$")
+  
+  matching_cols <- grep(regex_pattern, names(data), value = TRUE)
+  
+  if (length(matching_cols) > 0) {
+    result <- data[, ..matching_cols]
+    print(result)
+  } else {
+    print(paste0("No hay variables que terminen en ", paste(sufijos, collapse = ", ")))
+  }
+}
+
+select_suffix(data, c("x", "y", "z"))
+```
+
+### 5.1 Definición de la Función
+
+```{r eval = FALSE}
+select_suffix <- function(data, sufijos = "x") {
+
+```
+
+**`select_suffix`**: Define una función que toma dos argumentos:
+
+-   **`data`**: Un `data.table` del que se seleccionarán las columnas.
+
+-   **`sufijos`**: Un vector de sufijos para buscar en los nombres de las columnas. El valor predeterminado es `"x"`.
+
+### 5.2 Crear Patrón de Búsqueda
+
+```{r eval = FALSE}
+regex_pattern <- paste0("\\.(", paste(sufijos, collapse = "|"), ")$")
+
+```
+
+**`regex_pattern`**: Construye un patrón de expresión regular para buscar columnas cuyos nombres terminen con los sufijos especificados.
+
+-   **`paste(sufijos, collapse = "|")`**: Une los sufijos en una cadena separada por el símbolo `|`, que en las expresiones regulares actúa como "o". Por ejemplo, si `sufijos` es `c("x", "y")`, el patrón será `\\.("x|y")$`.
+
+-   **`paste0("\\.(", ..., ")$")`**: Añade el prefijo `\\.` (para coincidir con un punto literal) y el sufijo `$` (para indicar el final del nombre de la columna).
+
+### 5.3 Buscar Columnas que Coincidan con el Patrón
+
+```{r eval = FALSE}
+matching_cols <- grep(regex_pattern, names(data), value = TRUE)
+
+```
+
+**`matching_cols`**: Utiliza `grep()` para buscar nombres de columnas en `data` que coincidan con el patrón.
+
+-   **`regex_pattern`**: El patrón de búsqueda creado anteriormente.
+
+-   **`names(data)`**: Obtiene los nombres de las columnas de `data`.
+
+-   **`value = TRUE`**: Devuelve los nombres de las columnas que coinciden con el patrón.
+
+### 5.4 Verificar la Presencia de Columnas Coincidentes
+
+```{r eval = FALSE}
+if (length(matching_cols) > 0) {
+
+```
+
+**`if (length(matching_cols) > 0)`**: Verifica si se encontraron columnas que coinciden con el patrón. `length(matching_cols)` devuelve el número de columnas encontradas.
+
+### 5.5 Mostrar las Columnas Coincidentes
+
+```{r eval = FALSE}
+result <- data[, ..matching_cols]
+print(result)
+```
+
+-   **`result`**: Selecciona las columnas coincidentes del `data.table` y las almacena en `result`.
+
+-   **`print(result)`**: Muestra las columnas coincidentes.
+
+### 5.6 Mostrar Mensaje si No Se Encontraron Coincidencias
+
+```{r eval = FALSE}
+print(paste0("No hay variables que terminen en ", paste(sufijos, collapse = ", ")))
+
+```
+
+-   **`print(paste0(...))`**: Imprime un mensaje indicando que no se encontraron columnas que terminen con los sufijos especificados.
+
+### 5.7 Ejemplo de Uso de la Función
+
+```{r eval = FALSE}
+select_suffix(data, c("x", "y", "z"))
+```
+
+**`select_suffix(data, c("x", "y", "z"))`**: Llama a la función `select_suffix()` con `data` y los sufijos `c("x", "y", "z")` para buscar y mostrar las columnas que terminan en estos sufijos.
+
+### 5.8 Retorno de la función
+
+```{r eval = FALSE}
+[1] "No hay variables que terminen en x, y, z"
+```
+
+## 6. Funcion para la validación de contenido `content_alidation()`
 
 La función `validation()` se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado.
 
@@ -416,7 +520,7 @@ content_validation <- function(data, month, by_col, ...) {
 content_validation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
 ```
 
-### 5.1 Definición de la función
+### 6.1 Definición de la función
 
 ```{r eval = FALSE}
 validacion <- function(data, month, by_col, ...) {
@@ -432,7 +536,7 @@ Esta línea define una nueva función llamada `content_alidation()` La función 
 
 -   `...`: Un argumento variable que permite especificar múltiples columnas para las cuales se sumarán los valores durante la validación.
 
-### 5.2 Creación de un diccionario de meses
+### 6.2 Creación de un diccionario de meses
 
 ```{r eval = FALSE}
 months_dictionary <- list( 
@@ -453,7 +557,7 @@ months_dictionary <- list(
 
 Aquí se crea una lista llamada `months_dictionary` que asocia nombres de meses con sus correspondientes números de mes. Esta lista facilita la conversión del nombre del mes proporcionado en el argumento `month` a su número de mes equivalente.
 
-### 5.3 Obtención de los datos del mes específico
+### 6.3 Obtención de los datos del mes específico
 
 ```{r eval = FALSE}
 month_data <- merge_month(month)
@@ -461,7 +565,7 @@ month_data <- merge_month(month)
 
 Se llama a la función `merge_month()` con el nombre del mes especificado en month para obtener los datos correspondientes a ese mes. El resultado es un data frame llamado `month_data` que contiene la información para el mes actual.
 
-### 5.4 Cálculo de resultados por mes
+### 6.4 Cálculo de resultados por mes
 
 ```{r eval = FALSE}
 total_complete_data <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
@@ -477,7 +581,7 @@ total_complete_data <- month_data[, lapply(.SD, function(x) sum(x, na.rm = TRUE)
 
 El resultado, `total_complete_data`, es un data frame con la suma de valores para cada columna especificada, agrupado por la columna de agrupamiento en `month_data`.
 
-### 5.5 Cálculo de resultados en el conjunto de datos consolidado
+### 6.5 Cálculo de resultados en el conjunto de datos consolidado
 
 ```{r eval = FALSE}
 total_month_data <- data[MES == months_dictionary[[month]], lapply(.SD, function(x) sum(x, na.rm = TRUE)), .SDcols = c(...), by = by_col]
@@ -487,7 +591,7 @@ total_month_data <- data[MES == months_dictionary[[month]], lapply(.SD, function
 
 -   El cálculo realizado es similar al de `total_complete_data`: se suman los valores en las columnas especificadas, agrupados por la columna `by_col`.
 
-### 5.6 Comparación de resultados y mensajes de resultado
+### 6.6 Comparación de resultados y mensajes de resultado
 
 ```{r eval = FALSE}
 if (all(total_complete_data == total_month_data)) { 
@@ -503,7 +607,7 @@ if (all(total_complete_data == total_month_data)) {
 
 -   `print("El contenido no coincide")`: Si hay alguna discrepancia entre `total_complete_data` y `total_month_data`, se imprime este mensaje
 
-### 5.7 Llamada a la función para validación
+### 6.7 Llamada a la función para validación
 
 ```{r eval = FALSE}
 content_alidation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
@@ -519,7 +623,7 @@ content_alidation(data, "marzo", "DPTO", c("OCI", "P7360", "P9460"))
 
 Esta llamada a la función ejecuta la validación para el mes de marzo, comparando los resultados de las sumas en el conjunto de datos del mes específico con los resultados en el conjunto de datos consolidado.
 
-### 5. 8 Retorno de la función
+### 6.8 Retorno de la función
 
 ```{r eval = FALSE}
 
@@ -543,6 +647,10 @@ La función `duplicate()` se utiliza para verificar la existencia de filas dupli
 ### Función `missing_values()`
 
 La función `missing_values()` se utiliza para evaluar la completitud de datos en un conjunto específico de columnas dentro de un data frame. Al contar el número de valores faltantes `NA` en cada columna especificada, esta función ayuda a identificar problemas de calidad de datos, como la presencia de registros incompletos. Tener columnas clave con valores faltantes puede afectar negativamente los análisis posteriores, por lo que esta función es útil para realizar una limpieza de datos inicial y asegurar que las columnas esenciales estén completas antes de proceder con análisis más detallados
+
+### Función `select_suffix()`
+
+La función `select_suffix()` permite seleccionar y mostrar columnas de un `data.table` que terminan en los sufijos especificados. Si no se encuentran columnas con los sufijos proporcionados, la función informa al usuario. Esto facilita la identificación y el análisis de columnas específicas en un conjunto de datos.
 
 ### Función `content_alidation()`
 
