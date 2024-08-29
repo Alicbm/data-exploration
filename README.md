@@ -31,7 +31,8 @@
     - [Conteo de Registros](#2-conteo-de-registros)
     - [Verificar Duplicados](#3-verificar-duplicados)
     - [Completitud de Datos](#4-completitud-de-datos)
-    - [Validación de Contenidos](#5-validación-de-contenidos)
+    - [Verificación de Variables con Sufijos](#5-verificación-de-variables-con-sufijos)
+    - [Validación de Contenidos](#6-validación-de-contenidos)
 12. [Cálculo y Gráfico de Indicadores](#12-cálculo-y-gráfico-de-indicadores)
     - [Instalación de Librerias](#1-instalación-de-librerias)
     - [Lectura del Archivo GEIH](#2-lectura-del-archivo-geih)
@@ -43,6 +44,8 @@
 
 
 # Gran Encuesta Integrada de Hogares (GEIH) – Información Clave
+
+>**Nota:** Estas funciones están diseñadas para utilizarse con la GEIH de 2022 y posteriores. Si deseas emplearlas con bases de datos de la GEIH anteriores, es necesario realizar algunas modificaciones en las distintas funciones. Puedes adaptarlas según tus necesidades. Sin embargo, si utilizas la GEIH de 2022 o posteriores, puedes trabajar con estas funciones paso a paso.
 
 ## 1. ¿Qué es el DANE?
 
@@ -116,8 +119,7 @@ Para aplicar el factor de expansión:
 - **Identificación del Factor de Expansión:** Busca la variable que representa el factor de expansión en los microdatos, como FEX_C18.
 - **Uso en Cálculos:** Multiplica cada observación por su factor de expansión para ajustar a la población total. Ejemplo:
 
-  plaintext
-  Estimación Total = ∑ (Valor de la Observación × Factor de Expansión)
+ `Estimación Total = ∑ (Valor de la Observación × Factor de Expansión)`
 
 Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1 si está ocupado, 0 si no) por el factor de expansión y suma los valores ajustados.
 
@@ -133,7 +135,7 @@ Si calculas el total de personas ocupadas, multiplica el estado de ocupación (1
 >Abre tu navegador web y ve a la página principal del [DANE](https://www.dane.gov.co/ "DANE") Colombia.
 
 
-![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/1.1.dane_intro.png?raw=true)
+![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/1.dane_intro.png?raw=true)
 
 
 
@@ -212,18 +214,18 @@ Este proceso te permitirá trabajar de manera más efectiva con los datos al ten
 ![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/10.opciones_respuesta.png?raw=true)
 
 
-## 8.  8. Prepara el Entorno Para el Desarrollo
+## 8. Prepara el Entorno Para el Desarrollo
 
-###  1. Tener R y RStudio instalado:
+### 1. Tener R y RStudio instalado:
 En esta guía, utilizamos **R** como lenguaje de programación base y **RStudio** como nuestro editor de código. Por lo tanto, es necesario tener ambas herramientas instaladas en tu dispositivo.
 
 Si aún no las tienes, sigue el siguiente enlace y aprende como instalarlos en menos de dos minutos [Clic aquí.](https://www.youtube.com/watch?v=hbgzW3Cvda4 "Clic aquí.")
 
-###  2. Crear un proyecto:
+### 2. Crear un proyecto:
 
 Para desarrollar de manera optima todo el proyecto es recomendable crear un nuevo proyecto, puedes hacerlo con los siguientes pasos:
 
-1. Ve a la vista superior izquierda  y presiona **File** o **Archivo** (dependiendo el idioma en el cual está tu RStudio) y selecciona **New Porject...** o **Nuevo Proyecto...***
+1. Ve a la vista superior izquierda  y presiona **File** o **Archivo** (dependiendo el idioma en el cual está tu RStudio) y selecciona **New Porject...** o **Nuevo Proyecto...**
 
 	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/11.nuevo_proyecto.png?raw=true)
 
@@ -236,9 +238,9 @@ Para desarrollar de manera optima todo el proyecto es recomendable crear un nuev
 	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/13.nuevo_proyecto.png?raw=true)
 
 4. Crea una nueva carpeta, en el input **Directory Name** asigna el nombre que desees, en este caso será **data-exploration**.
->**Nota:** Puedes elegir la ruta donde prefieras guardar el proyecto, en este caso será en la carpeta raíz de nuestro computador, en tu caso puedes dejarla por defecto o escoger la que prefieras.
+>**Nota:** Puedes elegir la ruta donde prefieras guardar el proyecto, en este caso será en la carpeta que tiene por defecto (Documentos: Representada por ~), en tu caso puedes dejarla por defecto o escoger la que prefieras.
 
-  ![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/14.crear_carpeta.png?raw=true)
+   ![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/14.crear_carpeta.png?raw=true)
 
 5. Luego de crear el proyecto RStudio lo redireccionará al proyecto creado, estando en este cree un archivo llamado join_geih.R
 
@@ -325,32 +327,36 @@ Para obtener información detallada de esta función te recomendamos seguir el s
       
       key_variables <- c("DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
       
-      variables_to_delete <- c("PERIODO", "MES", "PER", "REGIS", "AREA", "CLASE", "DPTO")
-      
       base_dir <- file.path(getwd(), "datos", month)
       
       all_files <- list.files(path = base_dir, pattern = "*.csv", full.names = TRUE, ignore.case = TRUE)
       
+      # Leer el primer archivo para inicializar el data.table final
       final_df <- fread(file = all_files[1])
       
+      # Iterar sobre los archivos restantes
       for (file in all_files[-1]) {
         df <- fread(file = file)
         
+        # Encontrar las claves comunes para el merge
         new_key_variables <- intersect(colnames(df), key_variables)
         
+        # Realizar el merge
         final_df <- merge(final_df, df, by = new_key_variables, all.x = TRUE)
         
-        if ("PERIODO.x" %in% colnames(final_df)) {
-          setnames(final_df, old = paste0(variables_to_delete, ".x"), new = gsub("\\.x$", "", variables_to_delete))
-          final_df[, c(paste0(variables_to_delete, ".y")) := NULL]
-        }
+        # Encontrar y renombrar columnas que terminan en .x
+        cols_x <- grep("\\.x$", colnames(final_df), value = TRUE)
+        setnames(final_df, old = cols_x, new = gsub("\\.x$", "", cols_x))
+        
+        # Encontrar y eliminar columnas que terminan en .y
+        cols_y <- grep("\\.y$", colnames(final_df), value = TRUE)
+        final_df[, (cols_y) := NULL]
+        
       }
       
       return(final_df)
     }
-	
-	merged_data <- merge_month("enero")
-    				
+
     
 
 ### 2. Función para el pegado de todos los meses
@@ -389,7 +395,7 @@ Para obtener información detallada de esta función te recomendamos seguir el s
 
 Este documento proporciona las funciones en R necesarias para validar los datos de la Gran Encuesta Integrada de Hogares (GEIH). Estas funciones verifican la consistencia de los datos consolidados (ten en cuenta que en este ejercicio solo hemos unido los datos de 6 meses, ya que son los únicos datos recolectados por el DANE en lo que va del año), el conteo de registros, la presencia de duplicados, la completitud de datos y la validación de contenidos específicos.
 
->**Nota:** En este caso cargamos la base de datos en la variable `data` desde la ruta `C:/data-exploration/geih_complete.csv` debido a que es la ruta donde se descargo anteriormente la base de datos de la geih (la cual obtuvimos en la función [geih_completed](#función-para-el-pegado-de-todos-los-módulos-en-un-mes-determinado))
+>**Nota:** En este caso cargamos la base de datos en la variable `data` desde la ruta `C:/data-exploration/geih_complete.csv` debido a que es la ruta donde se descargo anteriormente la base de datos de la geih (la cual obtuvimos en la función [geih_completed](#1-función-para-el-pegado-de-todos-los-módulos-en-un-mes-determinado))
 
     data <- fread(file = "C:/data-exploration/geih_complete.csv")
 
@@ -470,7 +476,27 @@ Para obtener información detallada de esta función te recomendamos seguir el s
     missing_values(data, "DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
 	
 
-### 5. Validación de Contenidos
+### 5. Verificación de Variables con Sufijos
+
+La función `select_suffix()` permite seleccionar y mostrar columnas de un `data.table` que terminan en los sufijos especificados. Si no se encuentran columnas con los sufijos proporcionados, la función informa al usuario. Esto facilita la identificación y el análisis de columnas específicas en un conjunto de datos.
+
+    select_suffix <- function(data, sufijos = "x") {
+      
+      regex_pattern <- paste0("\\.(", paste(sufijos, collapse = "|"), ")$")
+      
+      matching_cols <- grep(regex_pattern, names(data), value = TRUE)
+      
+      if (length(matching_cols) > 0) {
+        result <- data[, ..matching_cols]
+        print(result)
+      } else {
+        print(paste0("No hay variables que terminen en ", paste(sufijos, collapse = ", ")))
+      }
+    }
+    
+    select_suffix(data, c("x", "y", "z"))
+
+### 6. Validación de Contenidos
 
 La función `content_validation()` se utiliza para verificar la consistencia de los datos entre un conjunto de datos mensual específico y un conjunto de datos consolidado. Primero, obtiene los datos del mes especificado y calcula las sumas de ciertas columnas agrupadas por una columna clave. Luego, realiza el mismo cálculo en el conjunto de datos consolidado para el mes correspondiente y compara los resultados. Esta función es esencial para asegurar que los datos de los meses individuales coincidan con los datos en el conjunto consolidado, garantizando así la integridad y precisión de los datos en el análisis.
 
@@ -642,7 +668,7 @@ La función `graph_variables` crea un gráfico de barras para visualizar tasas d
           hjust = ifelse(desc_data$var < 5, -0.2, 1.5),
           angle = 90, 
           size = 3, 
-          color = ifelse(desc_data$var < 5, "#000", "white")
+          color = ifelse(desc_data$var < 5, "#000000", "white")
         )
       
     }
@@ -680,9 +706,3 @@ La función `graph_variables` crea un gráfico de barras para visualizar tasas d
 Este proyecto nos ha permitido aplicar nuestros conocimientos en economía y analítica de datos para crear herramientas que facilitan el manejo y análisis de bases de datos complejas, como las del DANE. Las funciones desarrolladas mejoran la eficiencia y precisión en la unión de datos, la validación de información y el cálculo de indicadores del mercado laboral.
 
 Esperamos que estas herramientas sirvan como un recurso valioso para futuros estudiantes y profesionales, promoviendo buenas prácticas en el análisis de datos y contribuyendo al avance del conocimiento en el campo de la economía laboral en Colombia.
-
-
-
-
-
- 

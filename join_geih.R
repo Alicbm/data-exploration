@@ -28,11 +28,9 @@ merge_month <- function(month) {
     # Realizar el merge
     final_df <- merge(final_df, df, by = new_key_variables, all.x = TRUE)
     
-    
     # Encontrar y renombrar columnas que terminan en .x
     cols_x <- grep("\\.x$", colnames(final_df), value = TRUE)
     setnames(final_df, old = cols_x, new = gsub("\\.x$", "", cols_x))
-    
     
     # Encontrar y eliminar columnas que terminan en .y
     cols_y <- grep("\\.y$", colnames(final_df), value = TRUE)

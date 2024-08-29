@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alic Barandica, Daniel Molina">
-<meta name="dcterms.date" content="2024-08-27">
+<meta name="dcterms.date" content="2024-08-29">
 
-<title>Ejercicios: Calculo y grafico de indicadores</title>
+<title>Ejercicios: Cálculo y Gráfico de Indicadores</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,10 +65,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="calculate_indicators_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="calculate_indicators_files/libs/quarto-html/anchor.min.js"></script>
 <link href="calculate_indicators_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="calculate_indicators_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="calculate_indicators_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="calculate_indicators_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="calculate_indicators_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="calculate_indicators_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="calculate_indicators_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="calculate_indicators_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="calculate_indicators_files/libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -116,6 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#función-group_variables" id="toc-función-group_variables" class="nav-link" data-scroll-target="#función-group_variables">Función <code>group_variables</code></a></li>
   <li><a href="#función-graph_variables" id="toc-función-graph_variables" class="nav-link" data-scroll-target="#función-graph_variables">Función <code>graph_variables</code></a></li>
   </ul></li>
+  <li><a href="#contáctanos" id="toc-contáctanos" class="nav-link" data-scroll-target="#contáctanos">Contáctanos</a></li>
   </ul>
 </nav>
 </div>
@@ -123,7 +126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Ejercicios: Calculo y grafico de indicadores</h1>
+<h1 class="title">Ejercicios: Cálculo y Gráfico de Indicadores</h1>
 </div>
 
 
@@ -140,7 +143,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 27, 2024</p>
+      <p class="date">August 29, 2024</p>
     </div>
   </div>
   
@@ -150,6 +153,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p><a href="https://data-exploration.vercel.app" target="_blank">Ir a la página de inicio</a></p>
 <p><strong>Nota</strong>: Para utilizar las funciones presentadas en este documento, es necesario contar con la base de datos completa de la GEIH. Puedes obtener la GEIH completa en el siguiente enlace: https://geih.com. Aunque es recomendable tener conocimientos previos en R, esta guía ha sido diseñada y organizada para ser lo más explicativa posible.</p>
 <section id="instalación-y-carga-de-librerías" class="level2">
 <h2 class="anchored" data-anchor-id="instalación-y-carga-de-librerías">Instalación y carga de librerías</h2>
@@ -412,7 +416,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fu">ifelse</span>(desc_data<span class="sc">$</span>var <span class="sc">&lt;</span> <span class="dv">5</span>, <span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">1.5</span>),</span>
 <span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">angle =</span> <span class="dv">90</span>, </span>
 <span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">3</span>, </span>
-<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">ifelse</span>(desc_data<span class="sc">$</span>var <span class="sc">&lt;</span> <span class="dv">5</span>, <span class="st">"#000"</span>, <span class="st">"white"</span>)</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">color =</span> <span class="fu">ifelse</span>(desc_data<span class="sc">$</span>var <span class="sc">&lt;</span> <span class="dv">5</span>, <span class="st">"#000000"</span>, <span class="st">"white"</span>)</span>
 <span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -585,7 +589,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">hjust =</span> <span class="fu">ifelse</span>(desc_data<span class="sc">$</span>var <span class="sc">&lt;</span> <span class="dv">5</span>, <span class="sc">-</span><span class="fl">0.2</span>, <span class="fl">1.5</span>),</span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">angle =</span> <span class="dv">90</span>, </span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">3</span>, </span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">ifelse</span>(desc_data<span class="sc">$</span>var <span class="sc">&lt;</span> <span class="dv">5</span>, <span class="st">"#000"</span>, <span class="st">"white"</span>)</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> <span class="fu">ifelse</span>(desc_data<span class="sc">$</span>var <span class="sc">&lt;</span> <span class="dv">5</span>, <span class="st">"#000000"</span>, <span class="st">"white"</span>)</span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong><code>geom_text(aes(...))</code>:</strong></p>
@@ -613,10 +617,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Establece el tamaño de las etiquetas en 3 puntos, haciendo que el texto sea pequeño pero legible.</li>
 </ul></li>
-<li><p><strong><code>color = ifelse(desc_data$var &lt; 5, "#000", "white")</code>:</strong></p>
+<li><p><strong><code>color = ifelse(desc_data$var &lt; 5, "#000000", "white")</code>:</strong></p>
 <ul>
 <li><p>Cambia el color del texto dependiendo del valor de <code>var</code>.</p></li>
-<li><p>Si <code>var</code> es menor a 5, el texto es negro (<code>"#000"</code>).</p></li>
+<li><p>Si <code>var</code> es menor a 5, el texto es negro (<code>"#000000"</code>).</p></li>
 <li><p>Si <code>var</code> es mayor o igual a 5, el texto es blanco, lo que asegura que sea visible contra el fondo de la barra.</p></li>
 </ul></li>
 </ul>
@@ -660,6 +664,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>La función graph_variables crea un gráfico de barras para visualizar tasas de desempleo u ocupación por departamento. Toma un data.table, el nombre de la variable a graficar, y los títulos del gráfico. Prepara y ordena los datos, asigna colores a los departamentos, y usa ggplot2 para generar el gráfico. Ajusta el estilo del gráfico y añade etiquetas con los valores exactos en las barras. El resultado es un gráfico claro y visualmente atractivo que muestra las tasas por departamento.</p>
 </section>
 </section>
+<section id="contáctanos" class="level2">
+<h2 class="anchored" data-anchor-id="contáctanos">Contáctanos</h2>
+<p>Te invitamos a explorar el proyecto completo, con todas su guias indicaciones y demás ¡Solo visita el <a href="https://github.com/Alicbm/data-exploration" target="_blank">repositorio del Proyecto!</a></p>
+<p><strong>Daniel Molina:</strong> <a href="https://github.com/dmgsjj" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/daniel-molina-b76a4323b" target="_blank">LinkedIn</a></p>
+<p><strong>Alic Barandica:</strong> <a href="https://github.com/Alicbm" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/alic-barandica" target="_blank">LinkedIn</a></p>
+</section>
 
 </main>
 <!-- /main column -->
@@ -683,6 +693,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
   const icon = "";
   const anchorJS = new window.AnchorJS();
   anchorJS.options = {

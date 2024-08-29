@@ -1,5 +1,5 @@
 ---
-title: "Ejercicios: Calculo y grafico de indicadores "
+title: "Ejercicios: Cálculo y Gráfico de Indicadores "
 author: "Alic Barandica, Daniel Molina"
 date: "`r Sys.Date()`"
 format:
@@ -7,7 +7,12 @@ format:
     toc: true
     toc-title: "Tabla de contenido"
     css: styles.css
+    theme: 
+      light: flatly
+      dark: superhero
 ---
+
+<a href="https://data-exploration.vercel.app" target="_blank">Ir a la página de inicio</a>
 
 **Nota**: Para utilizar las funciones presentadas en este documento, es necesario contar con la base de datos completa de la GEIH. Puedes obtener la GEIH completa en el siguiente enlace: https://geih.com. Aunque es recomendable tener conocimientos previos en R, esta guía ha sido diseñada y organizada para ser lo más explicativa posible.
 
@@ -578,3 +583,11 @@ La función group_variables calcula estadísticas sobre empleo y desempleo a niv
 ### Función `graph_variables`
 
 La función graph_variables crea un gráfico de barras para visualizar tasas de desempleo u ocupación por departamento. Toma un data.table, el nombre de la variable a graficar, y los títulos del gráfico. Prepara y ordena los datos, asigna colores a los departamentos, y usa ggplot2 para generar el gráfico. Ajusta el estilo del gráfico y añade etiquetas con los valores exactos en las barras. El resultado es un gráfico claro y visualmente atractivo que muestra las tasas por departamento.
+
+## Contáctanos
+
+Te invitamos a explorar el proyecto completo, con todas su guias indicaciones y demás ¡Solo visita el <a href="https://github.com/Alicbm/data-exploration" target="_blank">repositorio del Proyecto!</a>
+
+<strong>Daniel Molina:</strong> <a href="https://github.com/dmgsjj" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/daniel-molina-b76a4323b" target="_blank">LinkedIn</a>
+
+<strong>Alic Barandica:</strong> <a href="https://github.com/Alicbm" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/alic-barandica" target="_blank">LinkedIn</a>

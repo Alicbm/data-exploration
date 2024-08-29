@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Alic Barandica, Daniel Molina">
-<meta name="dcterms.date" content="2024-08-28">
+<meta name="dcterms.date" content="2024-08-29">
 
-<title>Guia: Pegado de la GEIH</title>
+<title>Guía Práctica: Unión de Bases de Datos de la GEIH con Funciones en R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -108,6 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#función-merge_month" id="toc-función-merge_month" class="nav-link" data-scroll-target="#función-merge_month">Función <code>merge_month()</code></a></li>
   <li><a href="#función-geih_completed" id="toc-función-geih_completed" class="nav-link" data-scroll-target="#función-geih_completed">Función <code>geih_completed()</code></a></li>
   </ul></li>
+  <li><a href="#contáctanos" id="toc-contáctanos" class="nav-link" data-scroll-target="#contáctanos">Contáctanos</a></li>
   </ul>
 </nav>
 </div>
@@ -115,7 +116,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Guia: Pegado de la GEIH</h1>
+<h1 class="title">Guía Práctica: Unión de Bases de Datos de la GEIH con Funciones en R</h1>
 </div>
 
 
@@ -132,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 28, 2024</p>
+      <p class="date">August 29, 2024</p>
     </div>
   </div>
   
@@ -142,12 +143,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p><a href="https://data-exploration.vercel.app" target="_blank">Ir a la página de inicio</a></p>
 <p><strong>Nota</strong>: Para utilizar las funciones y unir las bases de datos no es necesario saber R, el archivo <a href="https://github.com/Alicbm/data-exploration" target="_blank">README.md</a><br> (leer primero el archivo README.md) está creado con el fin de ser lo más explícito posible para que puedas utilizarlas sin inconvenientes, sin embargo, para entender como funciona la lógica detrás del pegado de las bases de datos es necesario entender como funciona R. En este espacio explicaremos linea a linea como están construidas estás funciones.</p>
 <section id="función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month" class="level2">
 <h2 class="anchored" data-anchor-id="función-para-el-pegado-de-todos-los-modulos-en-un-mes-determinado-merge_month"><em>1. Función para el pegado de todos los modulos en un mes determinado (<code>merge_month</code>)</em></h2>
 <p>La siguiente función (<code>merge_month</code>) tiene como objetivo unir todos los modulos que hay dentro de cada mes. A continuación se expicará cada una de las funcionalidades dentro de ella:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mmerge_month <span class="ot">&lt;-</span> <span class="cf">function</span>(month) {</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>merge_month <span class="ot">&lt;-</span> <span class="cf">function</span>(month) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  key_variables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"DIRECTORIO"</span>, <span class="st">"SECUENCIA_P"</span>, <span class="st">"ORDEN"</span>, <span class="st">"HOGAR"</span>, <span class="st">"FEX_C18"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -168,20 +170,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Realizar el merge</span></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    final_df <span class="ot">&lt;-</span> <span class="fu">merge</span>(final_df, df, <span class="at">by =</span> new_key_variables, <span class="at">all.x =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Encontrar y renombrar columnas que terminan en .x</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    cols_x <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="fu">colnames</span>(final_df), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setnames</span>(final_df, <span class="at">old =</span> cols_x, <span class="at">new =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="st">""</span>, cols_x))</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Encontrar y eliminar columnas que terminan en .y</span></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    cols_y <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.y$"</span>, <span class="fu">colnames</span>(final_df), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    final_df[, (cols_y) <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_df)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Encontrar y renombrar columnas que terminan en .x</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    cols_x <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="fu">colnames</span>(final_df), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">setnames</span>(final_df, <span class="at">old =</span> cols_x, <span class="at">new =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="st">""</span>, cols_x))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Encontrar y eliminar columnas que terminan en .y</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    cols_y <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.y$"</span>, <span class="fu">colnames</span>(final_df), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    final_df[, (cols_y) <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(final_df)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="definición-de-la-función" class="level3">
 <h3 class="anchored" data-anchor-id="definición-de-la-función">1.1 Definición de la función</h3>
@@ -271,10 +271,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="columnas-con-sufijo-.x-.y" class="level3">
 <h3 class="anchored" data-anchor-id="columnas-con-sufijo-.x-.y">1.8 Columnas con Sufijo <code>(.x |.y)</code></h3>
-<p><strong>¿Por qué eliminar columnas?</strong> Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, <code>PERIODO.x</code>, <code>PERIODO.y</code>). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el <code>data.table</code> final limpio y manejable.</p>
-<ul>
-<li><h4 id="renombrar-columnas-con-sufijo-.x" class="anchored">Renombrar Columnas con Sufijo <code>.x</code></h4></li>
-</ul>
+<p>Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, <code>PERIODO.x</code>, <code>PERIODO.y</code>). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el <code>data.table</code> final limpio y manejable.</p>
+<section id="renombrar-columnas-con-sufijo-.x" class="level4">
+<h4 class="anchored" data-anchor-id="renombrar-columnas-con-sufijo-.x">Renombrar Columnas con Sufijo <code>.x</code></h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a> cols_x <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="fu">colnames</span>(final_df), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setnames</span>(final_df, <span class="at">old =</span> cols_x, <span class="at">new =</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.x$"</span>, <span class="st">""</span>, cols_x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -282,8 +281,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p><strong><code>grep("\\.x$", colnames(final_df), value = TRUE)</code></strong>: Busca y lista las columnas en <code>final_df</code> que terminan en <code>.x</code>.</p></li>
 <li><p><strong><code>setnames()</code></strong>: Renombra estas columnas eliminando el sufijo <code>.x</code>.</p></li>
-<li><h4 id="eliminar-columnas-con-sufijo-.y" class="anchored">Eliminar Columnas con Sufijo <code>.y</code></h4></li>
 </ul>
+</section>
+<section id="eliminar-columnas-con-sufijo-.y" class="level4">
+<h4 class="anchored" data-anchor-id="eliminar-columnas-con-sufijo-.y">Eliminar Columnas con Sufijo <code>.y</code></h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cols_y <span class="ot">&lt;-</span> <span class="fu">grep</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.y$"</span>, <span class="fu">colnames</span>(final_df), <span class="at">value =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>final_df[, (cols_y) <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -292,6 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong><code>grep("\\.y$", colnames(final_df), value = TRUE)</code></strong>: Busca y lista las columnas en <code>final_df</code> que terminan en <code>.y</code>.</p></li>
 <li><p><strong><code>final_df[, (cols_y) := NULL]</code></strong>: Elimina estas columnas del <code>data.table</code>.</p></li>
 </ul>
+</section>
 </section>
 <section id="devolver-el-data.table-final" class="level3">
 <h3 class="anchored" data-anchor-id="devolver-el-data.table-final">1.9 Devolver el data.table final</h3>
@@ -420,6 +422,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="función-geih_completed">Función <code>geih_completed()</code></h3>
 <p>La función <code>geih_completed</code> se encarga de consolidar los datos de todos los meses disponibles en el directorio <code>datos</code> en un único archivo CSV. Primero, define la ruta base y obtiene los nombres de los subdirectorios (que corresponden a los meses) en dicha ruta. Luego, inicializa un <code>data.table</code> vacío para almacenar los datos combinados. En un bucle, para cada mes, llama a la función <code>merge_month</code> para fusionar los archivos CSV del mes actual, y une estos datos con los datos acumulados anteriormente usando <code>rbindlist</code>. Finalmente, guarda el <code>data.table</code> completo en un archivo CSV llamado “geih_complete.csv” y devuelve el <code>data.table</code> resultante.</p>
 </section>
+</section>
+<section id="contáctanos" class="level2">
+<h2 class="anchored" data-anchor-id="contáctanos">Contáctanos</h2>
+<p>Te invitamos a explorar el proyecto completo, con todas su guias indicaciones y demás ¡Solo visita el <a href="https://github.com/Alicbm/data-exploration" target="_blank">repositorio del Proyecto!</a></p>
+<p><strong>Daniel Molina:</strong> <a href="https://github.com/dmgsjj" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/daniel-molina-b76a4323b" target="_blank">LinkedIn</a></p>
+<p><strong>Alic Barandica:</strong> <a href="https://github.com/Alicbm" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/alic-barandica" target="_blank">LinkedIn</a></p>
 </section>
 
 </main>

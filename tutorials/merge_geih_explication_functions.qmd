@@ -1,5 +1,5 @@
 ---
-title: "Guia: Pegado de la GEIH"
+title: "Guía Práctica: Unión de Bases de Datos de la GEIH con Funciones en R"
 author: "Alic Barandica, Daniel Molina"
 date: "`r Sys.Date()`"
 format:
@@ -9,6 +9,8 @@ format:
     css: styles.css
 ---
 
+<a href="https://data-exploration.vercel.app" target="_blank">Ir a la página de inicio</a>
+
 **Nota**: Para utilizar las funciones y unir las bases de datos no es necesario saber R, el archivo <a href="https://github.com/Alicbm/data-exploration" target="_blank">README.md</a><br> (leer primero el archivo README.md) está creado con el fin de ser lo más explícito posible para que puedas utilizarlas sin inconvenientes, sin embargo, para entender como funciona la lógica detrás del pegado de las bases de datos es necesario entender como funciona R. En este espacio explicaremos linea a linea como están construidas estás funciones.
 
 ## *1. Función para el pegado de todos los modulos en un mes determinado (`merge_month`)*
@@ -17,7 +19,7 @@ La siguiente función (`merge_month`) tiene como objetivo unir todos los modulos
 
 ```{r eval=FALSE}
 
-mmerge_month <- function(month) {
+merge_month <- function(month) {
   
   key_variables <- c("DIRECTORIO", "SECUENCIA_P", "ORDEN", "HOGAR", "FEX_C18")
   
@@ -38,11 +40,9 @@ mmerge_month <- function(month) {
     # Realizar el merge
     final_df <- merge(final_df, df, by = new_key_variables, all.x = TRUE)
     
-    
     # Encontrar y renombrar columnas que terminan en .x
     cols_x <- grep("\\.x$", colnames(final_df), value = TRUE)
     setnames(final_df, old = cols_x, new = gsub("\\.x$", "", cols_x))
-    
     
     # Encontrar y eliminar columnas que terminan en .y
     cols_y <- grep("\\.y$", colnames(final_df), value = TRUE)
@@ -166,20 +166,20 @@ for (file in all_files[-1]) {
 
 ### 1.8 Columnas con Sufijo `(.x |.y)`
 
-**¿Por qué eliminar columnas?** Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, `PERIODO.x`, `PERIODO.y`). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el `data.table` final limpio y manejable.
+Es posible que algunas columnas no sean necesarias después de la fusión o que puedan crear confusión si aparecen en múltiples versiones (por ejemplo, `PERIODO.x`, `PERIODO.y`). Este paso asegura que elimines esas columnas duplicadas o no necesarias para mantener el `data.table` final limpio y manejable.
 
-- #### Renombrar Columnas con Sufijo `.x`
+#### Renombrar Columnas con Sufijo `.x`
 
 ```{r eval=FALSE}
  cols_x <- grep("\\.x$", colnames(final_df), value = TRUE)
 setnames(final_df, old = cols_x, new = gsub("\\.x$", "", cols_x))
 ```
 
--   **`grep("\\.x$", colnames(final_df), value = TRUE)`**: Busca y lista las columnas en `final_df` que terminan en `.x`.
+  -   **`grep("\\.x$", colnames(final_df), value = TRUE)`**: Busca y lista las columnas en `final_df` que terminan en `.x`.
 
--   **`setnames()`**: Renombra estas columnas eliminando el sufijo `.x`.
+  -   **`setnames()`**: Renombra estas columnas eliminando el sufijo `.x`.
 
-- #### Eliminar Columnas con Sufijo `.y`
+#### Eliminar Columnas con Sufijo `.y`
 
 
 ```{r eval=FALSE}
@@ -339,3 +339,11 @@ La función `merge_month` toma como entrada el nombre de un mes y realiza la fus
 ### Función `geih_completed()`
 
 La función `geih_completed` se encarga de consolidar los datos de todos los meses disponibles en el directorio `datos` en un único archivo CSV. Primero, define la ruta base y obtiene los nombres de los subdirectorios (que corresponden a los meses) en dicha ruta. Luego, inicializa un `data.table` vacío para almacenar los datos combinados. En un bucle, para cada mes, llama a la función `merge_month` para fusionar los archivos CSV del mes actual, y une estos datos con los datos acumulados anteriormente usando `rbindlist`. Finalmente, guarda el `data.table` completo en un archivo CSV llamado "geih_complete.csv" y devuelve el `data.table` resultante.
+
+## Contáctanos
+
+Te invitamos a explorar el proyecto completo, con todas su guias indicaciones y demás ¡Solo visita el <a href="https://github.com/Alicbm/data-exploration" target="_blank">repositorio del Proyecto!</a>
+
+<strong>Daniel Molina:</strong> <a href="https://github.com/dmgsjj" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/daniel-molina-b76a4323b" target="_blank">LinkedIn</a>
+
+<strong>Alic Barandica:</strong> <a href="https://github.com/Alicbm" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/alic-barandica" target="_blank">LinkedIn</a>

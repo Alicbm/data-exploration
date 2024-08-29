@@ -1,7 +1,7 @@
 ---
-title: "Bienvenido a nuestro proyecto"
+title: "Guía Completa para la Unión y Validación de Datos de la GEIH (DANE)"
 author: "Alic Barandica, Daniel Molina"
-date: "`r Sys.Date()`"
+date: "August 29, 2024"
 format:
   html:
     toc: true
@@ -42,3 +42,14 @@ Esperamos que este proyecto sea una valiosa adición a los recursos disponibles 
     <a href="calculate_indicators.html" target="_blank">3. Cálculo y Graficado de Indicadores del Mercado Laboral</a>
   </li>
 </ul>
+
+## Contáctanos
+
+Te invitamos a explorar el proyecto completo, con todas su guias indicaciones y demás ¡Solo visita el <a href="https://github.com/Alicbm/data-exploration" target="_blank">repositorio del Proyecto!</a>
+
+<strong>Daniel Molina:</strong> <a href="https://github.com/dmgsjj" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/daniel-molina-b76a4323b" target="_blank">LinkedIn</a>
+
+<strong>Alic Barandica:</strong> <a href="https://github.com/Alicbm" target="_blank">GitHub</a> - <a href="https://www.linkedin.com/in/alic-barandica" target="_blank">LinkedIn</a>
+
+
+
