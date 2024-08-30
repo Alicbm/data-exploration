@@ -248,8 +248,7 @@ Para desarrollar de manera optima todo el proyecto es recomendable crear un nuev
 
 6. Crea una carpeta llamada **datos** en la ruta raíz del proyecto (es necesario que se llame datos)
 
-	![image](https://github.com/Alicbm/data-exploration/blob/testing-readme/readme-images/16.crear_carpeta.png?raw=true)
-
+	![image](https://github.com/Alicbm/data-exploration/blob/master/readme-images/16.crear_carpeta.png?raw=true)
 
 ## 9. Pasos para Organizar los Datos Descargados
 
